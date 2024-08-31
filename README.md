@@ -1,2 +1,2 @@
-# RGMS
-Research Grant Managment System
+# RGMS ( Research Grant Managment System)
+
