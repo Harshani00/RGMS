@@ -1,0 +1,68 @@
+.custom-card {
+  background-size: cover;
+  background-position: center;
+  color: white;
+  margin-bottom: 20px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  text-align: center;
+  overflow: hidden; /* Ensures content doesn’t overflow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transition effects */
+
+}
+
+.custom-card:hover {
+  transform: scale(1.05); /* Slightly enlarge the card */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Add shadow on hover */
+}
+
+.card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.2); /* Semi-transparent overlay */
+  transition: opacity 0.3s ease; /* Transition for overlay */
+}
+
+.custom-card:hover .card-overlay {
+  opacity: 1; /* Ensure overlay is fully visible on hover */
+}
+
+.card-title {
+  margin-bottom: 10px;
+  font-size: 1.6rem;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+ 
+ 
+}
+
+
+.card-hover-text {
+  display: none;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+ 
+  
+  padding: 10px;
+  border-radius: 5px;
+  max-width: 90%;
+
+  
+  
+}
+
+.custom-card:hover .card-hover-text {
+  display: block; /* Show hover text on hover */
+}
+
