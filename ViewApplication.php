@@ -12,7 +12,7 @@ session_start();
 include("dbConnection.php");
 
 // Fetch data from the `application` table
-$sql = "SELECT id, projectTitle, submittedDate FROM application";
+$sql = "SELECT app_ID, projectTitle, submittedDate FROM project";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {

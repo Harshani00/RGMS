@@ -469,16 +469,16 @@ const Sidebar = () => {
           </li>
           <li>
             <div className="sidebar-item">
-              Uploads Details
-              {completionStatus.uploads && (
+              Reviewers Details
+              {completionStatus.reviewers && (
                 <FontAwesomeIcon icon={faCheck} style={{ marginLeft: '8px', color: 'green' }} />
               )}
             </div>
           </li>
           <li>
             <div className="sidebar-item">
-              Reviewers Details
-              {completionStatus.reviewers && (
+              Uploads Details
+              {completionStatus.uploads && (
                 <FontAwesomeIcon icon={faCheck} style={{ marginLeft: '8px', color: 'green' }} />
               )}
             </div>

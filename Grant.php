@@ -5,7 +5,7 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
-//Start the session to access session variables
+// Start the session
 session_start(); 
 
 // Handle preflight OPTIONS request
@@ -13,16 +13,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-// Database connection details
+// Include the database connection
 include("dbConnection.php");
 
+// Ensure user_id is available in the session
+if (!isset($_SESSION['user_id'])) {
+    echo json_encode([
+        "status" => "error",
+        "message" => "User not logged in."
+    ]);
+    exit();
+}
+
+// Retrieve user_id from session
+$user_id = $conn->real_escape_string($_SESSION['user_id']);
 
 // Define required fields from both Grant and Project forms
 $requiredFields = [
     'title', 'name', 'faculty', 'department', 'email', 
     'phone', 'position', 'degree', 'university', 
     'year', 'field', 'start_date', 'duration',
-    'projectTitle', 'projectInvolved', 'outsidegrants', 'researchFacilities','co_investigators','co_investigator_departmentUniversity','reviewer1Name','reviewer2Name','reviewer3Name','reviewer1Email','reviewer2Email','reviewer3Email','reviewer1Affiliation','reviewer2Affiliation','reviewer3Affiliation'
+    'projectTitle', 'projectInvolved', 'outsidegrants', 'researchFacilities',
+    'co_investigators', 'co_investigator_departmentUniversity', 'reviewer1Name', 
+    'reviewer2Name', 'reviewer3Name', 'reviewer1Email', 'reviewer2Email', 
+    'reviewer3Email', 'reviewer1Affiliation', 'reviewer2Affiliation', 
+    'reviewer3Affiliation'
 ];
 
 // Initialize array to collect missing fields
@@ -36,7 +51,10 @@ foreach ($requiredFields as $field) {
 
 // If there are missing required fields, return an error
 if (!empty($missingFields)) {
-    echo "Error: Missing required fields: " . implode(", ", $missingFields);
+    echo json_encode([
+        "status" => "error",
+        "message" => "Missing required fields: " . implode(", ", $missingFields)
+    ]);
     exit();
 }
 
@@ -81,64 +99,148 @@ $reviewer1Affiliation = isset($_POST['reviewer1Affiliation']) ? $conn->real_esca
 $reviewer2Affiliation = isset($_POST['reviewer2Affiliation']) ? $conn->real_escape_string($_POST['reviewer2Affiliation']) : '';
 $reviewer3Affiliation = isset($_POST['reviewer3Affiliation']) ? $conn->real_escape_string($_POST['reviewer3Affiliation']) : '';
 
-
-
-
-
-// Set the target directory for uploads
-$targetDir = "D:/GrantData/Applications/";
-$filePaths = [
-    'projectProposal' => '',
-    'projectBudget' => '',
-    'projectCV' => '',
-    'coInvestigatorsCVs' => ''
-];
-$allowedTypes = array('pdf', 'doc', 'docx', 'xls', 'xlsx'); // Allowed file types
-
-// Ensure the uploads directory exists
-if (!file_exists($targetDir)) {
-    mkdir($targetDir, 0755, true);
-}
-
-foreach ($filePaths as $fileKey => &$filePath) {
-    if (isset($_FILES[$fileKey]) && $_FILES[$fileKey]['error'] == UPLOAD_ERR_OK) {
-        $targetFile = $targetDir . basename($_FILES[$fileKey]['name']);
-        if (move_uploaded_file($_FILES[$fileKey]['tmp_name'], $targetFile)) {
-            $filePath = $targetFile; // Save the file path
-        } else {
-            echo "Error uploading file: " . $_FILES[$fileKey]['name'];
-            exit();
-        }
-    }
-}
-
-// Construct SQL query
+// Construct SQL query to insert into the 'application' table
 $sql = "INSERT INTO application (
-    title, name, faculty, department, email, phone, position, degree, university, year, field, start_date, duration,
-    projectTitle, fundingSource, durationperiod, currency, amount, projectInvolved,
-    publication1, publication2, publication3, outsidegrants, fundingOrganization, fundingAmount, researchFacilities,
+    uid, title, name, faculty, department, email, phone, position, degree, university, year, field, start_date, duration,
     co_investigators, co_investigator_departmentUniversity, foreign_collaborators, foreign_collaborator_departmentUniversity,
-    projectProposal, projectBudget, projectCV, coInvestigatorsCVs, 
     reviewer1Name, reviewer2Name, reviewer3Name, reviewer1Email, reviewer2Email, reviewer3Email, 
     reviewer1Affiliation, reviewer2Affiliation, reviewer3Affiliation
 ) 
 VALUES (
-    '$title', '$name', '$faculty', '$department', '$email', '$phone', '$position', '$degree', '$university', '$year', '$field', '$start_date', '$duration',
-    '$projectTitle', '$fundingSource', '$durationperiod', '$currency', '$amount', '$projectInvolved',
-    '$publication1', '$publication2', '$publication3', '$outsidegrants', '$fundingOrganization', '$fundingAmount', '$researchFacilities',
+    '$user_id', '$title', '$name', '$faculty', '$department', '$email', '$phone', '$position', '$degree', '$university', '$year', '$field', '$start_date', '$duration',
     '$co_investigators', '$co_investigator_departmentUniversity', '$foreign_collaborators', '$foreign_collaborator_departmentUniversity',
-    '{$filePaths['projectProposal']}', '{$filePaths['projectBudget']}', '{$filePaths['projectCV']}', '{$filePaths['coInvestigatorsCVs']}',
     '$reviewer1Name', '$reviewer2Name', '$reviewer3Name', '$reviewer1Email', '$reviewer2Email', '$reviewer3Email', 
     '$reviewer1Affiliation', '$reviewer2Affiliation', '$reviewer3Affiliation'
 )";
 
-// Execute SQL query
-if ($conn->query($sql) === TRUE) {
-    echo "Form submitted successfully!";
+// Execute the SQL query for application table
+if ($conn->query($sql) === TRUE) { 
+    $app_ID = $conn->insert_id;
+
+    // Insert into Project table
+    $sql_project = "INSERT INTO project (
+    uid, projectTitle, projectInvolved, publication1, publication2, publication3, outsidegrants, researchFacilities, app_ID
+    ) VALUES (
+     '$user_id','$projectTitle', '$projectInvolved', '$publication1', '$publication2', '$publication3', '$outsidegrants', '$researchFacilities','$app_ID'
+    )";
+ 
+    if (!$conn->query($sql_project)) {
+     echo json_encode([
+         "status" => "error",
+         "message" => "Error inserting into Project: " . $conn->error
+     ]);
+     exit();
+    }
+
+    // Insert into prev_university_grants
+    if (isset($_POST['fundingSource']) && is_array($_POST['fundingSource'])) {
+        foreach ($_POST['fundingSource'] as $index => $fundingSource) {
+            $durationperiod = $conn->real_escape_string($_POST['durationperiod'][$index]);
+            $currency = $conn->real_escape_string($_POST['currency'][$index]);
+            $amount = $conn->real_escape_string($_POST['amount'][$index]);
+
+            $sql_funding = "INSERT INTO prev_university_grants (fundingSource, durationperiod, currency, amount, app_ID) VALUES ('$fundingSource', '$durationperiod', '$currency', '$amount', '$app_ID')";
+
+            if (!$conn->query($sql_funding)) {
+                echo json_encode([
+                    "status" => "error",
+                    "message" => "Error inserting funding data: " . $conn->error
+                ]);
+                exit();
+            }
+        }
+    }
+
+    // Insert into other_grants
+if (isset($_POST['fundingOrganization']) && is_array($_POST['fundingOrganization'])) {
+    foreach ($_POST['fundingOrganization'] as $index => $fundingOrganization) {
+        $fundingAmount = $conn->real_escape_string($_POST['fundingAmount'][$index]);
+
+        $sql_other_grants = "INSERT INTO other_grants (app_ID, fundingOrganization, fundingAmount) 
+                             VALUES ('$app_ID', '$fundingOrganization', '$fundingAmount')";
+
+        if (!$conn->query($sql_other_grants)) {
+            echo json_encode([
+                "status" => "error",
+                "message" => "Error inserting into other_grants: " . $conn->error
+            ]);
+            exit();
+        }
+    }
+}
+    // Insert into project 
+
+$projectProposal = isset($_FILES['projectProposal']['name']) ? $conn->real_escape_string($_FILES['projectProposal']['name']) : null;
+$projectBudget = isset($_FILES['projectBudget']['name']) ? $conn->real_escape_string($_FILES['projectBudget']['name']) : null;
+$projectCV = isset($_FILES['projectCV']['name']) ? $conn->real_escape_string($_FILES['projectCV']['name']) : null;
+$coInvestigatorsCVs = isset($_FILES['coInvestigatorsCVs']['name']) ? $conn->real_escape_string($_FILES['coInvestigatorsCVs']['name']) : null;
+
+$sql_uploads = "INSERT INTO uploads (app_ID, projectProposal, projectBudget, projectCV, coInvestigatorsCVs) 
+                VALUES ('$app_ID', '$projectProposal', '$projectBudget', '$projectCV', '$coInvestigatorsCVs')";
+
+if ($conn->query($sql_uploads) === TRUE) {
+    $upload_Id = $conn->insert_id;
+
+    $uploadSuccess = true;
+
+    $targetDir = "D:/GrantData/Applications/";
+
+    if ($projectProposal) {
+        $projectProposalTarget = $targetDir . basename($_FILES["projectProposal"]["name"]);
+        if (!move_uploaded_file($_FILES["projectProposal"]["tmp_name"], $projectProposalTarget)) {
+            $uploadSuccess = false;
+        }
+    }
+
+    if ($projectBudget) {
+        $projectBudgetTarget = $targetDir . basename($_FILES["projectBudget"]["name"]);
+        if (!move_uploaded_file($_FILES["projectBudget"]["tmp_name"], $projectBudgetTarget)) {
+            $uploadSuccess = false;
+        }
+    }
+
+    if ($projectCV) {
+        $projectCVTarget = $targetDir . basename($_FILES["projectCV"]["name"]);
+        if (!move_uploaded_file($_FILES["projectCV"]["tmp_name"], $projectCVTarget)) {
+            $uploadSuccess = false;
+        }
+    }
+
+    if ($coInvestigatorsCVs) {
+        $coInvestigatorsCVsTarget = $targetDir . basename($_FILES["coInvestigatorsCVs"]["name"]);
+        if (!move_uploaded_file($_FILES["coInvestigatorsCVs"]["tmp_name"], $coInvestigatorsCVsTarget)) {
+            $uploadSuccess = false;
+        }
+    }
+
+    if ($uploadSuccess) {
+        echo json_encode([
+            "status" => "success",
+            "message" => "Form and files uploaded successfully!",
+            "app_ID" => $app_ID,
+            "upload_Id" => $upload_Id
+        ]);
+    } else {
+        echo json_encode([
+            "status" => "error",
+            "message" => "Form submitted, but file upload failed."
+        ]);
+    }
 } else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
+    echo json_encode([
+        "status" => "error",
+        "message" => "Error saving uploaded file data: " . $conn->error
+    ]);
 }
 
-// Close the connection
+} else {
+    echo json_encode([
+        "status" => "error",
+        "message" => "Error inserting application data: " . $conn->error
+    ]);
+}
+
+// Close the database connection
 $conn->close();
+
 ?>

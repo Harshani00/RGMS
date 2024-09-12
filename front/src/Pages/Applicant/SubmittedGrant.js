@@ -151,7 +151,7 @@ export default function SubmittedGrant() {
       >
         <thead>
           <tr>
-            <th>#</th>
+            <th>No.</th>
             <th>Project Title</th>
             <th>Submitted Date</th>
             <th>Status</th>
@@ -162,7 +162,7 @@ export default function SubmittedGrant() {
         <tbody>
           {submittedGrants.length > 0 ? (
             submittedGrants.map((profile, index) => (
-              <tr key={profile.uid}>
+              <tr key={`${profile.uid}-${index}`}>
                 <td>{index + 1}</td>
                 <td>{profile.projectTitle}</td>
                 <td>{new Date().toLocaleDateString()}</td> {/* Placeholder for submitted date */}
@@ -189,4 +189,3 @@ export default function SubmittedGrant() {
     </div>
   );
 }
-

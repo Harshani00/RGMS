@@ -273,8 +273,8 @@ export default function ViewApplication() {
     setSelectedStatus(e.target.value);
   };
 
-  const handleViewClick = (id) => {
-    navigate(`/view-application/${id}`); // Navigate to the detailed view page
+  const handleViewClick = (Id) => {
+    navigate(`/view-application/${Id}`); // Navigate to the detailed view page
   };
 
   return (
@@ -313,8 +313,8 @@ export default function ViewApplication() {
         </thead>
         <tbody>
           {filteredApplications.map((app) => (
-            <tr key={app.id}>
-              <td>{app.id}</td>
+            <tr key={app.Id}>
+              <td>{app.app_ID}</td>
               <td>{app.projectTitle}</td>
               <td>{app.submittedDate}</td>
               <td>{app.status}</td>

@@ -20,7 +20,7 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 
 // Fetch grants submitted by the logged-in user
-$sql = "SELECT id, projectTitle FROM profile WHERE user_id = ?"; // Adjust query if needed
+$sql = "SELECT pID, projectTitle FROM project WHERE uid = ?"; // Adjust query if needed
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();

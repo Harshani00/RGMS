@@ -63,7 +63,7 @@
   position: absolute;
   left: 20px; /* Adjust based on your layout */
   top: 100px; /* Align with the sidebar's top */
-  background-color: white;
+  background-color: #e5e5e5;
   color: black;
   border: none;
   padding: 10px;
@@ -74,7 +74,7 @@
 }
 
 .toggle-button:hover {
-  background-color: #f0f0f0;
+  background-color: #e5e5e5;
 }
 
 /* Adjust for smaller screens */

@@ -40,8 +40,8 @@ export default function ViewApplicationD() {
     setSelectedStatus(e.target.value);
   };
 
-  const handleViewClick = (id) => {
-    navigate(`/view-application/${id}`); // Navigate to the detailed view page
+  const handleViewClick = (Id) => {
+    navigate(`/view-application/${Id}`); // Navigate to the detailed view page
   };
 
   return (
@@ -80,15 +80,15 @@ export default function ViewApplicationD() {
         </thead>
         <tbody>
           {filteredApplications.map((app) => (
-            <tr key={app.id}>
-              <td>{app.id}</td>
+            <tr key={app.Id}>
+              <td>{app.Id}</td>
               <td>{app.projectTitle}</td>
               <td>{app.submittedDate}</td>
               <td>{app.status}</td>
               <td>
                 <button 
                   className="view-button" // Add your custom class name for styling
-                  onClick={() => handleViewClick(app.id)} // Handle button click
+                  onClick={() => handleViewClick(app.Id)} // Handle button click
                 >
                   View
                 </button>
