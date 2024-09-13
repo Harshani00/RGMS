@@ -267,6 +267,7 @@
 
 
 import React, { useState } from 'react';
+import { Col } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
@@ -387,76 +388,18 @@ export default function Grant() {
 
   //////////
   
-  // const handleFinish = async (e) => {  // handle Finish and Submit Action in the From
-  //   e.preventDefault(); // Prevent default form submission behavior
+  const handleFinish = async (e) => {  // handle Finish and Submit Action in the From
+    e.preventDefault(); // Prevent default form submission behavior
   
-  //   // Validate the form
-  //   const isValid = validate(); 
-  
-  //   if (isValid) {
-  //     try {
-  //       // Submit the grant form data to Grant.php
-  //       const grantResponse = await axios.post('/Grant.php', formData, {  // Store the grant response data in grantResponse variable
-  //         headers: {
-  //           'Content-Type': 'application/x-www-form-urlencoded', // Send the from data to Grant.php using hhtp POST request via axios
-  //         },
-  //         transformRequest: [(data) => {
-  //           const params = new URLSearchParams();
-  //           for (const key in data) {
-  //             params.append(key, data[key]);
-  //           }
-  //           return params;
-  //         }],
-  //       });
-  
-  //       console.log(grantResponse.data); // Log the response for debugging
-  
-  //       if (grantResponse.data.status === "success") {
-  //         // Call updateCompletionStatus for the reviewers form
-  //         updateCompletionStatus('reviewers', true);
-  
-  //         // Proceed to submit the files to FileUploads.php
-  //         const fileUploadResponse = await axios.post('/FileUploads.php', formData, { // Send the from data to FileUploads.php using hhtp POST request via axios and  Store the upload response data in grantResponse variable
-  //           headers: {
-  //             'Content-Type': 'multipart/form-data', // the content type is set to multipart/form-data, which is suitable for file uploads.
-  //           },
-  //         });
-  
-  //         console.log(fileUploadResponse.data); // Log the response for debugging
-  
-  //         if (fileUploadResponse.data.status === "success") {
-  //           // Handle successful file upload
-  //           window.alert('All forms submitted successfully!');
-  
-  //           // Clear form data and local storage
-  //           localStorage.removeItem('formData');
-  //           resetFormData(); // Reset formData to initial state
-  //           setSubmitted(true); // Set form as submitted only on success
-  //         } else {
-  //           window.alert('File upload failed. Please try again.');
-  //         }
-  //       } else {
-  //         window.alert('Grant form submission failed. Please try again.');
-  //       }
-  //     } catch (error) {
-  //       console.error('There was an error submitting the form:', error);
-  //       window.alert('There was an error submitting the form. Please try again.');
-  //     }
-  //   } else {
-  //     window.alert('Missing Required Fields.');
-  //   }
-  // };
-  const handleFinish = async (e) => {  
-    e.preventDefault(); 
-    
+    // Validate the form
     const isValid = validate(); 
-    
+  
     if (isValid) {
       try {
         // Submit the grant form data to Grant.php
-        const grantResponse = await axios.post('/Grant.php', formData, {  
+        const grantResponse = await axios.post('/Grant.php', formData, {  // Store the grant response data in grantResponse variable
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': 'application/x-www-form-urlencoded', // Send the from data to Grant.php using hhtp POST request via axios
           },
           transformRequest: [(data) => {
             const params = new URLSearchParams();
@@ -466,20 +409,33 @@ export default function Grant() {
             return params;
           }],
         });
-    
-        console.log(grantResponse.data); 
-    
+  
+        console.log(grantResponse.data); // Log the response for debugging
+  
         if (grantResponse.data.status === "success") {
           // Call updateCompletionStatus for the reviewers form
           updateCompletionStatus('reviewers', true);
   
-          // Handle successful submission
-          window.alert('Grant form submitted successfully!');
+          // Proceed to submit the files to FileUploads.php
+          const fileUploadResponse = await axios.post('/FileUploads.php', formData, { // Send the from data to FileUploads.php using hhtp POST request via axios and  Store the upload response data in grantResponse variable
+            headers: {
+              'Content-Type': 'multipart/form-data', // the content type is set to multipart/form-data, which is suitable for file uploads.
+            },
+          });
   
-          // Clear form data and local storage
-          localStorage.removeItem('formData');
-          resetFormData(); // Reset formData to initial state
-          setSubmitted(true); // Set form as submitted only on success
+          console.log(fileUploadResponse.data); // Log the response for debugging
+  
+          if (fileUploadResponse.data.status === "success") {
+            // Handle successful file upload
+            window.alert('All forms submitted successfully!');
+  
+            // Clear form data and local storage
+            localStorage.removeItem('formData');
+            resetFormData(); // Reset formData to initial state
+            setSubmitted(true); // Set form as submitted only on success
+          } else {
+            window.alert('File upload failed. Please try again.');
+          }
         } else {
           window.alert('Grant form submission failed. Please try again.');
         }
@@ -491,6 +447,51 @@ export default function Grant() {
       window.alert('Missing Required Fields.');
     }
   };
+  // const handleFinish = async (e) => {  
+  //   e.preventDefault(); 
+    
+  //   const isValid = validate(); 
+    
+  //   if (isValid) {
+  //     try {
+  //       // Submit the grant form data to Grant.php
+  //       const grantResponse = await axios.post('/Grant.php', formData, {  
+  //         headers: {
+  //           'Content-Type': 'application/x-www-form-urlencoded',
+  //         },
+  //         transformRequest: [(data) => {
+  //           const params = new URLSearchParams();
+  //           for (const key in data) {
+  //             params.append(key, data[key]);
+  //           }
+  //           return params;
+  //         }],
+  //       });
+    
+  //       console.log(grantResponse.data); 
+    
+  //       if (grantResponse.data.status === "success") {
+  //         // Call updateCompletionStatus for the reviewers form
+  //         updateCompletionStatus('reviewers', true);
+  
+  //         // Handle successful submission
+  //         window.alert('Grant form submitted successfully!');
+  
+  //         // Clear form data and local storage
+  //         localStorage.removeItem('formData');
+  //         resetFormData(); // Reset formData to initial state
+  //         setSubmitted(true); // Set form as submitted only on success
+  //       } else {
+  //         window.alert('Grant form submission failed. Please try again.');
+  //       }
+  //     } catch (error) {
+  //       console.error('There was an error submitting the form:', error);
+  //       window.alert('There was an error submitting the form. Please try again.');
+  //     }
+  //   } else {
+  //     window.alert('Missing Required Fields.');
+  //   }
+  // };
   
 
   // Navigate to the next form step
@@ -517,142 +518,160 @@ export default function Grant() {
         )}
         
         <Form onSubmit={handleSubmit}>
-          <Row className="mb-3">
-            <Form.Label>*Names & Affiliations of 3- Reviewers of the research proposal (preferably from other faculties/outside institutions)</Form.Label>
+  <Row className="mb-3">
+    <Form.Label>
+      *Names & Affiliations of 3 Reviewers of the research proposal (preferably from other faculties/outside institutions)
+    </Form.Label>
 
-            <Form.Group controlId="formGridinvestigator">
-              <Form.Label>1. Name of the Reviewer</Form.Label>
-              <Form.Control 
-                name="reviewer1Name" 
-                value={formData.reviewer1Name || ''} 
-                placeholder="Reviewer 1" 
-                className="form-control"
-                onChange={handleInputChange} 
-                isInvalid={!!formErrors.reviewer1Name}
-              />
-              <Form.Control.Feedback type="invalid">
-                {formErrors.reviewer1Name}
-              </Form.Control.Feedback>
+    {/* Reviewer 1 Details */}
+    <Col md={4}>
+      <Form.Group controlId="formGridReviewer1">
+        <Form.Label>Name of the Reviewer 1</Form.Label>
+        <Form.Control
+          name="reviewer1Name"
+          value={formData.reviewer1Name || ''}
+          placeholder="Reviewer 1"
+          className="form-control"
+          onChange={handleInputChange}
+          isInvalid={!!formErrors.reviewer1Name}
+        />
+        <Form.Control.Feedback type="invalid">
+          {formErrors.reviewer1Name}
+        </Form.Control.Feedback>
 
-              <Form.Control 
-                name="reviewer2Name" 
-                value={formData.reviewer2Name || ''} 
-                placeholder="Reviewer 2" 
-                className="form-control"
-                onChange={handleInputChange} 
-                isInvalid={!!formErrors.reviewer2Name}
-              />
-              <Form.Control.Feedback type="invalid">
-                {formErrors.reviewer2Name}
-              </Form.Control.Feedback>
+        <Form.Label>2. Email</Form.Label>
+        <Form.Control
+          name="reviewer1Email"
+          value={formData.reviewer1Email || ''}
+          placeholder="Reviewer 1: Email"
+          className="form-control"
+          onChange={handleInputChange}
+          isInvalid={!!formErrors.reviewer1Email}
+        />
+        <Form.Control.Feedback type="invalid">
+          {formErrors.reviewer1Email}
+        </Form.Control.Feedback>
 
-              <Form.Control 
-                name="reviewer3Name" 
-                value={formData.reviewer3Name || ''} 
-                placeholder="Reviewer 3" 
-                className="form-control"
-                onChange={handleInputChange} 
-                isInvalid={!!formErrors.reviewer3Name}
-              />
-              <Form.Control.Feedback type="invalid">
-                {formErrors.reviewer3Name}
-              </Form.Control.Feedback>
-              
-              <Form.Label>2. Email</Form.Label>
-              <Form.Control 
-                name="reviewer1Email" 
-                value={formData.reviewer1Email || ''} 
-                placeholder="Reviewer 1: Email " 
-                className="form-control"
-                onChange={handleInputChange} 
-                isInvalid={!!formErrors.reviewer1Email}
-              />
-              <Form.Control.Feedback type="invalid">
-                {formErrors.reviewer1Email}
-              </Form.Control.Feedback>
+        <Form.Label>3. Affiliation</Form.Label>
+        <Form.Control
+          name="reviewer1Affiliation"
+          value={formData.reviewer1Affiliation || ''}
+          placeholder="Reviewer 1: Affiliation"
+          className="form-control"
+          onChange={handleInputChange}
+          isInvalid={!!formErrors.reviewer1Affiliation}
+        />
+        <Form.Control.Feedback type="invalid">
+          {formErrors.reviewer1Affiliation}
+        </Form.Control.Feedback>
+      </Form.Group>
+    </Col>
 
-              <Form.Control 
-                name="reviewer2Email" 
-                value={formData.reviewer2Email || ''} 
-                placeholder="Reviewer 2: Email" 
-                className="form-control"
-                onChange={handleInputChange} 
-                isInvalid={!!formErrors.reviewer2Email}
-              />
-              <Form.Control.Feedback type="invalid">
-                {formErrors.reviewer2Email}
-              </Form.Control.Feedback>
+    {/* Reviewer 2 Details */}
+    <Col md={4}>
+      <Form.Group controlId="formGridReviewer2">
+        <Form.Label> Name of the Reviewer 2</Form.Label>
+        <Form.Control
+          name="reviewer2Name"
+          value={formData.reviewer2Name || ''}
+          placeholder="Reviewer 2"
+          className="form-control"
+          onChange={handleInputChange}
+          isInvalid={!!formErrors.reviewer2Name}
+        />
+        <Form.Control.Feedback type="invalid">
+          {formErrors.reviewer2Name}
+        </Form.Control.Feedback>
 
-              <Form.Control 
-                name="reviewer3Email" 
-                value={formData.reviewer3Email || ''} 
-                placeholder="Reviewer 3: Email" 
-                className="form-control"
-                onChange={handleInputChange} 
-                isInvalid={!!formErrors.reviewer3Email}
-              />
-              <Form.Control.Feedback type="invalid">
-                {formErrors.reviewer3Email}
-              </Form.Control.Feedback>
+        <Form.Label>2. Email</Form.Label>
+        <Form.Control
+          name="reviewer2Email"
+          value={formData.reviewer2Email || ''}
+          placeholder="Reviewer 2: Email"
+          className="form-control"
+          onChange={handleInputChange}
+          isInvalid={!!formErrors.reviewer2Email}
+        />
+        <Form.Control.Feedback type="invalid">
+          {formErrors.reviewer2Email}
+        </Form.Control.Feedback>
 
-            </Form.Group>
-            <Form.Group controlId="formGridforeign">
-              <Form.Label>3. Affiliation</Form.Label>
-              <Form.Control 
-                name="reviewer1Affiliation" 
-                value={formData.reviewer1Affiliation || ''} 
-                placeholder="Reviewer 1: Affiliation " 
-                className="form-control"
-                onChange={handleInputChange} 
-                isInvalid={!!formErrors.reviewer1Affiliation}
-              />
-              <Form.Control.Feedback type="invalid">
-                {formErrors.reviewer1Affiliation}
-              </Form.Control.Feedback>
+        <Form.Label>3. Affiliation</Form.Label>
+        <Form.Control
+          name="reviewer2Affiliation"
+          value={formData.reviewer2Affiliation || ''}
+          placeholder="Reviewer 2: Affiliation"
+          className="form-control"
+          onChange={handleInputChange}
+          isInvalid={!!formErrors.reviewer2Affiliation}
+        />
+        <Form.Control.Feedback type="invalid">
+          {formErrors.reviewer2Affiliation}
+        </Form.Control.Feedback>
+      </Form.Group>
+    </Col>
 
-              <Form.Control 
-                name="reviewer2Affiliation" 
-                value={formData.reviewer2Affiliation || ''} 
-                placeholder="Reviewer 2: Affiliation" 
-                className="form-control"
-                onChange={handleInputChange} 
-                isInvalid={!!formErrors.reviewer2Affiliation}
-              />
-              <Form.Control.Feedback type="invalid">
-                {formErrors.reviewer2Affiliation}
-              </Form.Control.Feedback>
+    {/* Reviewer 3 Details */}
+    <Col md={4}>
+      <Form.Group controlId="formGridReviewer3">
+        <Form.Label>1. Name of the Reviewer 3</Form.Label>
+        <Form.Control
+          name="reviewer3Name"
+          value={formData.reviewer3Name || ''}
+          placeholder="Reviewer 3"
+          className="form-control"
+          onChange={handleInputChange}
+          isInvalid={!!formErrors.reviewer3Name}
+        />
+        <Form.Control.Feedback type="invalid">
+          {formErrors.reviewer3Name}
+        </Form.Control.Feedback>
 
-              <Form.Control 
-                name="reviewer3Affiliation" 
-                value={formData.reviewer3Affiliation || ''} 
-                placeholder="Reviewer 3: Affiliation" 
-                className="form-control"
-                onChange={handleInputChange} 
-                isInvalid={!!formErrors.reviewer3Affiliation}
-              />
-              <Form.Control.Feedback type="invalid">
-                {formErrors.reviewer3Affiliation}
-              </Form.Control.Feedback>
+        <Form.Label>2. Email</Form.Label>
+        <Form.Control
+          name="reviewer3Email"
+          value={formData.reviewer3Email || ''}
+          placeholder="Reviewer 3: Email"
+          className="form-control"
+          onChange={handleInputChange}
+          isInvalid={!!formErrors.reviewer3Email}
+        />
+        <Form.Control.Feedback type="invalid">
+          {formErrors.reviewer3Email}
+        </Form.Control.Feedback>
 
-            </Form.Group>
-          </Row>
+        <Form.Label>3. Affiliation</Form.Label>
+        <Form.Control
+          name="reviewer3Affiliation"
+          value={formData.reviewer3Affiliation || ''}
+          placeholder="Reviewer 3: Affiliation"
+          className="form-control"
+          onChange={handleInputChange}
+          isInvalid={!!formErrors.reviewer3Affiliation}
+        />
+        <Form.Control.Feedback type="invalid">
+          {formErrors.reviewer3Affiliation}
+        </Form.Control.Feedback>
+      </Form.Group>
+    </Col>
+  </Row>
 
-          <div className="form-buttons">
-          <Button variant="secondary" onClick={handleSave} className='savebutton' >
-              Save
-            </Button>
-            <Button variant="secondary" onClick={handlePrevious} className='previousbutton'>
-              Previous
-            </Button>
-            
-            <Button variant="primary" type="submit" onClick={handleFinish}  className='nextbutton'>
-              Finish and Submit
-            </Button>
-            <Button variant="primary" onClick={handleNext} className="nextbutton">
-              Next
-            </Button>
-          </div>
-        </Form>
+  <div className="form-buttons">
+    <Button variant="secondary" onClick={handleSave} className='savebutton'>
+      Save
+    </Button>
+    <Button variant="secondary" onClick={handlePrevious} className='previousbutton'>
+      Previous
+    </Button>
+    <Button variant="primary" type="submit" onClick={handleFinish} className='nextbutton'>
+      Finish and Submit
+    </Button>
+    <Button variant="primary" onClick={handleNext} className="nextbutton">
+      Next
+    </Button>
+  </div>
+</Form>
+
       </div>
     </div>
   );

@@ -364,8 +364,9 @@ export default function Grant() {
     if (!formData.university) newErrors.university = 'University is required';
     if (!formData.year) newErrors.year = 'Year is required';
     if (!formData.field) newErrors.field = 'Field is required';
-    if (!formData.start_date) newErrors.start_date = 'Start Date is required';
-    if (!formData.duration) newErrors.duration = 'Duration is required';
+    if (!formData.Leave_Get) newErrors.Leave_Get = 'Start Date is required';
+    if (!formData.Leave_Date) newErrors.Leave_Date = 'Start Date is required';
+    if (!formData.Leave_Duration) newErrors.Leave_Duration = 'Duration is required';
 
     setErrors(newErrors);
     
@@ -601,32 +602,61 @@ export default function Grant() {
               <Form.Control.Feedback type="invalid">{errors.field}</Form.Control.Feedback>
             </Form.Group>
           </Row>
+          <Row className="mb-3">
+            <Form.Label>8. Are you due for sabbatical leave/short term leave during the next 2 years </Form.Label>
+            <Form.Group as={Col} controlId="formGridLeaveGet">
+              <Row>
+                <Col xs={6}>
+                  <Form.Check
+                    type="radio"
+                    label="Yes"
+                    name="Leave_Get"
+                    value="yes"
+                    checked={formData.Leave_Get === 'yes'}
+                    onChange={(e) => handleFormDataChange({ Leave_Get: e.target.value })}
+                    isInvalid={!!errors.Leave_Get}
+                  />
+                </Col>
+                <Col xs={6}>
+                  <Form.Check
+                    type="radio"
+                    label="No"
+                    name="Leave"
+                    value="no"
+                    checked={formData.Leave_Get === 'no'}
+                    onChange={(e) => handleFormDataChange({ Leave_Get: e.target.value })}
+                    isInvalid={!!errors.Leave_Get}
+                  />
+                </Col>
+              </Row>
+              <Form.Control.Feedback type="invalid">
+                {errors.Leave_Get}
+              </Form.Control.Feedback>
+            </Form.Group>
+          </Row>
 
           <Row className="mb-3">
-            <Form.Group as={Col} xs={12} md={6} controlId="formGridStartDate">
-              <Form.Label>8. Starting Date of the Proposed Project</Form.Label>
+            <Form.Group as={Col} xs={12} md={6} controlId="formGridLeaveDate">
+              <Form.Label>Starting Date </Form.Label>
               <Form.Control
-                name="start_date"
-
-
-
+                name="Leave_Date"
                 type="date"
-                value={formData.start_date}
+                value={formData.Leave_Date}
                 onChange={handleChange}
-                isInvalid={!!errors.start_date}
+                isInvalid={!!errors.Leave_Date}
               />
-              <Form.Control.Feedback type="invalid">{errors.start_date}</Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">{errors.Leave_Date}</Form.Control.Feedback>
             </Form.Group>
 
-            <Form.Group as={Col} xs={12} md={6} controlId="formGridDuration">
-              <Form.Label>9. Duration of the Proposed Project</Form.Label>
+            <Form.Group as={Col} xs={12} md={6} controlId="formGridLeaveDuration">
+              <Form.Label>Duration (Months) </Form.Label>
               <Form.Control
-                name="duration"
-                value={formData.duration}
+                name="Leave_Duration"
+                value={formData.Leave_Duration}
                 onChange={handleChange}
-                isInvalid={!!errors.duration}
+                isInvalid={!!errors.Leave_Duration}
               />
-              <Form.Control.Feedback type="invalid">{errors.duration}</Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">{errors.Leave_Duration}</Form.Control.Feedback>
             </Form.Group>
           </Row>
 

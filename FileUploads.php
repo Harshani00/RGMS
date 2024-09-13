@@ -41,15 +41,15 @@ function uploadFile($file, $targetDir, $allowedTypes) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // Get the application ID from the request
-    // $app_ID = isset($_POST['app_ID']) ? $_POST['app_ID'] : null;  // Ensure this is correctly passed from the frontend
+    // Retrieve app_ID from the session
+    if (!isset($_SESSION['app_ID'])) {
+        echo json_encode(["status" => "error", "message" => "app_ID not found in session."]);
+        exit();
+    }
+    
+    $app_ID = $_SESSION['app_ID'];
 
-    // if (!$app_ID) {
-    //     echo json_encode(["status" => "error", "message" => "app_ID not provided."]);
-    //     exit();
-    // }
-
-    $responses = [ 'status' => 'success'];
+    $responses = ['status' => 'success'];
     if (isset($_FILES['projectProposal'])) {
         $responses['projectProposal'] = uploadFile($_FILES['projectProposal'], $targetDir, $allowedTypes);
     }
