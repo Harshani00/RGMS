@@ -437,7 +437,7 @@ export default function Grant() {
             window.alert('File upload failed. Please try again.');
           }
         } else {
-          window.alert('Grant form submission failed. Please try again.');
+          window.alert('Grant form submission failed. Please Fill all the Required Fields.');
         }
       } catch (error) {
         console.error('There was an error submitting the form:', error);
@@ -495,15 +495,7 @@ export default function Grant() {
   
 
   // Navigate to the next form step
-  const handleNext = async () => {
-    if (validate()) {
-      updateCompletionStatus('reviewers', true);
-      navigate('/uploads'); // Update this path to the correct next page
-    } else {
-      window.alert('Missing Fields Required.');
-    }
-  };
-
+ 
   return (
     <div>
       <Navbar />
@@ -665,9 +657,6 @@ export default function Grant() {
     </Button>
     <Button variant="primary" type="submit" onClick={handleFinish} className='nextbutton'>
       Finish and Submit
-    </Button>
-    <Button variant="primary" onClick={handleNext} className="nextbutton">
-      Next
     </Button>
   </div>
 </Form>

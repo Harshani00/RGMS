@@ -308,11 +308,71 @@ export default function Grant() {
     navigate('/project'); // Navigate to the project page
   };
 
+  // const handleSave = async () => {
+  //   try {
+  //     // Save data from the second form by posting to the new PHP script
+  //     const response = await axios.post('/SaveForm.php', formData, {
+  //       headers: {
+  //         'Content-Type': 'application/x-www-form-urlencoded',
+  //       },
+  //       transformRequest: [(data) => {
+  //         const params = new URLSearchParams();
+  //         for (const key in data) {
+  //           params.append(key, data[key]);
+  //         }
+  //         return params;
+  //       }],
+  //     });
+  
+  //     if (response.data.status === "success") {
+  //       updateCompletionStatus('project', true);
+  //       navigate('/supervisors');
+  //     } else {
+  //       alert(response.data.message); // Show specific error message from the server
+  //     }
+  
+  //   } catch (error) {
+  //     console.error("Error details:", error); // This will give you more context
+  //     alert('There was an error saving the data. Please try again.');
+  //   }
+  // };
   const handleSave = async () => {
-    if (validate()) {
-      await handleSubmit(); // Submit form data if valid
+    try {
+        // Retrieve app_ID from the session
+        const appIdResponse = await axios.get('/GetAppID.php'); // Ensure this endpoint returns the correct ID
+        const appId = appIdResponse.data.Id;
+
+        // Prepare form data including app_ID
+        const dataToSend = { ...formData, Id: appId };
+
+        // Save data to the new PHP script
+        const response = await axios.post('/SaveForm.php', dataToSend, {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            transformRequest: [(data) => {
+                const params = new URLSearchParams();
+                for (const key in data) {
+                    params.append(key, data[key]);
+                }
+                return params;
+            }],
+        });
+
+        if (response.data.status === "success") {
+            updateCompletionStatus('project', true);
+            navigate('/supervisors');
+        } else {
+            alert(response.data.message);
+        }
+
+    } catch (error) {
+        console.error("Error details:", error);
+        alert('There was an error saving the data. Please try again.');
     }
-  };
+};
+
+  
 
   return (
     <div>

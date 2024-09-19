@@ -73,8 +73,6 @@ $field = isset($_POST['field']) ? $conn->real_escape_string($_POST['field']) : '
 $Leave_Get = isset($_POST['Leave_Get']) ? $conn->real_escape_string($_POST['Leave_Get']) : '';
 $Leave_Date = isset($_POST['Leave_Date']) ? $conn->real_escape_string($_POST['Leave_Date']) : '';
 $Leave_Duration = isset($_POST['Leave_Duration']) ? $conn->real_escape_string($_POST['duration']) : '';
-$start_date = isset($_POST['start_date']) ? $conn->real_escape_string($_POST['start_date']) : '';
-$duration = isset($_POST['duration']) ? $conn->real_escape_string($_POST['duration']) : '';
 $projectTitle = isset($_POST['projectTitle']) ? $conn->real_escape_string($_POST['projectTitle']) : '';
 $projectInvolved = isset($_POST['projectInvolved']) ? $conn->real_escape_string($_POST['projectInvolved']) : '';
 $publication1 = isset($_POST['publication1']) ? $conn->real_escape_string($_POST['publication1']) : '';
@@ -139,7 +137,7 @@ if ($conn->query($sql) === TRUE) {
             $amount = $conn->real_escape_string($_POST['amount'][$index]);
 
             $sql_funding = "INSERT INTO prev_university_grants (fundingSource, durationperiod, currency, amount, app_ID) VALUES ('$fundingSource', '$durationperiod', '$currency', '$amount', '$app_ID')";
-
+            echo $sql_funding;
             if (!$conn->query($sql_funding)) {
                 echo json_encode([
                     "status" => "error",
@@ -157,7 +155,10 @@ if ($conn->query($sql) === TRUE) {
             $currencyType = $conn->real_escape_string($_POST['currencyType'][$index]);
 
             $sql_other_grants = "INSERT INTO other_grants (fundingOrganization, fundingAmount, currencyType, app_ID) VALUES ('$fundingOrganization', '$fundingAmount', '$currencyType', '$app_ID')";
-
+            echo json_encode([
+                
+                "message" => "INSERTING " . $sql_other_grants 
+            ]);
             if (!$conn->query($sql_other_grants)) {
                 echo json_encode([
                     "status" => "error",

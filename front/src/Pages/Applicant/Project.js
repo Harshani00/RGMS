@@ -614,7 +614,9 @@ export default function Grant() {
     { fundingOrganization: '', fundingAmount: '' },
   ]); // Separate state for funding organization rows
   const [submitted, setSubmitted] = useState(false); // Track form submission
+  const [isSubmitted, setIsSubmitted] = useState(false); 
   const [errors, setErrors] = useState({});
+ 
   const navigate = useNavigate(); // Initialize useNavigate
 
   // Function to add a new row to the grant table
@@ -692,19 +694,56 @@ export default function Grant() {
     }
   };
 
-  // Function to navigate to the next page
-  const handleNext = () => {
+  
+  const handleSave = async () => {
     if (validate()) {
-      updateCompletionStatus('project', true);
-      navigate('/supervisors'); // Update this path to the correct previous page
+      if (isSubmitted) {
+        alert('Form data has already been submitted.');
+        return; // Prevent further submissions
+      }
+  
+      try {
+        const response = await axios.post('/SaveForm.php', formData, {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          transformRequest: [(data) => {
+            const params = new URLSearchParams();
+            for (const key in data) {
+              params.append(key, data[key]);
+            }
+            return params;
+          }],
+        });
+  
+        if (response.data.status === "success") {
+          setIsSubmitted(true); // Mark as submitted
+          alert('Form saved successfully.');
+        } else {
+          alert(response.data.message);
+        }
+      } catch (error) {
+        console.error("Error details:", error);
+        alert('There was an error saving the data. Please try again.');
+      }
     } else {
       alert('Missing Fields Required.');
     }
   };
+  
 
   // Function to navigate to the previous page
   const handlePrevious = () => {
     navigate('/grant'); // Update this path to the correct previous page
+  };
+
+  const handleNext = async () => {
+    if (validate()) {
+      updateCompletionStatus('project', true);
+      navigate('/supervisors'); // Navigate to the uploads page
+    }else {
+      alert('Missing Fields Required.');
+    }
   };
 
   return (
@@ -919,14 +958,13 @@ export default function Grant() {
               />
             </Form.Group>
           </Row>
-
-          <Button variant="primary" type="submit" className="savebutton">
+          <Button variant="primary" type="button" onClick={handleSave} className='savebutton'>
             Save
           </Button>
           <Button variant="primary" onClick={handlePrevious} className="previousbutton">
             Previous
           </Button>
-          <Button variant="primary" onClick={handleNext} className="nextbutton">
+          <Button variant="primary" type="button" onClick={handleNext} className='nextbutton'>
             Next
           </Button>
         </Form>
@@ -934,3 +972,4 @@ export default function Grant() {
     </div>
   );
 }
+
