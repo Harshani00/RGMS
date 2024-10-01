@@ -203,6 +203,7 @@ export default function Grant() {
   const { formData, handleFormDataChange,updateCompletionStatus } = useForm(); // Use form context
   const [formErrors, setFormErrors] = useState({}); // Define state for form errors
   const [submitted, setSubmitted] = useState(false); // Define state for form submission
+  const [isSubmitted, setIsSubmitted] = useState(false); 
   const navigate = useNavigate();
 
   // Handle file input changes
@@ -238,7 +239,7 @@ export default function Grant() {
     return Object.keys(errors).length === 0; // Return true if no errors
   };
 
-  // Handle form submission
+  // Function to handle form submission
   const handleSubmit = async () => {
     if (validate()) {
       try {
@@ -271,15 +272,94 @@ export default function Grant() {
     }
   };
 
-  // Handle Save button
+  // Function to handle save form  
+  // const handleSave = async () => {
+  //   if (validate()) {
+  //     if (isSubmitted) {
+  //       alert('Form data has already been submitted.');
+  //       return; // Prevent further submissions
+  //     }
+  
+  //     try {
+  //       const response = await axios.post('/FileUploads.php', formData, {
+  //         headers: {
+  //           'Content-Type': 'multipart/form-data',
+  //         },
+  //         transformRequest: [(data) => {
+  //           const params = new URLSearchParams();
+  //           for (const key in data) {
+  //             params.append(key, data[key]);
+  //           }
+  //           return params;
+  //         }],
+  //       });
+  
+  //       if (response.data.status === "success") {
+  //         setIsSubmitted(true); // Mark as submitted
+  //         alert('Form saved successfully.');
+  //       } else {
+  //         alert(response.data.message);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error details:", error);
+  //       alert('There was an error saving the data. Please try again.');
+  //     }
+  //   } else {
+  //     alert('Missing Fields Required.');
+  //   }
+  // };
   const handleSave = async () => {
-    const isValid = validate(); // Validate form
-    if (isValid) {
-      await handleSubmit(); // Submit form data if valid
+    if (isSubmitted) {
+      alert('Form data has already been saved.');
+      return; // Prevent further submissions
+    }
+  
+    try {
+      // Save form data to SaveForm.php
+      const response = await axios.post('/SaveForm.php', formData, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        transformRequest: [(data) => {
+          const params = new URLSearchParams();
+          for (const key in data) {
+            params.append(key, data[key]);
+          }
+          return params;
+        }],
+      });
+  
+      // Check if the form data was saved successfully
+      if (response.data.status === "success") {
+        setIsSubmitted(true); // Mark as submitted
+        alert('Form saved successfully.');
+  
+        // Now proceed with file upload to FileUploads.php
+        const fileUploadResponse = await axios.post('/SaveFileUploads.php', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data', // Set content type to multipart/form-data for file upload
+          },
+        });
+  
+        console.log(fileUploadResponse.data); // Log the file upload response for debugging
+  
+        // Handle successful file upload
+        if (fileUploadResponse.data.status === "success") {
+          alert('Files uploaded successfully.');
+        } else {
+          alert(fileUploadResponse.data.message); // Handle file upload failure
+        }
+      } else {
+        alert(response.data.message); // Handle form save failure
+      }
+    } catch (error) {
+      console.error("Error details:", error);
+      alert('There was an error saving the data or uploading files. Please try again.');
     }
   };
+  
 
-  // Navigate to the next form step
+  // Navigate to the next form page
   const handleNext = async () => {
     if (validate()) {
       updateCompletionStatus('uploads', true);
@@ -289,7 +369,7 @@ export default function Grant() {
     }
   };
 
-  // Navigate to the previous form step
+  // Navigate to the previous form page
   const handlePrevious = () => {
     navigate('/supervisors'); // Navigate to the previous page
   };
@@ -306,10 +386,10 @@ export default function Grant() {
             Form submitted successfully!
           </div>
         )}
-        <Form>
+        <Form onSubmit={handleSubmit}>
           <Row className="mb-3">
             <Form.Group controlId="formProjectProposal">
-              <Form.Label>1. Upload Project Proposal</Form.Label>
+              <Form.Label>1. Upload Project Proposal <span className="text-danger">*</span></Form.Label>
               <Form.Control
                 type="file"
                 name="projectProposal"
@@ -327,7 +407,7 @@ export default function Grant() {
             </Form.Group>
 
             <Form.Group controlId="formProjectBudget">
-              <Form.Label>2. Upload Project Budget</Form.Label>
+              <Form.Label>2. Upload Project Budget <span className="text-danger">*</span></Form.Label>
               <Form.Control
                 type="file"
                 name="projectBudget"
@@ -345,7 +425,7 @@ export default function Grant() {
             </Form.Group>
 
             <Form.Group controlId="formProjectCV">
-              <Form.Label>3. Upload Project Full CV of the Principal Investigator</Form.Label>
+              <Form.Label>3. Upload Project Full CV of the Principal Investigator <span className="text-danger">*</span></Form.Label>
               <Form.Control
                 type="file"
                 name="projectCV"
@@ -363,7 +443,7 @@ export default function Grant() {
             </Form.Group>
 
             <Form.Group controlId="formCoInvestigatorsCVs">
-              <Form.Label>4. Upload Project two page CVs of all the co-investigators (compile to single pdf)</Form.Label>
+              <Form.Label>4. Upload Project two page CVs of all the co-investigators (compile to single pdf) <span className="text-danger">*</span></Form.Label>
               <Form.Control
                 type="file"
                 name="coInvestigatorsCVs"

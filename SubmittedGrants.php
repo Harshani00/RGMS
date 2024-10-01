@@ -19,8 +19,12 @@ if (!isset($_SESSION['user_id'])) {
 // Get user ID from session
 $user_id = $_SESSION['user_id'];
 
-// Fetch grants submitted by the logged-in user
-$sql = "SELECT pID, projectTitle FROM project WHERE uid = ?"; // Adjust query if needed
+// Fetch grants submitted by the logged-in user along with application status
+$sql = "SELECT p.pID, p.projectTitle, a.Status ,a.Id,p.submittedDate
+        FROM project p
+        JOIN application a ON p.app_ID = a.Id 
+        WHERE p.uid = ?";
+
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -28,6 +32,8 @@ $result = $stmt->get_result();
 
 $submittedGrants = [];
 while ($row = $result->fetch_assoc()) {
+    // Map numeric status to string representation
+    $row['Status'] = $row['Status'] == 1 ? 'Submitted' : 'Save'; // Adjust mapping as needed
     $submittedGrants[] = $row;
 }
 

@@ -2,30 +2,56 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Form, Col, Row } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom'; // Add useLocation
 import Navbar from '../../Components/Navbar';
-import Navbar2 from '../../Components/Navbar2';
+import Navbar2Edit from '../../Components/Navbar2Edit';
 import Sidebar from '../../Components/Sidebar';
-import { useForm } from './MainForm'; // Import useForm from your context
-import './Grant.css'; // Import the CSS file
+import { useForm } from '../Applicant/MainForm'; // Import useForm from your context
+//import { useForm } from '../Applicant_EditForm/MainFormEdit'
+import '../Applicant/Grant.css';
+//import { useParams } from 'react-router-dom';
 
-export default function Grant()  {
+
+export default function EditGrant() {
   const { formData, handleFormDataChange, updateCompletionStatus } = useForm(); // Use form context
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [faculties, setFaculties] = useState([]);
   const [departments, setDepartments] = useState([]);
+  const [loading, setLoading] = useState(true); // Add loading state
+  const location = useLocation(); // Access the appId from route state
+  //const appId = location.state?.appId; // Get appId from location state
   const navigate = useNavigate(); // Initialize useNavigate hook
+  //const { appId } = useParams(); // Get appId from URL parameter
 
+  // Fetch form data based on app_ID (EditForm logic)
+  
+    const appId = location.state ? location.state.appId : null;
+  
+    useEffect(() => {
+      if (appId) {
+          console.log("Sending app_ID:", appId);  // Debugging
+          axios.post('/GetFormData.php', { app_ID: appId })
+              .then(response => {
+                  console.log("Response:", response.data);  // Debugging
+                  if (response.data.status === "success") {
+                      Object.keys(response.data.data).forEach(key => {
+                          handleFormDataChange({ [key]: response.data.data[key] });
+                      });
+                      setLoading(false); // Form data loaded
+                  } else {
+                      console.error(response.data.message);
+                  }
+              })
+              .catch(error => {
+                  console.error("There was an error fetching the form data:", error);
+              });
+      }
+  }, []);  // Empty array to run only once on mount
   useEffect(() => {
     // Fetch faculties and departments
     axios.get('/FacultyDepartment.php')
       .then(response => {
-        // Assuming the response data structure is { faculties: [...], departments: [...] }
-        console.log('Faculties:', response.data.faculties); // Log faculties for debugging
-        console.log('Departments:', response.data.departments); // Log departments for debugging
-        
-        // Update state based on response data structure
         setFaculties(response.data.faculties);
         setDepartments(response.data.departments);
       })
@@ -34,9 +60,10 @@ export default function Grant()  {
       });
   }, []);
 
+
   const handleChange = (e) => {
     handleFormDataChange({ [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: '' }); // Clear error when user types
+    setErrors({ ...errors, [e.target.name]: '' });
   };
 
   const validateForm = () => {
@@ -58,8 +85,6 @@ export default function Grant()  {
     if (!formData.Leave_Duration) newErrors.Leave_Duration = 'Leave Duration is required';
 
     setErrors(newErrors);
-
-    // If no errors, return true, otherwise return false
     return Object.keys(newErrors).length === 0;
   };
 
@@ -82,7 +107,7 @@ export default function Grant()  {
         });
 
         if (response.data === "Form submitted successfully!") {
-          setSubmitted(true); // Set form as submitted only on success
+          setSubmitted(true); 
           alert(response.data);
         } else {
           alert('Form submission failed. Please try again.');
@@ -97,17 +122,18 @@ export default function Grant()  {
     e.preventDefault();
 
     if (validateForm()) {
-      updateCompletionStatus('profile', true); // Mark the profile section as completed
-      navigate('/project'); // Navigate to the "project" page
+      updateCompletionStatus('profile', true); 
+      navigate('/editproject');
     } else {
       alert('Missing Fields Required.');
     }
   };
 
+ 
   return (
     <div>
       <Navbar />
-      <Navbar2 />
+      <Navbar2Edit />
       <Sidebar />
       <div className="form-container">
         {submitted && (
@@ -364,4 +390,5 @@ export default function Grant()  {
       </div>
     </div>
   );
-}
+  }
+

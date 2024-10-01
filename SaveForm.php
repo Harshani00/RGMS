@@ -55,12 +55,21 @@ $co_investigators = isset($_POST['co_investigators']) ? $conn->real_escape_strin
 $co_investigator_departmentUniversity = isset($_POST['co_investigator_departmentUniversity']) ? $conn->real_escape_string($_POST['co_investigator_departmentUniversity']) : '';
 $foreign_collaborators = isset($_POST['foreign_collaborators']) ? $conn->real_escape_string($_POST['foreign_collaborators']) : '';
 $foreign_collaborator_departmentUniversity = isset($_POST['foreign_collaborator_departmentUniversity']) ? $conn->real_escape_string($_POST['foreign_collaborator_departmentUniversity']) : '';
+$reviewer1Name = isset($_POST['reviewer1Name']) ? $conn->real_escape_string($_POST['reviewer1Name']) : '';
+$reviewer2Name = isset($_POST['reviewer2Name']) ? $conn->real_escape_string($_POST['reviewer2Name']) : '';
+$reviewer3Name = isset($_POST['reviewer3Name']) ? $conn->real_escape_string($_POST['reviewer3Name']) : '';
+$reviewer1Email = isset($_POST['reviewer1Email']) ? $conn->real_escape_string($_POST['reviewer1Email']) : '';
+$reviewer2Email = isset($_POST['reviewer2Email']) ? $conn->real_escape_string($_POST['reviewer2Email']) : '';
+$reviewer3Email = isset($_POST['reviewer3Email']) ? $conn->real_escape_string($_POST['reviewer3Email']) : '';
+$reviewer1Affiliation = isset($_POST['reviewer1Affiliation']) ? $conn->real_escape_string($_POST['reviewer1Affiliation']) : '';
+$reviewer2Affiliation = isset($_POST['reviewer2Affiliation']) ? $conn->real_escape_string($_POST['reviewer2Affiliation']) : '';
+$reviewer3Affiliation = isset($_POST['reviewer3Affiliation']) ? $conn->real_escape_string($_POST['reviewer3Affiliation']) : '';
 
 // Insert form data into the application table
-$sql1 = "INSERT INTO application (uid, title, name, faculty, department, email, phone, position, degree, university, year, field, Leave_Get, Leave_Date, Leave_Duration, co_investigators, co_investigator_departmentUniversity, foreign_collaborators, foreign_collaborator_departmentUniversity) 
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+$sql1 = "INSERT INTO application (uid, title, name, faculty, department, email, phone, position, degree, university, year, field, Leave_Get, Leave_Date, Leave_Duration, co_investigators, co_investigator_departmentUniversity, foreign_collaborators, foreign_collaborator_departmentUniversity,reviewer1Name,reviewer2Name,reviewer3Name,reviewer1Email,reviewer2Email,reviewer3Email,reviewer1Affiliation,reviewer2Affiliation,reviewer3Affiliation) 
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 $stmt1 = $conn->prepare($sql1);
-$stmt1->bind_param("sssssssssssssssssss", $user_id, $title, $name, $faculty, $department, $email, $phone, $position, $degree, $university, $year, $field, $Leave_Get, $Leave_Date, $Leave_Duration, $co_investigators, $co_investigator_departmentUniversity, $foreign_collaborators, $foreign_collaborator_departmentUniversity);
+$stmt1->bind_param("ssssssssssssssssssssssssssss", $user_id, $title, $name, $faculty, $department, $email, $phone, $position, $degree, $university, $year, $field, $Leave_Get, $Leave_Date, $Leave_Duration, $co_investigators, $co_investigator_departmentUniversity, $foreign_collaborators, $foreign_collaborator_departmentUniversity,$reviewer1Name,$reviewer2Name,$reviewer3Name,$reviewer1Email,$reviewer2Email,$reviewer3Email,$reviewer1Affiliation,$reviewer2Affiliation,$reviewer3Affiliation);
 
 // Execute application insert
 if (!$stmt1->execute()) {
@@ -75,8 +84,8 @@ if (!$stmt1->execute()) {
 $app_ID = $conn->insert_id;
 
 // Store app_ID in session only if it's not already set
-if (!isset($_SESSION['Id'])) {
-    $_SESSION['Id'] = $app_ID;
+if (!isset($_SESSION['app_ID'])) {
+    $_SESSION['app_ID'] = $app_ID;
 }
 
 // Insert into the project table
@@ -90,6 +99,92 @@ if (!$stmt2->execute()) {
     echo json_encode([
         "status" => "error",
         "message" => "Error inserting into Project: " . $stmt2->error
+    ]);
+    exit();
+}
+
+// Insert into prev_university_grants using a prepared statement
+if (isset($_POST['fundingSource']) && is_array($_POST['fundingSource'])) {
+    $sql_funding = "INSERT INTO prev_university_grants (fundingSource, durationperiod, currency, amount, app_ID) VALUES (?, ?, ?, ?, ?)";
+    $stmt_funding = $conn->prepare($sql_funding);
+
+    foreach ($_POST['fundingSource'] as $index => $fundingSource) {
+        $durationperiod = $conn->real_escape_string($_POST['durationperiod'][$index]);
+        $currency = $conn->real_escape_string($_POST['currency'][$index]);
+        $amount = $conn->real_escape_string($_POST['amount'][$index]);
+
+        $stmt_funding->bind_param("ssssi", $fundingSource, $durationperiod, $currency, $amount, $app_ID);
+        if (!$stmt_funding->execute()) {
+            echo json_encode([
+                "status" => "error",
+                "message" => "Error inserting funding data: " . $stmt_funding->error
+            ]);
+            exit();
+        }
+    }
+    $stmt_funding->close();
+}
+
+// Insert into other_grants using a prepared statement
+if (isset($_POST['fundingOrganization']) && is_array($_POST['fundingOrganization'])) {
+    $sql_other_grants = "INSERT INTO other_grants (fundingOrganization, fundingAmount, currencyType, app_ID) VALUES (?, ?, ?, ?)";
+    $stmt_other_grants = $conn->prepare($sql_other_grants);
+
+    foreach ($_POST['fundingOrganization'] as $index => $fundingOrganization) {
+        $fundingAmount = $conn->real_escape_string($_POST['fundingAmount'][$index]);
+        $currencyType = $conn->real_escape_string($_POST['currencyType'][$index]);
+
+        $stmt_other_grants->bind_param("sssi", $fundingOrganization, $fundingAmount, $currencyType, $app_ID);
+        if (!$stmt_other_grants->execute()) {
+            echo json_encode([
+                "status" => "error",
+                "message" => "Error inserting other grants data: " . $stmt_other_grants->error
+            ]);
+            exit();
+        }
+    }
+    $stmt_other_grants->close();
+}
+ // Prepare and execute the app_status insertion
+ $status = 0; // Status 1 for submitted
+ $sql_status = "INSERT INTO app_status (app_ID, status, date) VALUES (?, ?, NOW()) ON DUPLICATE KEY UPDATE status = ?, date = NOW()";
+
+ if ($stmt = $conn->prepare($sql_status)) {
+     $stmt->bind_param("iii", $app_ID, $status, $status);
+     
+     if (!$stmt->execute()) {
+         echo json_encode([
+             "status" => "error",
+             "message" => "Error updating status"
+         ]);
+         exit();
+     }
+     $stmt->close();
+ } else {
+     echo json_encode([
+         "status" => "error",
+         "message" => "Error preparing status statement"
+     ]);
+     exit();
+ }
+
+ // Now retrieve the status and update the application table
+$sql_update_application = "UPDATE application SET Status = ? WHERE Id = ?";
+if ($stmt = $conn->prepare($sql_update_application)) {
+    $stmt->bind_param("ii", $status, $app_ID); // Bind the correct variables
+    
+    if (!$stmt->execute()) {
+        echo json_encode([
+            "status" => "error",
+            "message" => "Error updating application status"
+        ]);
+        exit();
+    }
+    $stmt->close();
+} else {
+    echo json_encode([
+        "status" => "error",
+        "message" => "Error preparing application update statement"
     ]);
     exit();
 }

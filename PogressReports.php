@@ -45,6 +45,7 @@ function uploadFile($file, $targetDir, $allowedTypes) {
 }
 
 // Check if files are submitted
+// Check if files are submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $responses = [];
     if (isset($_FILES['file'])) {
@@ -58,11 +59,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ];
             $response = uploadFile($file, $targetDir, $allowedTypes);
             if (strpos($response, 'Error') === false) {
-                // Prepare the SQL query without the report_type
-                $stmt = $conn->prepare("INSERT INTO progress_reports (file_name, file_path, uploaded_at) VALUES (?, ?, NOW())");
+                // Prepare the SQL query including app_ID
+                $stmt = $conn->prepare("INSERT INTO progress_reports (app_ID, file_name, file_path, uploaded_at) VALUES (?, ?, ?, NOW())");
                 if ($stmt) {
+                    // Get app_ID from session
+                    $app_ID = $_SESSION['app_ID']; // Ensure app_ID is set in the session
+
                     $filePathFull = $targetDir . $response;
-                    $stmt->bind_param("ss", $response, $filePathFull);
+                    // Bind the parameters including app_ID
+                    $stmt->bind_param("sss", $app_ID, $response, $filePathFull);
                     if ($stmt->execute()) {
                         $responses[$name] = "File uploaded and database updated successfully.";
                     } else {

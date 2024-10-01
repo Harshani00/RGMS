@@ -53,6 +53,10 @@ import React from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FormProvider } from './Pages/Applicant/MainForm'; // Import FormProvide
+//import { FormProvider } from './Pages/Applicant_EditForm/MainFormEdit'; // Import FormProvide
+
+
+import Profile from './Pages/AllUsers/Profile';
 
  // Applicante Pages
 import Dashboard from "./Pages/Applicant/Dashboard";
@@ -68,6 +72,8 @@ import Budget from './Pages/Applicant/Budget';
 import Home from './Pages/Applicant/Home';
 import SubmittedGrant from './Pages/Applicant/SubmittedGrant';
 import ProgressReport from './Pages/Applicant/ProgressReport';
+import EditGrant from './Pages/Applicant_EditForm/EditGrant';
+import EditProject from './Pages/Applicant_EditForm/EditProject';
 
 
 
@@ -94,12 +100,16 @@ import ReviewCriteriaD from './Pages/Director/ReviewCriteriaD';
 
 
 
+
 class App extends React.Component {
   render() {
     return (
       <FormProvider>
         <BrowserRouter>
           <Routes>
+            <Route path="/profile" element={<Profile />} /> 
+
+
             <Route path="/" element={<Navigate to="/Home" />} />
             <Route path="/home" element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} />
@@ -114,6 +124,8 @@ class App extends React.Component {
             <Route path="/budget" element={<Budget />} />
             <Route path="/submittedgrant" element={<SubmittedGrant />} />
             <Route path="/progressreport" element={<ProgressReport />} />
+            <Route path="/editgrant" element={<EditGrant/>} />
+            <Route path="/editproject" element={<EditProject/>} />
             
           
 

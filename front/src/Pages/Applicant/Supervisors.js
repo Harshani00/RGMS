@@ -253,6 +253,7 @@ import axios from 'axios';
 export default function Grant() {
   const { formData, handleFormDataChange,updateCompletionStatus } = useForm(); // Use form context
   const [submitted, setSubmitted] = useState(false); // Define state for form submission
+  const [isSubmitted, setIsSubmitted] = useState(false); 
   const [formErrors, setFormErrors] = useState({}); // Define state for form errors
   const navigate = useNavigate();
 
@@ -272,6 +273,8 @@ export default function Grant() {
     return Object.keys(errors).length === 0;
   };
 
+  
+  // Function to handle form submission
   const handleSubmit = async () => {
     if (validate()) {
       try {
@@ -295,6 +298,95 @@ export default function Grant() {
     }
   };
 
+   // Function to handle form save
+  // const handleSave = async () => {
+  //   if (validate()) {
+  //     if (isSubmitted) {
+  //       alert('Form data has already been saved.');
+  //       return; // Prevent further submissions
+  //     }
+  
+  //     try {
+  //       const response = await axios.post('/SaveForm.php', formData, {
+  //         headers: {
+  //           'Content-Type': 'application/x-www-form-urlencoded',
+  //         },
+  //         transformRequest: [(data) => {
+  //           const params = new URLSearchParams();
+  //           for (const key in data) {
+  //             params.append(key, data[key]);
+  //           }
+  //           return params;
+  //         }],
+  //       });
+  
+  //       if (response.data.status === "success") {
+  //         setIsSubmitted(true); // Mark as submitted
+  //         alert('Form saved successfully.');
+  //       } else {
+  //         alert(response.data.message);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error details:", error);
+  //       alert('There was an error saving the data. Please try again.');
+  //     }
+  //   } else {
+  //     alert('Missing Fields Required.');
+  //   }
+  // };
+  const handleSave = async () => {
+    if (isSubmitted) {
+      alert('Form data has already been saved.');
+      return; // Prevent further submissions
+    }
+  
+    try {
+      // Save form data to SaveForm.php
+      const response = await axios.post('/SaveForm.php', formData, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        transformRequest: [(data) => {
+          const params = new URLSearchParams();
+          for (const key in data) {
+            params.append(key, data[key]);
+          }
+          return params;
+        }],
+      });
+  
+      // Check if the form data was saved successfully
+      if (response.data.status === "success") {
+        setIsSubmitted(true); // Mark as submitted
+        alert('Form saved successfully.');
+  
+        // Now proceed with file upload to FileUploads.php
+        const fileUploadResponse = await axios.post('/SaveFileUploads.php', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data', // Set content type to multipart/form-data for file upload
+          },
+        });
+  
+        console.log(fileUploadResponse.data); // Log the file upload response for debugging
+  
+        // Handle successful file upload
+        if (fileUploadResponse.data.status === "success") {
+          alert('Files uploaded successfully.');
+        } else {
+          alert(fileUploadResponse.data.message); // Handle file upload failure
+        }
+      } else {
+        alert(response.data.message); // Handle form save failure
+      }
+    } catch (error) {
+      console.error("Error details:", error);
+      alert('There was an error saving the data or uploading files. Please try again.');
+    }
+  };
+  
+
+
+ // function to navigate to next page
   const handleNext = async () => {
     if (validate()) {
       updateCompletionStatus('supervisors', true);
@@ -303,7 +395,7 @@ export default function Grant() {
       alert('Missing Fields Required.');
     }
   };
-
+ // function to navigate to previous page
   const handlePrevious = () => {
     navigate('/project'); // Navigate to the project page
   };
@@ -336,42 +428,6 @@ export default function Grant() {
   //     alert('There was an error saving the data. Please try again.');
   //   }
   // };
-  const handleSave = async () => {
-    try {
-        // Retrieve app_ID from the session
-        const appIdResponse = await axios.get('/GetAppID.php'); // Ensure this endpoint returns the correct ID
-        const appId = appIdResponse.data.Id;
-
-        // Prepare form data including app_ID
-        const dataToSend = { ...formData, Id: appId };
-
-        // Save data to the new PHP script
-        const response = await axios.post('/SaveForm.php', dataToSend, {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            transformRequest: [(data) => {
-                const params = new URLSearchParams();
-                for (const key in data) {
-                    params.append(key, data[key]);
-                }
-                return params;
-            }],
-        });
-
-        if (response.data.status === "success") {
-            updateCompletionStatus('project', true);
-            navigate('/supervisors');
-        } else {
-            alert(response.data.message);
-        }
-
-    } catch (error) {
-        console.error("Error details:", error);
-        alert('There was an error saving the data. Please try again.');
-    }
-};
-
   
 
   return (
@@ -385,7 +441,7 @@ export default function Grant() {
         <Form onSubmit={handleSubmit}>
           <Row className="mb-3">
             <Form.Group controlId="formGridinvestigator">
-              <Form.Label>1. Co-investigators of the Project</Form.Label>
+              <Form.Label>1. Co-investigators of the Project <span className="text-danger">*</span></Form.Label>
               <Form.Control
                 name="co_investigators"
                 value={formData.co_investigators || ''}
@@ -397,7 +453,7 @@ export default function Grant() {
                 {formErrors.co_investigators}
               </Form.Control.Feedback>
 
-              <Form.Label>Affiliated Department and University</Form.Label>
+              <Form.Label>Affiliated Department and University <span className="text-danger">*</span></Form.Label>
               <Form.Control
                 name="co_investigator_departmentUniversity"
                 value={formData.co_investigator_departmentUniversity || ''}

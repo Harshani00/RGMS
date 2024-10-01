@@ -283,6 +283,7 @@ export default function Grant() {
   const { formData, handleFormDataChange, resetFormData, updateCompletionStatus } = useForm();
   const [formErrors, setFormErrors] = useState({});
   const [submitted, setSubmitted] = useState(false); // Track form submission
+  const [isSubmitted, setIsSubmitted] = useState(false); 
   const navigate = useNavigate();
 
   // Handle input changes
@@ -309,7 +310,7 @@ export default function Grant() {
     return Object.keys(errors).length === 0;
   };
 
-  // Handle form submission
+  // Function to Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -363,18 +364,98 @@ export default function Grant() {
     }
   };
 
+ // Function to navigate to the next page
   const handlePrevious = () => {
     navigate('/uploads'); // Navigate to the previous page
   };
 
-  const handleSave = async (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
-    const isValid = validate(); // Validate form
-    if (isValid) {
-      await handleSubmit(e); // Pass the event object to handleSubmit
+  // const handleSave = async () => {
+  //   if (validate()) {
+  //     if (isSubmitted) {
+  //       alert('Form data has already been saved.');
+  //       return; // Prevent further submissions
+  //     }
+  
+  //     try {
+  //       const response = await axios.post('/SaveForm.php', formData, {
+  //         headers: {
+  //           'Content-Type': 'application/x-www-form-urlencoded',
+  //         },
+  //         transformRequest: [(data) => {
+  //           const params = new URLSearchParams();
+  //           for (const key in data) {
+  //             params.append(key, data[key]);
+  //           }
+  //           return params;
+  //         }],
+  //       });
+  
+  //       if (response.data.status === "success") {
+  //         setIsSubmitted(true); // Mark as submitted
+  //         alert('Form saved successfully.');
+  //       } else {
+  //         alert(response.data.message);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error details:", error);
+  //       alert('There was an error saving the data. Please try again.');
+  //     }
+  //   } else {
+  //     alert('Missing Fields Required.');
+  //   }
+  // };
+
+  const handleSave = async () => {
+    if (isSubmitted) {
+      alert('Form data has already been saved.');
+      return; // Prevent further submissions
+    }
+  
+    try {
+      // Save form data to SaveForm.php
+      const response = await axios.post('/SaveForm.php', formData, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        transformRequest: [(data) => {
+          const params = new URLSearchParams();
+          for (const key in data) {
+            params.append(key, data[key]);
+          }
+          return params;
+        }],
+      });
+  
+      // Check if the form data was saved successfully
+      if (response.data.status === "success") {
+        setIsSubmitted(true); // Mark as submitted
+        alert('Form saved successfully.');
+  
+        // Now proceed with file upload to FileUploads.php
+        const fileUploadResponse = await axios.post('/SaveFileUploads.php', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data', // Set content type to multipart/form-data for file upload
+          },
+        });
+  
+        console.log(fileUploadResponse.data); // Log the file upload response for debugging
+  
+        // Handle successful file upload
+        if (fileUploadResponse.data.status === "success") {
+          alert('Files uploaded successfully.');
+        } else {
+          alert(fileUploadResponse.data.message); // Handle file upload failure
+        }
+      } else {
+        alert(response.data.message); // Handle form save failure
+      }
+    } catch (error) {
+      console.error("Error details:", error);
+      alert('There was an error saving the data or uploading files. Please try again.');
     }
   };
-
+  
+  
   // const handleFinish = async (e) => {
   //   e.preventDefault(); // Prevent default form submission behavior
   //   const isValid = validate(); // Validate form
@@ -387,7 +468,8 @@ export default function Grant() {
   // };
 
   //////////
-  
+
+   // Function to handle form submission (Finish and Submit)
   const handleFinish = async (e) => {  // handle Finish and Submit Action in the From
     e.preventDefault(); // Prevent default form submission behavior
   
@@ -518,7 +600,8 @@ export default function Grant() {
     {/* Reviewer 1 Details */}
     <Col md={4}>
       <Form.Group controlId="formGridReviewer1">
-        <Form.Label>Name of the Reviewer 1</Form.Label>
+        <Form.Label> Reviewer 1 <span className="text-danger">*</span></Form.Label><br></br>
+        <Form.Label>1. Name</Form.Label>
         <Form.Control
           name="reviewer1Name"
           value={formData.reviewer1Name || ''}
@@ -562,7 +645,8 @@ export default function Grant() {
     {/* Reviewer 2 Details */}
     <Col md={4}>
       <Form.Group controlId="formGridReviewer2">
-        <Form.Label> Name of the Reviewer 2</Form.Label>
+        <Form.Label>Reviewer 2 <span className="text-danger">*</span></Form.Label><br></br>
+        <Form.Label>1. Name</Form.Label>
         <Form.Control
           name="reviewer2Name"
           value={formData.reviewer2Name || ''}
@@ -606,7 +690,8 @@ export default function Grant() {
     {/* Reviewer 3 Details */}
     <Col md={4}>
       <Form.Group controlId="formGridReviewer3">
-        <Form.Label>1. Name of the Reviewer 3</Form.Label>
+        <Form.Label>Reviewer 3 <span className="text-danger">*</span></Form.Label><br></br>
+        <Form.Label>1. Name</Form.Label>
         <Form.Control
           name="reviewer3Name"
           value={formData.reviewer3Name || ''}

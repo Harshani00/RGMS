@@ -606,7 +606,7 @@ import Sidebar from '../../Components/Sidebar';
 import { useForm } from './MainForm';
 
 export default function Grant() {
-  const { formData, handleFormDataChange, updateCompletionStatus } = useForm(); // Destructure formData and handleFormDataChange from useForm
+  const { formData, handleFormDataChange, updateCompletionStatus,resetFormData } = useForm(); // Destructure formData and handleFormDataChange from useForm
   const [grantRows, setGrantRows] = useState([
     { fundingSource: '', duration: '', currency: '', amount: '' },
   ]);
@@ -694,49 +694,158 @@ export default function Grant() {
     }
   };
 
+  // Function to handle form save
+  // const handleSave = async () => {
+  //   if (validate()) {
+  //     if (isSubmitted) {
+  //       alert('Form data has already been saved.');
+  //       return; // Prevent further submissions
+  //     }
+  
+  //     try {
+  //       const response = await axios.post('/SaveForm.php', formData, {
+  //         headers: {
+  //           'Content-Type': 'application/x-www-form-urlencoded',
+  //         },
+  //         transformRequest: [(data) => {
+  //           const params = new URLSearchParams();
+  //           for (const key in data) {
+  //             params.append(key, data[key]);
+  //           }
+  //           return params;
+  //         }],
+  //       });
+  
+  //       if (response.data.status === "success") {
+  //         setIsSubmitted(true); // Mark as submitted
+  //         alert('Form saved successfully.');
+  //       } else {
+  //         alert(response.data.message);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error details:", error);
+  //       alert('There was an error saving the data. Please try again.');
+  //     }
+  //   } else {
+  //     alert('Missing Fields Required.');
+  //   }
+  // };
+
+  // Function to Save Form Data 
+  // const handleSave = async () => {
+  //   if (isSubmitted) {
+  //     alert('Form data has already been saved.');
+  //     return; // Prevent further submissions
+  //   }
+  
+  //   try {
+  //     // Save form data to SaveForm.php
+  //     const response = await axios.post('/SaveForm.php', formData, {
+  //       headers: {
+  //         'Content-Type': 'application/x-www-form-urlencoded',
+  //       },
+  //       transformRequest: [(data) => {
+  //         const params = new URLSearchParams();
+  //         for (const key in data) {
+  //           params.append(key, data[key]);
+  //         }
+  //         return params;
+  //       }],
+  //     });
+  
+  //     // Check if the form data was saved successfully
+  //     if (response.data.status === "success") {
+  //       setIsSubmitted(true); // Mark as submitted
+  //       alert('Form saved successfully.');
+  
+  //       // Now proceed with file upload to FileUploads.php
+  //       const fileUploadResponse = await axios.post('/SaveFileUploads.php', formData, {
+  //         headers: {
+  //           'Content-Type': 'multipart/form-data', // Set content type to multipart/form-data for file upload
+  //         },
+  //       });
+  
+  //       console.log(fileUploadResponse.data); // Log the file upload response for debugging
+  
+  //       // Handle successful file upload
+  //       if (fileUploadResponse.data.status === "success") {
+  //         alert('Files uploaded successfully.');
+  //       } else {
+  //         alert(fileUploadResponse.data.message); // Handle file upload failure
+  //       }
+  //     } else {
+  //       alert(response.data.message); // Handle form save failure
+  //     }
+  //   } catch (error) {
+  //     console.error("Error details:", error);
+  //     alert('There was an error saving the data or uploading files. Please try again.');
+  //   }
+  // };
   
   const handleSave = async () => {
-    if (validate()) {
-      if (isSubmitted) {
-        alert('Form data has already been submitted.');
-        return; // Prevent further submissions
-      }
+    if (isSubmitted) {
+      alert('Form data has already been saved.');
+      return; // Prevent further submissions
+    }
   
-      try {
-        const response = await axios.post('/SaveForm.php', formData, {
+    try {
+      // Save form data to SaveForm.php
+      const response = await axios.post('/SaveForm.php', formData, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        transformRequest: [(data) => {
+          const params = new URLSearchParams();
+          for (const key in data) {
+            params.append(key, data[key]);
+          }
+          return params;
+        }],
+      });
+  
+      // Check if the form data was saved successfully
+      if (response.data.status === 'success') {
+        setIsSubmitted(true); // Mark as submitted
+        alert('Form saved successfully.');
+  
+        // Now proceed with file upload to FileUploads.php
+        const fileUploadResponse = await axios.post('/SaveFileUploads.php', formData, {
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': 'multipart/form-data', // Set content type to multipart/form-data for file upload
           },
-          transformRequest: [(data) => {
-            const params = new URLSearchParams();
-            for (const key in data) {
-              params.append(key, data[key]);
-            }
-            return params;
-          }],
         });
   
-        if (response.data.status === "success") {
-          setIsSubmitted(true); // Mark as submitted
-          alert('Form saved successfully.');
+        console.log(fileUploadResponse.data); // Log the file upload response for debugging
+  
+        // Handle successful file upload
+        if (fileUploadResponse.data.status === 'success') {
+          alert('Files uploaded successfully.');
+  
+          // Clear form data and reset form state
+         
+          localStorage.removeItem('formData'); // Optional: Clear any saved form data in localStorage
+          resetFormData();
+  
+          // Navigate to the submitted grants page
+          navigate('/submittedgrant'); // Use navigate instead of window.location.href
         } else {
-          alert(response.data.message);
+          alert(fileUploadResponse.data.message); // Handle file upload failure
         }
-      } catch (error) {
-        console.error("Error details:", error);
-        alert('There was an error saving the data. Please try again.');
+      } else {
+        alert(response.data.message); // Handle form save failure
       }
-    } else {
-      alert('Missing Fields Required.');
+    } catch (error) {
+      console.error('Error details:', error);
+      alert('There was an error saving the data or uploading files. Please try again.');
     }
   };
-  
 
   // Function to navigate to the previous page
   const handlePrevious = () => {
     navigate('/grant'); // Update this path to the correct previous page
   };
 
+  // Function to navigate to the next page
   const handleNext = async () => {
     if (validate()) {
       updateCompletionStatus('project', true);
@@ -761,7 +870,7 @@ export default function Grant() {
         
         <Form onSubmit={handleSubmit}>
           <Row className="mb-3">
-            <Form.Label>1. Project Title</Form.Label>
+            <Form.Label>1. Project Title <span className="text-danger">*</span></Form.Label>
             <Form.Group as={Col} controlId="formGridTitle">
               <Form.Control
                 as="textarea"
@@ -771,6 +880,7 @@ export default function Grant() {
                 value={formData.projectTitle || ''}
                 onChange={(e) => handleFormDataChange({ projectTitle: e.target.value })}
                 isInvalid={!!errors.projectTitle}
+                className="required"
               />
               <Form.Control.Feedback type="invalid">
                 {errors.projectTitle}
@@ -828,7 +938,7 @@ export default function Grant() {
             Add Grant Row
           </Button>
           <Row className="mb-3">
-            <Form.Label>3. Are you currently involved in a project?</Form.Label>
+            <Form.Label>3. Are you currently involved in a project? <span className="text-danger">*</span></Form.Label>
             <Form.Group as={Col} controlId="formGridProject">
               <Row>
                 <Col xs={6}>
@@ -840,6 +950,7 @@ export default function Grant() {
                     checked={formData.projectInvolved === 'yes'}
                     onChange={(e) => handleFormDataChange({ projectInvolved: e.target.value })}
                     isInvalid={!!errors.projectInvolved}
+                    
                   />
                 </Col>
                 <Col xs={6}>
@@ -889,7 +1000,7 @@ export default function Grant() {
 
           {/* Dynamically generated funding rows */}
           <Row className="mb-3">
-          <Form.Label>5. Have you received any grants from outside for this/similar project?</Form.Label>
+          <Form.Label>5. Have you received any grants from outside for this/similar project? <span className="text-danger">*</span></Form.Label>
             <Form.Group as={Col} controlId="formGridProject">
               <Row>
                 <Col xs={6}>
@@ -945,7 +1056,7 @@ export default function Grant() {
             Add Funding Row
           </Button>
           <Row className="mb-3">
-            <Form.Label>6. List the equipment/resources/facilities available in your Department/Faculty for your research </Form.Label>
+            <Form.Label>6. List the equipment/resources/facilities available in your Department/Faculty for your research <span className="text-danger">*</span> </Form.Label>
             <Form.Group as={Col} controlId="formGridTitle">
               <Form.Control
                 as="textarea"

@@ -39,51 +39,59 @@
   
    /* Css for Review Criteria */
 
-.btn_add{
+   .Submitcriteria {
     background-color: #052659;
     border-color: #052659;
     color: white;
     margin-top: 20px;
     border-radius: 5px;
-    margin-left: 30PX;
+    margin-left: 30px;
     height: 40px;
     width: 100px;
-
-  }
-
-.btn_add:focus,
-.btn_add:hover {
-  background-color: #005b96;
-  border-color: #005b96; 
-  color: white;
 }
 
-  .textbox1{
-    border: 1px solid rgb(207, 201, 201);
-    border-radius: 4px;
-    width: 250px; 
-    height:40px;
-  }
-
-  .btn_remove{
-    background-color: #052659;
-    border-color: #052659;
+.Submitcriteria:focus,
+.Submitcriteria:hover {
+    background-color: #005b96;
+    border-color: #005b96;
     color: white;
-    margin-left: 15px;
-    border-radius: 5px;
-    height: 40px;
-    width: 100px;
-  }
+}
 
- .btn_remove:focus,
- .btn_remove:hover {
-  background-color: #005b96;
-  border-color: #005b96; 
-  color: white;
+.upload-box {
+    border: 2px dashed #cccccc;
+    padding: 20px;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    width: 100%; /* width of the upload column */
 }
-.review_t1{
-  margin-top: 50px;
+
+.view-box {
+    width: 150%; /* adjust width for the view box */
 }
+
+/* Increase the width of the 'View Criteria' column */
+.view-criteria-header {
+    width: 50%; /* increase the width of the column header */
+}
+/* Centering text inside the upload box */
+.dropzone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px; /* Set a fixed height */
+  text-align: center;
+  background-color: #f9f9f9;
+}
+
+.dropzone p {
+  margin: 0;
+  color: #666;
+}
+
+
+
+ 
+
 /* Css for Order Application (Secretary) */
 
   .select-button{

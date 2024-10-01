@@ -1,0 +1,33 @@
+.Edit_Button{
+    background-color: #052659;
+    border-color: #052659;
+    color: white;
+    border-radius: 5px;
+    height: 30px;
+    width: 60px;
+    margin-left: 50px;
+  }
+
+ .Edit_Button:focus,
+ .Edit_Button:hover {
+  background-color: #005b96;
+  border-color: #005b96; 
+  color: white;
+}
+.View_Button{
+    background-color: #052659;
+    border-color: #052659;
+    color: white;
+    border-radius: 5px;
+    height: 30px;
+    width: 60px;
+    margin-left: 50px;
+    
+  }
+
+ .View_Button:focus,
+ .View_Button:hover {
+  background-color: #005b96;
+  border-color: #005b96; 
+  color: white;
+}

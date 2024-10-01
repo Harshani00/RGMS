@@ -1,66 +1,94 @@
 <?php
+
 // Enable CORS
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: POST, GET, DELETE, OPTIONS');
+header('Access-Control-Allow-Methods: POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
-// Database connection
+// Start the session
+session_start();
+
+// Include the database connection
 include("dbConnection.php");
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Handle adding criteria
-    $criteria = $_POST['criteria'];
+// Define the target directory where files will be uploaded
+$targetDir = "D:/GrantData/CriteriaFiles/"; // Make sure this folder exists
+$allowedTypes = array('docx'); // Allowed file types
 
-    if (!empty($criteria)) {
-        $stmt = $conn->prepare("INSERT INTO criteria (criteria) VALUES (?)");
-        $stmt->bind_param("s", $criteria);
+// Ensure the uploads directory exists
+if (!file_exists($targetDir)) {
+    mkdir($targetDir, 0755, true);
+}
 
-        if ($stmt->execute()) {
-            $last_id = $conn->insert_id;
-            echo json_encode(["C_Id" => $last_id, "criteria" => $criteria]);
-        } else {
-            echo "Error: " . $stmt->error;
-        }
+// Function to handle file upload
+function uploadFile($file, $targetDir, $allowedTypes) {
+    $fileName = basename($file["name"]);
+    $targetFilePath = $targetDir . $fileName;
+    $fileType = strtolower(pathinfo($targetFilePath, PATHINFO_EXTENSION));
 
-        $stmt->close();
-    } else {
-        echo "Criteria cannot be empty";
+    // Check if the file type is allowed
+    if (!in_array($fileType, $allowedTypes)) {
+        return "Error: Only " . implode(", ", $allowedTypes) . " files are allowed.";
     }
 
-} elseif ($_SERVER["REQUEST_METHOD"] == "GET") {
-    // Handle fetching criteria
-    $sql = "SELECT * FROM criteria";
-    $result = $conn->query($sql);
-
-    $criteria = [];
-    if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
-            $criteria[] = $row;
-        }
+    // Check if the file already exists
+    if (file_exists($targetFilePath)) {
+        return "Error: File already exists.";
     }
 
-    echo json_encode($criteria);
-
-} elseif ($_SERVER["REQUEST_METHOD"] == "DELETE") {
-    // Handle deleting criteria
-    parse_str(file_get_contents("php://input"), $_DELETE);
-    $id = $_DELETE['C_Id'];
-
-    if (!empty($id)) {
-        $stmt = $conn->prepare("DELETE FROM criteria WHERE C_Id = ?");
-        $stmt->bind_param("i", $id);
-
-        if ($stmt->execute()) {
-            echo json_encode(["success" => true]);
-        } else {
-            echo json_encode(["error" => $stmt->error]);
-        }
-
-        $stmt->close();
+    // Move the uploaded file to the target directory
+    if (move_uploaded_file($file["tmp_name"], $targetFilePath)) {
+        return $fileName; // Return the file name if uploaded successfully
     } else {
-        echo json_encode(["error" => "C_Id is required"]);
+        return "Error: Failed to upload the file.";
     }
 }
 
+// Function to fetch the uploaded file from the database
+function fetchUploadedFile($conn) {
+    $result = $conn->query("SELECT criteria FROM criteria ORDER BY C_Id DESC LIMIT 1"); // Assuming 'id' is the primary key
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        return $row['criteria']; // Return the file path or name
+    } else {
+        return "No file uploaded yet.";
+    }
+}
+
+// Check if a POST request was made (for uploading a file)
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $responses = [];
+    
+    // Check if the file was submitted via the "criteria" field
+    if (isset($_FILES['criteria'])) {
+        $uploadResult = uploadFile($_FILES['criteria'], $targetDir, $allowedTypes);
+        $responses['criteria'] = $uploadResult;
+
+        // If the file was successfully uploaded, insert it into the database
+        if (strpos($uploadResult, 'Error') === false) {
+            // Prepare the SQL query to insert the file into the `criteria` table
+            $stmt = $conn->prepare("INSERT INTO criteria (criteria) VALUES (?)");
+
+            if ($stmt) {
+                // Insert the file path (or name) into the `criteria` column
+                $filePath = $targetDir . $uploadResult;
+                $stmt->bind_param("s", $filePath);
+                $stmt->execute();
+                $stmt->close();
+            }
+        }
+    }
+
+    // Return the response as JSON
+    echo json_encode($responses);
+
+// Check if a GET request was made (for fetching the file to view)
+} elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $file = fetchUploadedFile($conn);
+    echo json_encode(['criteria' => $file]);
+}
+
+// Close the database connection
 $conn->close();
+
 ?>

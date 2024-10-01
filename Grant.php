@@ -28,6 +28,7 @@ if (!isset($_SESSION['user_id'])) {
 // Retrieve user_id from session
 $user_id = $conn->real_escape_string($_SESSION['user_id']);
 
+
 // Define required fields from both Grant and Project forms
 $requiredFields = [
     'title', 'name', 'faculty', 'department', 'email', 
@@ -72,7 +73,7 @@ $year = isset($_POST['year']) ? $conn->real_escape_string($_POST['year']) : '';
 $field = isset($_POST['field']) ? $conn->real_escape_string($_POST['field']) : '';
 $Leave_Get = isset($_POST['Leave_Get']) ? $conn->real_escape_string($_POST['Leave_Get']) : '';
 $Leave_Date = isset($_POST['Leave_Date']) ? $conn->real_escape_string($_POST['Leave_Date']) : '';
-$Leave_Duration = isset($_POST['Leave_Duration']) ? $conn->real_escape_string($_POST['duration']) : '';
+$Leave_Duration = isset($_POST['Leave_Duration']) ? $conn->real_escape_string($_POST['Leave_Duration']) : '';
 $projectTitle = isset($_POST['projectTitle']) ? $conn->real_escape_string($_POST['projectTitle']) : '';
 $projectInvolved = isset($_POST['projectInvolved']) ? $conn->real_escape_string($_POST['projectInvolved']) : '';
 $publication1 = isset($_POST['publication1']) ? $conn->real_escape_string($_POST['publication1']) : '';
@@ -96,13 +97,13 @@ $reviewer3Affiliation = isset($_POST['reviewer3Affiliation']) ? $conn->real_esca
 
 // Construct SQL query to insert into the 'application' table
 $sql = "INSERT INTO application (
-    uid, title, name, faculty, department, email, phone, position, degree, university, year, field, Leave_Get,Leave_Date, Leave_Duration,
+    uid, title, name, faculty, department, email, phone, position, degree, university, year, field, Leave_Get, Leave_Date, Leave_Duration,
     co_investigators, co_investigator_departmentUniversity, foreign_collaborators, foreign_collaborator_departmentUniversity,
     reviewer1Name, reviewer2Name, reviewer3Name, reviewer1Email, reviewer2Email, reviewer3Email, 
     reviewer1Affiliation, reviewer2Affiliation, reviewer3Affiliation
 ) 
 VALUES (
-    '$user_id', '$title', '$name', '$faculty', '$department', '$email', '$phone', '$position', '$degree', '$university', '$year', '$field', '$Leave_Get','$Leave_Date', '$Leave_Duration',
+    '$user_id', '$title', '$name', '$faculty', '$department', '$email', '$phone', '$position', '$degree', '$university', '$year', '$field', '$Leave_Get', '$Leave_Date', '$Leave_Duration',
     '$co_investigators', '$co_investigator_departmentUniversity', '$foreign_collaborators', '$foreign_collaborator_departmentUniversity',
     '$reviewer1Name', '$reviewer2Name', '$reviewer3Name', '$reviewer1Email', '$reviewer2Email', '$reviewer3Email', 
     '$reviewer1Affiliation', '$reviewer2Affiliation', '$reviewer3Affiliation'
@@ -118,15 +119,15 @@ if ($conn->query($sql) === TRUE) {
     $sql_project = "INSERT INTO project (
     uid, projectTitle, projectInvolved, publication1, publication2, publication3, outsidegrants, researchFacilities, app_ID
     ) VALUES (
-     '$user_id','$projectTitle', '$projectInvolved', '$publication1', '$publication2', '$publication3', '$outsidegrants', '$researchFacilities','$app_ID'
+     '$user_id', '$projectTitle', '$projectInvolved', '$publication1', '$publication2', '$publication3', '$outsidegrants', '$researchFacilities', '$app_ID'
     )";
  
     if (!$conn->query($sql_project)) {
-     echo json_encode([
-         "status" => "error",
-         "message" => "Error inserting into Project: " . $conn->error
-     ]);
-     exit();
+        echo json_encode([
+            "status" => "error",
+            "message" => "Error inserting into Project: " . $conn->error
+        ]);
+        exit();
     }
 
     // Insert into prev_university_grants
@@ -137,43 +138,90 @@ if ($conn->query($sql) === TRUE) {
             $amount = $conn->real_escape_string($_POST['amount'][$index]);
 
             $sql_funding = "INSERT INTO prev_university_grants (fundingSource, durationperiod, currency, amount, app_ID) VALUES ('$fundingSource', '$durationperiod', '$currency', '$amount', '$app_ID')";
-            echo $sql_funding;
+
             if (!$conn->query($sql_funding)) {
                 echo json_encode([
                     "status" => "error",
-                    "message" => "Error inserting funding data: " . $conn->error
+                    "message" => "Error inserting into prev_university_grants: " . $conn->error
                 ]);
                 exit();
             }
         }
     }
 
-    // Insert into other_grants
-    if (isset($_POST['fundingOrganization']) && is_array($_POST['fundingOrganization'])) {
-        foreach ($_POST['fundingOrganization'] as $index => $fundingOrganization) {
-            $fundingAmount = $conn->real_escape_string($_POST['fundingAmount'][$index]);
-            $currencyType = $conn->real_escape_string($_POST['currencyType'][$index]);
+    // Insert into other_grants (assuming similar structure as prev_university_grants)
+    if (isset($_POST['otherFundingSource']) && is_array($_POST['otherFundingSource'])) {
+        foreach ($_POST['otherFundingSource'] as $index => $otherFundingSource) {
+            $durationperiod = $conn->real_escape_string($_POST['other_durationperiod'][$index]);
+            $currency = $conn->real_escape_string($_POST['other_currency'][$index]);
+            $amount = $conn->real_escape_string($_POST['other_amount'][$index]);
 
-            $sql_other_grants = "INSERT INTO other_grants (fundingOrganization, fundingAmount, currencyType, app_ID) VALUES ('$fundingOrganization', '$fundingAmount', '$currencyType', '$app_ID')";
-            echo json_encode([
-                
-                "message" => "INSERTING " . $sql_other_grants 
-            ]);
-            if (!$conn->query($sql_other_grants)) {
+            $sql_other_funding = "INSERT INTO other_grants (fundingSource, durationperiod, currency, amount, app_ID) VALUES ('$otherFundingSource', '$durationperiod', '$currency', '$amount', '$app_ID')";
+
+            if (!$conn->query($sql_other_funding)) {
                 echo json_encode([
                     "status" => "error",
-                    "message" => "Error inserting other grants data: " . $conn->error
+                    "message" => "Error inserting into other_grants: " . $conn->error
                 ]);
                 exit();
             }
         }
     }
 
+    // Prepare and execute the app_status insertion
+  // After inserting into app_status table
+
+// Prepare and execute the app_status insertion
+$status = 1; // Status 1 for submitted
+$sql_status = "INSERT INTO app_status (app_ID, status, date) VALUES (?, ?, NOW()) ON DUPLICATE KEY UPDATE status = ?, date = NOW()";
+
+if ($stmt = $conn->prepare($sql_status)) {
+    $stmt->bind_param("iii", $app_ID, $status, $status);
+    
+    if (!$stmt->execute()) {
+        echo json_encode([
+            "status" => "error",
+            "message" => "Error updating status"
+        ]);
+        exit();
+    }
+    $stmt->close();
+} else {
     echo json_encode([
-        "status" => "success",
-        "message" => "Application and project data inserted successfully.",
-        "app_ID" => $app_ID
+        "status" => "error",
+        "message" => "Error preparing status statement"
     ]);
+    exit();
+}
+
+// Now retrieve the status and update the application table
+$sql_update_application = "UPDATE application SET Status = ? WHERE Id = ?";
+if ($stmt = $conn->prepare($sql_update_application)) {
+    $stmt->bind_param("ii", $status, $app_ID); // Bind the correct variables
+    
+    if (!$stmt->execute()) {
+        echo json_encode([
+            "status" => "error",
+            "message" => "Error updating application status"
+        ]);
+        exit();
+    }
+    $stmt->close();
+} else {
+    echo json_encode([
+        "status" => "error",
+        "message" => "Error preparing application update statement"
+    ]);
+    exit();
+}
+
+// Final response after all operations
+echo json_encode([
+    "status" => "success",
+    "message" => "Form submitted successfully",
+    "app_ID" => $app_ID
+]);
+
 } else {
     echo json_encode([
         "status" => "error",

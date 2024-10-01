@@ -73,8 +73,8 @@ export default function OrderApplication() {
         </thead>
         <tbody>
           {filteredApplications.map((app) => (
-            <tr key={app.id}>
-              <td>{app.id}</td>
+            <tr key={app.app_ID}>
+              <td>{app.app_ID}</td>
               <td>{app.projectTitle}</td>
               <td>{app.submittedDate}</td>
               <td>

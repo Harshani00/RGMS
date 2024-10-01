@@ -38,7 +38,7 @@ function uploadFile($file, $targetDir, $allowedTypes) {
 
     // Attempt to move the uploaded file
     if (move_uploaded_file($file["tmp_name"], $targetFilePath)) {
-        return $fileName;
+        return $fileName; // Return the file name
     } else {
         return "Error: Unable to upload the file.";
     }
@@ -55,17 +55,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Prepare the SQL query
-    $stmt = $conn->prepare("INSERT INTO budget (file_name, file_path) VALUES (?, ?)");
+    $stmt = $conn->prepare("INSERT INTO budget (app_ID, previous_budget, current_budget) VALUES (?, ?, ?)");
 
     if ($stmt) {
+        // Get app_ID from session
+        $app_ID = $_SESSION['app_ID']; // Make sure app_ID is set in the session
+
         // Insert each file into the database
-        foreach ($responses as $fileKey => $filePath) {
-            if (strpos($filePath, 'Error') === false) {
-                $fileName = $fileKey;
-                $filePathFull = $targetDir . $filePath;
-                $stmt->bind_param("ss", $fileName, $filePathFull);
-                $stmt->execute();
-            }
+        $previousBudgetPath = isset($responses['PreviousBudget']) && strpos($responses['PreviousBudget'], 'Error') === false ? $targetDir . $responses['PreviousBudget'] : null;
+        $currentBudgetPath = isset($responses['CurrentBudget']) && strpos($responses['CurrentBudget'], 'Error') === false ? $targetDir . $responses['CurrentBudget'] : null;
+
+        if ($previousBudgetPath && $currentBudgetPath) {
+            $stmt->bind_param("iss", $app_ID, $previousBudgetPath, $currentBudgetPath);
+            $stmt->execute();
         }
         $stmt->close();
     }

@@ -1,4 +1,6 @@
-// import React, { useState } from 'react';
+
+// Table  of Review Criteria
+// import React, { useState, useEffect } from 'react';
 // import Table from 'react-bootstrap/Table';
 // import Navbar from '../../Components/Navbar';
 // import './Table.css';
@@ -7,18 +9,54 @@
 //   const [inputValue, setInputValue] = useState('');
 //   const [entries, setEntries] = useState([]);
 
-//   // Function to handle adding new entry
+//   useEffect(() => {
+//     fetch('/Criteria.php') // Update the path as needed
+//       .then(response => response.json())
+//       .then(data => setEntries(data))
+//       .catch(error => console.error('Error:', error));
+//   }, []);
+
 //   const handleAdd = () => {
 //     if (inputValue.trim()) {
-//       setEntries([...entries, inputValue]);
-//       setInputValue(''); // Clear the input after adding
+//       fetch('/Criteria.php', { // Update the path as needed
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/x-www-form-urlencoded',
+//         },
+//         body: new URLSearchParams({
+//           'criteria': inputValue,
+//         }),
+//       })
+//       .then(response => response.json())
+//       .then(newEntry => {
+//         setEntries([...entries, newEntry]);
+//         setInputValue('');
+//       })
+//       .catch(error => console.error('Error:', error));
 //     }
 //   };
-
-//   // Function to handle removing an entry
-//   const handleRemove = (index) => {
-//     setEntries(entries.filter((_, i) => i !== index));
+  
+//   const handleRemove = (id) => {
+//     fetch('/Criteria.php', { // Update the path as needed
+//       method: 'DELETE',
+//       headers: {
+//         'Content-Type': 'application/x-www-form-urlencoded',
+//       },
+//       body: new URLSearchParams({
+//         'C_Id': id,
+//       }),
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//       if (data.success) {
+//         setEntries(entries.filter(entry => entry.C_Id !== id));
+//       } else {
+//         console.error('Error:', data.error);
+//       }
+//     })
+//     .catch(error => console.error('Error:', error));
 //   };
+  
 
 //   return (
 //     <div>
@@ -26,8 +64,8 @@
 //       <Table className="review_t1" striped bordered hover>
 //         <thead>
 //           <tr>
-//           <th style={{ width: '50%' }}>Add Criteria</th> {/* Adjust the width here */}
-//           <th style={{ width: '50%' }}>Criteria Name</th> {/* Adjust the width here */}
+//             <th style={{ width: '40%' }}>Add Criteria</th>
+//             <th style={{ width: '60%' }}>Criteria Name</th>
 //           </tr>
 //         </thead>
 //         <tbody>
@@ -47,12 +85,12 @@
 //             <td>
 //               <Table striped bordered hover>
 //                 <tbody>
-//                   {entries.map((entry, index) => (
-//                     <tr key={index}>
-//                       <td>{entry}</td>
+//                   {entries.map((entry) => (
+//                     <tr key={entry.C_Id}>
+//                       <td>{entry.criteria}</td>
 //                       <td>
 //                         <button
-//                           onClick={() => handleRemove(index)}
+//                           onClick={() => handleRemove(entry.C_Id)}
 //                           className="btn_remove"
 //                         >
 //                           Remove
@@ -69,114 +107,102 @@
 //     </div>
 //   );
 // }
-
-// import React, { useState, useEffect } from 'react';
+// import React, { useState } from 'react';
 // import Table from 'react-bootstrap/Table';
 // import Navbar from '../../Components/Navbar';
+// import { useDropzone } from 'react-dropzone';
 // import './Table.css';
 // import axios from 'axios';
 
-// export default function ReviewCriteria() {
-//   const [inputValue, setInputValue] = useState('');
-//   const [entries, setEntries] = useState([]);
+// export default function ViewApplication() {
 
-//   useEffect(() => {
-//     // Fetch existing entries when component mounts
-//     const fetchEntries = async () => {
-//       try {
-//         const response = await axios.get('/get_criteria.php');
-//         if (response.data) {
-//           setEntries(response.data);
-//         }
-//       } catch (error) {
-//         console.error('Error fetching criteria:', error);
-//       }
-//     };
-    
-//     fetchEntries();
-//   }, []);
+//   const [files, setFiles] = useState([]);
 
-//   const handleAdd = async () => {
-//     if (inputValue.trim()) {
+//   // Use react-dropzone to handle drag-and-drop
+//   const { getRootProps, getInputProps } = useDropzone({
+//     onDrop: (acceptedFiles) => {
+//       setFiles(acceptedFiles);
+//     }
+//   });
+
+//   const handleSubmit = async () => {
+//     if (files.length > 0) {
+//       const formData = new FormData();
+//       formData.append('criteria', files[0]); // Only upload the first file
+  
 //       try {
-//         const response = await axios.post('/Criteria.php', {
-//           action: 'add',
-//           criteria: inputValue,
+//         // Send the form data to UploadCriteria.php using Axios
+//         const response = await axios.post('/Criteria.php', formData, {
+//           headers: {
+//             'Content-Type': 'multipart/form-data', // Axios automatically sets this when using FormData
+//           },
 //         });
         
-//         const data = response.data;
-//         if (data.status === 'success') {
-//           setEntries([...entries, { id: Date.now(), name: inputValue }]);
-//           setInputValue('');
+//         const result = response.data; // Get the response data
+//         console.log(result);
+  
+//         if (result.criteria && result.criteria.includes('Error')) {
+//           alert('Error: ' + result.criteria);
 //         } else {
-//           alert(data.message);
+//           alert('File uploaded successfully!');
+//           setFiles([]); // Clear the files after successful submission
 //         }
 //       } catch (error) {
-//         console.error('Error adding criteria:', error);
+//         console.error('Error uploading file:', error);
+//         alert('Error uploading file.');
 //       }
-//     }
-//   };
-
-//   const handleRemove = async (id) => {
-//     try {
-//       const response = await axios.post('/Criteria.php', {
-//         action: 'delete',
-//         id: id,
-//       });
-
-//       const data = response.data;
-//       if (data.status === 'success') {
-//         setEntries(entries.filter(entry => entry.id !== id));
-//       } else {
-//         alert(data.message);
-//       }
-//     } catch (error) {
-//       console.error('Error deleting criteria:', error);
+//     } else {
+//       alert('Please select or drop files to upload.');
 //     }
 //   };
 
 //   return (
 //     <div>
 //       <Navbar />
-//       <Table className="review_t1" striped bordered hover>
+//       <Table striped bordered hover>
 //         <thead>
 //           <tr>
-//             <th style={{ width: '50%' }}>Add Criteria</th>
-//             <th style={{ width: '50%' }}>Criteria Name</th>
+//             <th>Upload Criteria ( Word File) </th>
+//             <th className="view-criteria-header">View Criteria</th>
 //           </tr>
 //         </thead>
 //         <tbody>
 //           <tr>
 //             <td>
-//               <input
-//                 type="text"
-//                 value={inputValue}
-//                 onChange={(e) => setInputValue(e.target.value)}
-//                 placeholder="Enter Review Criteria"
-//                 className="textbox1"
-//               />
-//               <button onClick={handleAdd} className="btn_add">
-//                 Add
-//               </button>
+//               <div className="upload-box">
+              
+//                 {/* Drag and drop box */}
+//                 <div
+//                   {...getRootProps({ className: 'dropzone' })}
+//                 >
+//                   <input {...getInputProps()} />
+//                   {files.length > 0 ? (
+//                     <ul>
+//                       {files.map((file) => (
+//                         <li key={file.path}>{file.path}</li>
+//                       ))}
+//                     </ul>
+//                   ) : (
+//                     <p>Drag & drop files here, or click to select files.</p>
+                    
+              
+//                   )}
+//                 </div>
+//                 {/* Submit button */}
+                
+//               </div>
+//               <button
+//                   type="button"
+//                   onClick={handleSubmit}
+//                   className='Submitcriteria'
+//                 >
+//                   Submit
+//                 </button>
 //             </td>
 //             <td>
-//               <Table striped bordered hover>
-//                 <tbody>
-//                   {entries.map((entry) => (
-//                     <tr key={entry.id}>
-//                       <td>{entry.name}</td>
-//                       <td>
-//                         <button
-//                           onClick={() => handleRemove(entry.id)}
-//                           className="btn_remove"
-//                         >
-//                           Remove
-//                         </button>
-//                       </td>
-//                     </tr>
-//                   ))}
-//                 </tbody>
-//               </Table>
+//               <div className="view-box">
+//                 View Criteria Content
+//               </div>
 //             </td>
 //           </tr>
 //         </tbody>
@@ -184,298 +210,114 @@
 //     </div>
 //   );
 // }
-
-// import React, { useState, useEffect } from 'react';
-// import Table from 'react-bootstrap/Table';
-// import Navbar from '../../Components/Navbar';
-// import './Table.css';
-// import axios from 'axios';
-
-// export default function ReviewCriteria() {
-//   const [inputValue, setInputValue] = useState('');
-//   const [entries, setEntries] = useState([]);
-
-//   useEffect(() => {
-//     // Fetch existing entries when component mounts
-//     const fetchEntries = async () => {
-//       try {
-//         const response = await axios.get('/GetCriteria.php');
-//         if (response.data) {
-//           setEntries(response.data);
-//         }
-//       } catch (error) {
-//         console.error('Error fetching criteria:', error);
-//       }
-//     };
-    
-//     fetchEntries();
-//   }, []);
-
-//   const handleAdd = async () => {
-//     if (inputValue.trim()) {
-//       try {
-//         const response = await axios.post('/Criteria.php', {
-//           action: 'add',
-//           criteria: inputValue,
-//         });
-  
-//         console.log('POST request payload:', {
-//           action: 'add',
-//           criteria: inputValue,
-//         }); // Log request payload
-  
-//         const data = response.data;
-//         if (data.status === 'success') {
-//           setEntries([...entries, { id: Date.now(), name: inputValue }]);
-//           setInputValue('');
-//         } else {
-//           alert(data.message);
-//         }
-//       } catch (error) {
-//         console.error('Error adding criteria:', error);
-//       }
-//     }
-//   };
-  
-
-//   const handleRemove = async (id) => {
-//     try {
-//       const response = await axios.post('/Criteria.php', {
-//         action: 'delete',
-//         id: id,
-//       });
-
-//       const data = response.data;
-//       if (data.status === 'success') {
-//         setEntries(entries.filter(entry => entry.id !== id));
-//       } else {
-//         alert(data.message);
-//       }
-//     } catch (error) {
-//       console.error('Error deleting criteria:', error);
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <Navbar />
-//       <Table className="review_t1" striped bordered hover>
-//         <thead>
-//           <tr>
-//             <th style={{ width: '50%' }}>Add Criteria</th>
-//             <th style={{ width: '50%' }}>Criteria Name</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           <tr>
-//             <td>
-//               <input
-//                 type="text"
-//                 value={inputValue}
-//                 onChange={(e) => setInputValue(e.target.value)}
-//                 placeholder="Enter Review Criteria"
-//                 className="textbox1"
-//               />
-//               <button onClick={handleAdd} className="btn_add">
-//                 Add
-//               </button>
-//             </td>
-//             <td>
-//               <Table striped bordered hover>
-//                 <tbody>
-//                   {entries.map((entry) => (
-//                     <tr key={entry.id}>
-//                       <td>{entry.name}</td>
-//                       <td>
-//                         <button
-//                           onClick={() => handleRemove(entry.id)}
-//                           className="btn_remove"
-//                         >
-//                           Remove
-//                         </button>
-//                       </td>
-//                     </tr>
-//                   ))}
-//                 </tbody>
-//               </Table>
-//             </td>
-//           </tr>
-//         </tbody>
-//       </Table>
-//     </div>
-//   );
-// }
-
-// import React, { useState } from 'react';
-// import Table from 'react-bootstrap/Table';
-// import Navbar from '../../Components/Navbar';
-// import './Table.css';
-
-// export default function ReviewCriteria() {
-//   const [inputValue, setInputValue] = useState('');
-//   const [entries, setEntries] = useState([]);
-
-//   const handleAdd = () => {
-//     if (inputValue.trim()) {
-//       setEntries([...entries, { id: Date.now(), name: inputValue }]);
-//       setInputValue('');
-//     }
-//   };
-
-//   const handleRemove = (id) => {
-//     setEntries(entries.filter(entry => entry.id !== id));
-//   };
-
-//   return (
-//     <div>
-//       <Navbar />
-//       <Table className="review_t1" striped bordered hover>
-//         <thead>
-//           <tr>
-//             <th style={{ width: '50%' }}>Add Criteria</th>
-//             <th style={{ width: '50%' }}>Criteria Name</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           <tr>
-//             <td>
-//               <input
-//                 type="text"
-//                 value={inputValue}
-//                 onChange={(e) => setInputValue(e.target.value)}
-//                 placeholder="Enter Review Criteria"
-//                 className="textbox1"
-//               />
-//               <button onClick={handleAdd} className="btn_add">
-//                 Add
-//               </button>
-//             </td>
-//             <td>
-//               <Table striped bordered hover>
-//                 <tbody>
-//                   {entries.map((entry) => (
-//                     <tr key={entry.id}>
-//                       <td>{entry.name}</td>
-//                       <td>
-//                         <button
-//                           onClick={() => handleRemove(entry.id)}
-//                           className="btn_remove"
-//                         >
-//                           Remove
-//                         </button>
-//                       </td>
-//                     </tr>
-//                   ))}
-//                 </tbody>
-//               </Table>
-//             </td>
-//           </tr>
-//         </tbody>
-//       </Table>
-//     </div>
-//   );
-// }
-
 import React, { useState, useEffect } from 'react';
 import Table from 'react-bootstrap/Table';
 import Navbar from '../../Components/Navbar';
+import { useDropzone } from 'react-dropzone';
 import './Table.css';
+import axios from 'axios';
 
-export default function ReviewCriteria() {
-  const [inputValue, setInputValue] = useState('');
-  const [entries, setEntries] = useState([]);
+export default function ViewApplication() {
 
-  useEffect(() => {
-    fetch('/Criteria.php') // Update the path as needed
-      .then(response => response.json())
-      .then(data => setEntries(data))
-      .catch(error => console.error('Error:', error));
-  }, []);
+  const [files, setFiles] = useState([]);
+  const [criteriaFile, setCriteriaFile] = useState(null);
 
-  const handleAdd = () => {
-    if (inputValue.trim()) {
-      fetch('/Criteria.php', { // Update the path as needed
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-          'criteria': inputValue,
-        }),
-      })
-      .then(response => response.json())
-      .then(newEntry => {
-        setEntries([...entries, newEntry]);
-        setInputValue('');
-      })
-      .catch(error => console.error('Error:', error));
+  // Use react-dropzone to handle drag-and-drop
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop: (acceptedFiles) => {
+      setFiles(acceptedFiles);
+    }
+  });
+
+  // Function to handle file upload
+  const handleSubmit = async () => {
+    if (files.length > 0) {
+      const formData = new FormData();
+      formData.append('criteria', files[0]); // Only upload the first file
+  
+      try {
+        const response = await axios.post('/Criteria.php', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        
+        const result = response.data;
+        console.log(result);
+  
+        if (result.criteria && result.criteria.includes('Error')) {
+          alert('Error: ' + result.criteria);
+        } else {
+          alert('File uploaded successfully!');
+          setFiles([]); // Clear the files after successful submission
+          fetchCriteriaFile(); // Fetch the latest file to display in the table
+        }
+      } catch (error) {
+        console.error('Error uploading file:', error);
+        alert('Error uploading file.');
+      }
+    } else {
+      alert('Please select or drop files to upload.');
     }
   };
-  
-  const handleRemove = (id) => {
-    fetch('/Criteria.php', { // Update the path as needed
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams({
-        'C_Id': id,
-      }),
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        setEntries(entries.filter(entry => entry.C_Id !== id));
-      } else {
-        console.error('Error:', data.error);
-      }
-    })
-    .catch(error => console.error('Error:', error));
+
+  // Function to fetch the uploaded criteria file
+  const fetchCriteriaFile = async () => {
+    try {
+      const response = await axios.get('/Criteria.php');
+      const result = response.data;
+      setCriteriaFile(result.criteria); // Set the retrieved file name/path
+    } catch (error) {
+      console.error('Error fetching criteria file:', error);
+    }
   };
-  
+
+  // Fetch criteria file when the component is mounted
+  useEffect(() => {
+    fetchCriteriaFile();
+  }, []);
 
   return (
     <div>
       <Navbar />
-      <Table className="review_t1" striped bordered hover>
+      <Table striped bordered hover>
         <thead>
           <tr>
-            <th style={{ width: '40%' }}>Add Criteria</th>
-            <th style={{ width: '60%' }}>Criteria Name</th>
+            <th>Upload Criteria (Word File)</th>
+            <th className="view-criteria-header">View Criteria</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>
-              <input
-                type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                placeholder="Enter Review Criteria"
-                className="textbox1"
-              />
-              <button onClick={handleAdd} className="btn_add">
-                Add
+              <div className="upload-box">
+                <div {...getRootProps({ className: 'dropzone' })}>
+                  <input {...getInputProps()} />
+                  {files.length > 0 ? (
+                    <ul>
+                      {files.map((file) => (
+                        <li key={file.path}>{file.path}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>Drag & drop files here, or click to select files.</p>
+                  )}
+                </div>
+              </div>
+              <button type="button" onClick={handleSubmit} className="Submitcriteria">
+                Submit
               </button>
             </td>
             <td>
-              <Table striped bordered hover>
-                <tbody>
-                  {entries.map((entry) => (
-                    <tr key={entry.C_Id}>
-                      <td>{entry.criteria}</td>
-                      <td>
-                        <button
-                          onClick={() => handleRemove(entry.C_Id)}
-                          className="btn_remove"
-                        >
-                          Remove
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
+              <div className="view-box">
+                {criteriaFile ? (
+                  <a href={criteriaFile} target="_blank" rel="noopener noreferrer">
+                    View Criteria Document
+                  </a>
+                ) : (
+                  <p>No criteria file uploaded yet.</p>
+                )}
+              </div>
             </td>
           </tr>
         </tbody>

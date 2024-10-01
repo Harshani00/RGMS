@@ -184,14 +184,14 @@ function Budget() {
     <div>
       <Navbar />
       <div className="label-container1">
-        <Form.Label>1. Upload Previous Budget Revision</Form.Label>
+        <Form.Label>1. Upload Previous Budget</Form.Label>
         {errors.PreviousBudget && <p className="error">{errors.PreviousBudget}</p>}
       </div>
       <Card className="dropzone-container">
         <div {...getRootProps1({ className: 'dropzone' })}>
           <input {...getInputProps1()} />
           <p>Drag & drop some files here, or click to select files</p>
-          <p>Rename Your File Name to ProjectTitle_PerviousBudget_Revision</p>
+          <p>Rename Your File Name to ProjectTitle_PerviousBudget</p>
           <Button variant="primary">Browse Files</Button>
         </div>
         <aside>
@@ -205,14 +205,14 @@ function Budget() {
       </Card>
 
       <div className="label-container2">
-        <Form.Label>2. Upload Current Budget Revision</Form.Label>
+        <Form.Label>2. Upload Current Budget</Form.Label>
         {errors.CurrentBudget && <p className="error">{errors.CurrentBudget}</p>}
       </div>
       <Card className="dropzone-container">
         <div {...getRootProps2({ className: 'dropzone' })}>
           <input {...getInputProps2()} />
           <p>Drag & drop some files here, or click to select files</p>
-          <p>Rename Your File Name to ProjectTitle_CurrentBudget_Revision</p>
+          <p>Rename Your File Name to ProjectTitle_CurrentBudget</p>
           <Button variant="primary">Browse Files</Button>
         </div>
         <aside>

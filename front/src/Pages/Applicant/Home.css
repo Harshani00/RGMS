@@ -29,77 +29,111 @@
   }
    */
 
-/* Styles for the background container */
+/* Background container */
+/* Background container */
 .home-background {
-    background-size: cover; /* Ensures the image covers the entire viewport */
-    background-position: center; /* Centers the image */
-    background-repeat: no-repeat; /* Prevents image repetition */
-    height: 100vh; /* Full viewport height */
-    width: auto; /* Full viewport width */
-    display: flex; /* Flexbox for alignment */
-    justify-content: flex-start; /* Aligns content to the start of the container */
-    align-items: center; /* Vertically centers content */
-    position: relative; /* Allows for absolute positioning of child elements */
-  }
-  
-  /* Container for the content */
-  .home-page-container {
-    position: absolute; /* Allows precise positioning */
-    left: 20px; /* Adjusts horizontal positioning */
-    top: 50%; /* Centers vertically in the container */
-    transform: translateY(-50%); /* Adjusts for true vertical center */
-  }
-  
-  /* Container for the title and buttons */
-  .content-container {
-    display: flex; /* Flexbox for vertical alignment */
-    flex-direction: column; /* Stacks items vertically */
-    align-items: flex-start; /* Aligns items to the start of the container */
-    margin-left: 50%;
-  
-    width: 100%;
-  }
-  
-  /* Styles for the title */
-  .home-title{
-    color: black; /* White text color for contrast */
-    margin-bottom: 20px; /* Spacing below the title */
-    font-size: 3em; /* Adjust font size as needed */
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-weight:bolder;
-    text-align: center; /* Centers the text */
-    
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  display: flex;
+  justify-content: center; /* Centers content horizontally */
+  align-items: center; /* Centers content vertically */
+  position: relative;
+  padding: 0 20px; /* Padding for smaller screen sides */
+}
+
+/* Main container for content */
+.home-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; /* Stacks content vertically */
+  width: 100%;
+  max-width: 1200px; /* Maximum width to keep content from stretching too far */
+  text-align: center;
+}
+
+/* Container for the title and buttons */
+.content-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 800px; /* Constrain the width for readability */
+  padding: 20px;
+  text-align: center; /* Centers text */
+
+}
+
+/* Styles for the title */
+.home-title {
+  color: black;
+  margin-bottom: 20px;
+  font-size: 2.5em; /* Adjust font size for smaller screens */
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-weight: bolder;
+  line-height: 1.2; /* Line height to adjust spacing between "Welcome to" and the system name */
+}
+
+/* Responsive font for system name */
+.system-name {
+  font-size: 2.5rem;
+  font-weight: normal;
+  display: block;
+  margin-top: 0.5rem;
+}
+
+/* Styles for buttons */
+.home-button {
+  margin-bottom: 10px;
+  width: 100px; /* Increase button width */
+  border: none;
+  background-color: #052659;
+  border-color: #052659;
+  color: white;
+  height: 40px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.home-button:focus,
+.home-button:hover {
+  background-color: #005b96;
+  border-color: #005b96;
+  color: white;
+}
+
+/* Container for buttons */
+.button-container {
+  display: flex;
+  gap: 15px;
+  justify-content: center; /* Centers buttons horizontally */
+  margin-top: 20px;
+}
+
+/* Media query for larger screens */
+@media (min-width: 768px) {
+  .home-title {
+    font-size: 3em;
   }
 
   .system-name {
-    font-size: 3rem; /* Slightly smaller size for the system name */
-    font-weight: normal; /* Regular weight for contrast */
-    display: block; /* Makes the system name appear on a new line */
-    margin-top: 0.5rem; /* Adds some space between the two parts */
+    font-size: 2.5rem;
   }
-  
-  /* Styles for buttons */
+}
+
+/* Media query for small screens */
+@media (max-width: 767px) {
+  .home-title {
+    font-size: 2rem;
+  }
+
+  .system-name {
+    font-size: 1.75rem;
+  }
+
   .home-button {
-    margin-bottom: 10px; /* Spacing between buttons */
-    width: 100px; /* Fixed button width */
-    border: none; /* Removes default border */
-    background-color: #052659;
-    border-color: #052659;
-    color: white;
-   
-    height: 40px;
-    font-weight: bold;
-    font-size: 18px;
+    width: 120px; /* Adjust button width */
   }
-  .home-button:focus,
-  .home-button:hover {
-    background-color: #005b96;
-    border-color: #005b96; 
-    color: white;
-  }
-  .button-container
-  {
-    display: flex;
-    gap:15px;
-    margin-left:30%;
-  }
+}
