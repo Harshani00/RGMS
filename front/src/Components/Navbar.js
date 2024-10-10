@@ -89,7 +89,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
-import Logo from '../Assets/Img1.png';
+import Logo from '../Assets/logo2.png';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -125,18 +125,21 @@ const Navbar = () => {
         <div className="nav-center">
           <h1 className="main-title">RESEARCH GRANT MANAGEMENT SYSTEM</h1>
         </div>
-
         <div className="nav-right">
-          <button className="nav-button dashboard-button">
-            <Link to="/dashboard">Dashboard</Link>
-          </button>
-          <button className="nav-button profile-button">
-            <Link to="/profile">{userName}</Link> {/* Show username or "Profile" */}
-          </button>
-          <button className="nav-button logout-button" onClick={handleLogout}>
-            Log Out
-          </button>
-        </div>
+        <Link to="/home" className="nav-link">
+    Home
+  </Link>
+  <Link to="/dashboard" className="nav-link">
+    Dashboard
+  </Link>
+  <Link to="/profile" className="nav-link">
+    {userName}
+  </Link> {/* Show username or "Profile" */}
+  <span className="nav-link logout-link" onClick={handleLogout}>
+    Log Out
+  </span>
+</div>
+
       </div>
     </div>
   );

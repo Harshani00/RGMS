@@ -127,14 +127,14 @@ if (isset($_POST['fundingSource']) && is_array($_POST['fundingSource'])) {
 
 // Insert into other_grants using a prepared statement
 if (isset($_POST['fundingOrganization']) && is_array($_POST['fundingOrganization'])) {
-    $sql_other_grants = "INSERT INTO other_grants (fundingOrganization, fundingAmount, currencyType, app_ID) VALUES (?, ?, ?, ?)";
+    $sql_other_grants = "INSERT INTO other_grants (fundingOrganization, fundingAmount ,app_ID) VALUES (?, ?, ?)";
     $stmt_other_grants = $conn->prepare($sql_other_grants);
 
     foreach ($_POST['fundingOrganization'] as $index => $fundingOrganization) {
         $fundingAmount = $conn->real_escape_string($_POST['fundingAmount'][$index]);
         $currencyType = $conn->real_escape_string($_POST['currencyType'][$index]);
 
-        $stmt_other_grants->bind_param("sssi", $fundingOrganization, $fundingAmount, $currencyType, $app_ID);
+        $stmt_other_grants->bind_param("sssi", $fundingOrganization, $fundingAmount, $app_ID);
         if (!$stmt_other_grants->execute()) {
             echo json_encode([
                 "status" => "error",

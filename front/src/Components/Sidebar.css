@@ -5,14 +5,13 @@
   width: 240px;
   height: 86%;
   margin-left: 2px;
-  background-color: #e5e5e5;
+  background-color: #800000;
   color: black;
   border: 1px solid #ddd;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s ease; /* Smooth transition */
   transform: translateX(0); /* Start visible */
-  border-radius: 20px;
-}
+  border-radius: 20px;}
 
 .sidebar.closed {
   transform: translateX(-100%); /* Hidden */

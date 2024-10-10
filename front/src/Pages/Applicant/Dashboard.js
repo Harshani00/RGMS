@@ -343,173 +343,23 @@
 //   );
 // }
 
-import React from 'react';
-import CustomCard from '../../Components/CustomCard';
-
-import './Dashboard.css';
-import Navbar from '../../Components/Navbar';
-import grantImage from '../../Assets/img12.jpg';
-import budgetImage from '../../Assets/img13.jpg';
-import progressImage from '../../Assets/img14.jpg';
-import AgreementImage from '../../Assets/img16.jpg';
-import CriteriaImage from '../../Assets/img17.jpg';
-import progressImage1 from '../../Assets/img7.png';
-import FinalReport from '../../Assets/img8.png';
-import ApproveBudget from '../../Assets/img9.png';
-import SubmittedGrant from '../../Assets/img10.jpg';
-import { useNavigate } from 'react-router-dom';
-
-
-export default function Dashboard() {
-  
-  const userRole = localStorage.getItem('userRole');
-  
-  // Example usage to avoid warning
-
-  const navigate = useNavigate(); // Initialize useNavigate hook
-
-  const renderCards = () => {
-    switch (userRole) {
-      case 'urc':
-        return (
-          <>
-            <CustomCard 
-              title="View Applications " 
-              linkTo="/viewapplicationd" 
-              imageSrc={grantImage} 
-            />
-            <CustomCard 
-              title="View Criteria" 
-              linkTo="/reviewcriteriad" 
-              imageSrc={CriteriaImage} 
-            />
-            <CustomCard 
-              title="Request Progress Report" 
-              linkTo="/progressreportd"  
-              imageSrc={progressImage}
-            >
-            </CustomCard>
-
-            <CustomCard 
-              title="Approve Budget Revision" 
-              linkTo="/approvebudgetd" 
-              imageSrc={budgetImage} 
-            />
-
-              <CustomCard 
-              title="Request Approvals" 
-              linkTo="/requestapproval" 
-              imageSrc={budgetImage} 
-            />   
-
-             <CustomCard 
-              title="Send Reviewers" 
-              linkTo="/sendreviewers" 
-              imageSrc={budgetImage} 
-            />  
-            
-            <CustomCard 
-              title="Request Agreements" 
-              linkTo="/requestagreement" 
-              imageSrc={AgreementImage} 
-            />   
-          </>
-        );
-      case 'Applicant':
-        return (
-          <>
-            <CustomCard 
-              title="Apply New Grant" 
-              linkTo="/grant" 
-              imageSrc={grantImage} 
-            />
-            <CustomCard 
-              title="Apply Budget Revision" 
-              linkTo="/budget" 
-              imageSrc={budgetImage} 
-            />
-            <CustomCard 
-              title="Submit Progress Report" 
-              imageSrc={progressImage}
-              linkTo="/progressreport" 
-            >
-              
-              
-            </CustomCard>
-
-            <CustomCard 
-              title="View Applyed Grants" 
-              linkTo="/submittedgrant" 
-              imageSrc={SubmittedGrant} 
-            />
-          </>
-        );
-      case 'Admin':
-        return (
-          <>
-            <CustomCard 
-              title="View Applications" 
-              linkTo="/viewapplication" 
-              imageSrc={grantImage} 
-            />
-            <CustomCard 
-              title="Customize Review Criteria (Criteria, Weight, Marks)"  
-              linkTo="/reviewcriteria" 
-              imageSrc={CriteriaImage} 
-            />
-            <CustomCard 
-              title="Order Applications and View" 
-              linkTo="/orderapplication" 
-              imageSrc={SubmittedGrant} 
-            />
-
-            
-             <CustomCard 
-                title="Request Progress Report"  
-                buttonText="View" 
-                linkTo="/requestreport" 
-                imageSrc={FinalReport} 
-              />   
-
-             
-
-              <CustomCard 
-                title="Approve Budget Revision"  
-                buttonText="View" 
-                linkTo="/aprovebudget" 
-                imageSrc={budgetImage} 
-              />        
-          </>
-        );
-      default:
-        return <p>No dashboard available for your role.</p>;
-    }
-  };
-
-  return (
-    <div>
-      <Navbar />
-      <div className="dashboard-container">
-        {renderCards()}
-      </div>
-    </div>
-  );
-}
-
-
 // import React from 'react';
-// import CustomCard from '../Components/CustomCard';
-// import { Dropdown, DropdownButton } from 'react-bootstrap';
+// import CustomCard from '../../Components/CustomCard';
+
 // import './Dashboard.css';
-// import Navbar from '../Components/Navbar';
-// import grantImage from '../Assets/img12.jpg';
-// import budgetImage from '../Assets/img13.jpg';
-// import progressImage from '../Assets/img14.jpg';
-// import progressImage1 from '../Assets/img7.png';
-// import FinalReport from '../Assets/img8.png';
-// import ApproveBudget from '../Assets/img9.png';
-// import SubmittedGrant from '../Assets/img10.jpg';
+// import Navbar from '../../Components/Navbar';
+// import grantImage from '../../Assets/img12.jpg';
+// import budgetImage from '../../Assets/img13.jpg';
+// import progressImage from '../../Assets/img14.jpg';
+// import AgreementImage from '../../Assets/img16.jpg';
+// import CriteriaImage from '../../Assets/img17.jpg';
+// import progressImage1 from '../../Assets/img7.png';
+// import FinalReport from '../../Assets/img8.png';
+// import ApproveBudget from '../../Assets/img9.png';
+// import SubmittedGrant from '../../Assets/img10.jpg';
 // import { useNavigate } from 'react-router-dom';
+// import backgroundImage from '../../Assets/10.jpg';
+
 
 // export default function Dashboard() {
   
@@ -526,47 +376,43 @@ export default function Dashboard() {
 //           <>
 //             <CustomCard 
 //               title="View Applications " 
-//               linkTo="/view-grants" 
+//               linkTo="/viewapplicationd" 
 //               imageSrc={grantImage} 
 //             />
 //             <CustomCard 
 //               title="View Criteria" 
-//               linkTo="/view-budget" 
-//               imageSrc={budgetImage} 
+//               linkTo="/reviewcriteriad" 
+//               imageSrc={CriteriaImage} 
 //             />
 //             <CustomCard 
-//               title="Request Progress Report"  
+//               title="Request Progress Report" 
+//               linkTo="/progressreportd"  
 //               imageSrc={progressImage}
 //             >
-//               <DropdownButton id="dropdown-basic-button" title="Choose Report Type">
-//                 <Dropdown.Item onClick={() => navigate('/submit-mid-year-report')}>Submit Mid-Year Report</Dropdown.Item>
-//                 <Dropdown.Item onClick={() => navigate('/submit-year-end-report')}>Submit Year-End Report</Dropdown.Item>
-//                 <Dropdown.Item onClick={() => navigate('/submit-final-report')}>Submit Final Report</Dropdown.Item>
-//               </DropdownButton>
 //             </CustomCard>
 
 //             <CustomCard 
 //               title="Approve Budget Revision" 
-//               linkTo="/view-budget" 
+//               linkTo="/approvebudgetd" 
 //               imageSrc={budgetImage} 
 //             />
 
 //               <CustomCard 
 //               title="Request Approvals" 
-//               linkTo="/view-budget" 
+//               linkTo="/requestapproval" 
 //               imageSrc={budgetImage} 
 //             />   
 
 //              <CustomCard 
 //               title="Send Reviewers" 
-//               linkTo="/view-budget" 
+//               linkTo="/sendreviewers" 
 //               imageSrc={budgetImage} 
 //             />  
             
 //             <CustomCard 
-//               title="Send Agreements" 
-//               linkTo="/view-budget" 
-//               imageSrc={budgetImage} 
+//               title="Request Agreements" 
+//               linkTo="/requestagreement" 
+//               imageSrc={AgreementImage} 
 //             />   
 //           </>
 //         );
@@ -584,14 +430,12 @@ export default function Dashboard() {
 //               imageSrc={budgetImage} 
 //             />
 //             <CustomCard 
-//               title="Submit Report" 
+//               title="Submit Progress Report" 
 //               imageSrc={progressImage}
+//               linkTo="/progressreport" 
 //             >
-//               <DropdownButton id="dropdown-basic-button" title="Choose Report Type">
-//               <Dropdown.Item onClick={() => navigate('/midreport')}>Submit Mid-Year Report</Dropdown.Item>
-//                 <Dropdown.Item onClick={() => navigate('/endreport')}>Submit Year-End Report</Dropdown.Item>
-//                 <Dropdown.Item onClick={() => navigate('/finalreport')}>Submit Final Report</Dropdown.Item>
-//               </DropdownButton>
+              
+              
 //             </CustomCard>
 
 //             <CustomCard 
@@ -611,20 +455,20 @@ export default function Dashboard() {
 //             />
 //             <CustomCard 
 //               title="Customize Review Criteria (Criteria, Weight, Marks)"  
-//               linkTo="/view-progress-reports" 
-//               imageSrc={progressImage} 
+//               linkTo="/reviewcriteria" 
+//               imageSrc={CriteriaImage} 
 //             />
 //             <CustomCard 
 //               title="Order Applications and View" 
-//               linkTo="/view-final-reports" 
-//               imageSrc={progressImage} 
+//               linkTo="/orderapplication" 
+//               imageSrc={SubmittedGrant} 
 //             />
 
             
 //              <CustomCard 
 //                 title="Request Progress Report"  
 //                 buttonText="View" 
-//                 linkTo="/view-final-reports" 
+//                 linkTo="/requestreport" 
 //                 imageSrc={FinalReport} 
 //               />   
 
@@ -633,8 +477,8 @@ export default function Dashboard() {
 //               <CustomCard 
 //                 title="Approve Budget Revision"  
 //                 buttonText="View" 
-//                 linkTo="/view-final-reports" 
-//                 imageSrc={ApproveBudget} 
+//                 linkTo="/aprovebudget" 
+//                 imageSrc={budgetImage} 
 //               />        
 //           </>
 //         );
@@ -646,9 +490,291 @@ export default function Dashboard() {
 //   return (
 //     <div>
 //       <Navbar />
+//       <div className="dashboard-container" style={{ backgroundImage: `url(${backgroundImage})` }}>
+//         {renderCards()}
+//       </div>
+//     </div>
+//   );
+// }
+
+// import React from 'react';
+// import CustomCard from '../../Components/CustomCard';
+// import './Dashboard.css';
+// import Navbar from '../../Components/Navbar';
+// import grantImage from '../../Assets/img12.jpg';
+// import budgetImage from '../../Assets/img13.jpg';
+// import progressImage from '../../Assets/img14.jpg';
+// import AgreementImage from '../../Assets/img16.jpg';
+// import CriteriaImage from '../../Assets/img17.jpg';
+// import progressImage1 from '../../Assets/img7.png';
+// import FinalReport from '../../Assets/img8.png';
+// import ApproveBudget from '../../Assets/img9.png';
+// import SubmittedGrant from '../../Assets/img10.jpg';
+// import { useNavigate } from 'react-router-dom';
+// import backgroundImage from '../../Assets/10.jpg';
+
+// export default function Dashboard() {
+  
+//   const userRole = localStorage.getItem('userRole');
+//   const navigate = useNavigate(); // Initialize useNavigate hook
+
+//   const renderCards = () => {
+//     switch (userRole) {
+//       case 'urc':
+//         return (
+//           <>
+//             <CustomCard 
+//               title="View Applications " 
+//               linkTo="/viewapplicationd" 
+//               imageSrc={grantImage} 
+//             />
+//             <CustomCard 
+//               title="View Criteria" 
+//               linkTo="/reviewcriteriad" 
+//               imageSrc={CriteriaImage} 
+//             />
+//             <CustomCard 
+//               title="Request Progress Report" 
+//               linkTo="/progressreportd"  
+//               imageSrc={progressImage}
+//             />
+//             <CustomCard 
+//               title="Approve Budget Revision" 
+//               linkTo="/approvebudgetd" 
+//               imageSrc={budgetImage} 
+//             />
+//             <CustomCard 
+//               title="Request Approvals" 
+//               linkTo="/requestapproval" 
+//               imageSrc={budgetImage} 
+//             />   
+//             <CustomCard 
+//               title="Send Reviewers" 
+//               linkTo="/sendreviewers" 
+//               imageSrc={budgetImage} 
+//             />  
+//             <CustomCard 
+//               title="Request Agreements" 
+//               linkTo="/requestagreement" 
+//               imageSrc={AgreementImage} 
+//             />   
+//           </>
+//         );
+//       case 'Applicant':
+//         return (
+//           <>
+//             <CustomCard 
+//               title="Apply New Grant" 
+//               linkTo="/grant" 
+//              // imageSrc={grantImage} 
+//             />
+//             <CustomCard 
+//               title="Apply Budget Revision" 
+//               linkTo="/budget" 
+//              // imageSrc={budgetImage} 
+//             />
+//             <CustomCard 
+//               title="Submit Progress Report" 
+//               //imageSrc={progressImage}
+//               linkTo="/progressreport" 
+//             />
+//             <CustomCard 
+//               title="View Applied Grants" 
+//               linkTo="/submittedgrant" 
+//               //imageSrc={SubmittedGrant} 
+//             />
+//           </>
+//         );
+//       case 'Admin':
+//         return (
+//           <>
+//             <CustomCard 
+//               title="View Applications" 
+//               linkTo="/viewapplication" 
+//               imageSrc={grantImage} 
+//             />
+//             <CustomCard 
+//               title="Customize Review Criteria (Criteria, Weight, Marks)"  
+//               linkTo="/reviewcriteria" 
+//               imageSrc={CriteriaImage} 
+//             />
+//             <CustomCard 
+//               title="Order Applications and View" 
+//               linkTo="/orderapplication" 
+//               imageSrc={SubmittedGrant} 
+//             />
+//             <CustomCard 
+//               title="Request Progress Report"  
+//               linkTo="/requestreport" 
+//               imageSrc={FinalReport} 
+//             />
+//             <CustomCard 
+//               title="Approve Budget Revision"  
+//               linkTo="/approvebudget" 
+//               imageSrc={budgetImage} 
+//             />        
+//           </>
+//         );
+//       default:
+//         return <p>No dashboard available for your role.</p>;
+//     }
+//   };
+
+//   return (
+//     <div className="dashboard-background" style={{ backgroundImage: `url(${backgroundImage})` }}> {/* Add this wrapper */}
+//       <Navbar />
 //       <div className="dashboard-container">
 //         {renderCards()}
 //       </div>
 //     </div>
 //   );
 // }
+
+
+import React from 'react';
+import CustomCard from '../../Components/CustomCard';
+import './Dashboard.css';
+import Navbar from '../../Components/Navbar';
+// import grantImage from '../../Assets/img12.jpg';
+// import budgetImage from '../../Assets/img13.jpg';
+// import progressImage from '../../Assets/img14.jpg';
+// import AgreementImage from '../../Assets/img16.jpg';
+// import CriteriaImage from '../../Assets/img17.jpg';
+// import progressImage1 from '../../Assets/img7.png';
+// import FinalReport from '../../Assets/img8.png';
+// import ApproveBudget from '../../Assets/img9.png';
+// import SubmittedGrant from '../../Assets/img10.jpg';
+import { useNavigate } from 'react-router-dom';
+import backgroundImage from '../../Assets/10.jpg';
+import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+import MoneyIcon from '@mui/icons-material/Money';
+import AssessmentIcon from '@mui/icons-material/Assessment';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+
+export default function Dashboard() {
+  
+  const userRole = localStorage.getItem('userRole');
+  const navigate = useNavigate();
+
+  const renderCards = () => {
+    switch (userRole) {
+      case 'urc':
+        return (
+          <>
+            <CustomCard 
+              title="View Applications" 
+              linkTo="/viewapplicationd" 
+              //imageSrc={grantImage} 
+            />
+            <CustomCard 
+              title="View Criteria" 
+              linkTo="/reviewcriteriad" 
+              //imageSrc={CriteriaImage} 
+            />
+            <CustomCard 
+              title="Request Progress Report" 
+              linkTo="/progressreportd"  
+              //imageSrc={progressImage}
+            />
+            <CustomCard 
+              title="Approve Budget Revision" 
+              linkTo="/approvebudgetd" 
+              //imageSrc={budgetImage} 
+            />
+            <CustomCard 
+              title="Request Approvals" 
+              linkTo="/requestapproval" 
+              //imageSrc={budgetImage} 
+            />   
+            <CustomCard 
+              title="Send Reviewers" 
+              linkTo="/sendreviewers" 
+              //imageSrc={budgetImage} 
+            />  
+            <CustomCard 
+              title="Request Agreements" 
+              linkTo="/requestagreement" 
+              //imageSrc={AgreementImage} 
+            />   
+          </>
+        );
+      case 'Applicant':
+        return (
+          <>
+              <CustomCard 
+              title="Apply New Grant" 
+              linkTo="/grant"
+              icon={<LibraryBooksIcon />}  // Render icon as a JSX element
+              // imageSrc={grantImage} 
+            />
+            <CustomCard 
+              title="Apply Budget Revision" 
+              linkTo="/budget" 
+              icon={<MoneyIcon/>}
+              // imageSrc={budgetImage} 
+            />
+            <CustomCard 
+              title="Submit Progress Report" 
+              linkTo="/progressreport" 
+              icon={<AssessmentIcon/>}
+              // imageSrc={progressImage} 
+            />
+            <CustomCard 
+              title="View Applied Grants" 
+              linkTo="/submittedgrant" 
+              icon={<MenuBookIcon/>}
+             // imageSrc={SubmittedGrant} 
+            />
+          
+          </>
+        );
+      case 'Admin':
+        return (
+          <>
+            <CustomCard 
+              title="View Applications" 
+              linkTo="/viewapplication" 
+              //imageSrc={grantImage}
+              //className="transparent-image"  
+            />
+            <CustomCard 
+              title="Customize Review Criteria (Criteria, Weight, Marks)"  
+              linkTo="/reviewcriteria" 
+              //imageSrc={CriteriaImage} 
+              //className="transparent-image" 
+            />
+            <CustomCard 
+              title="Order Applications and View" 
+              linkTo="/orderapplication" 
+              //imageSrc={SubmittedGrant} 
+              //className="transparent-image" 
+            />
+            <CustomCard 
+              title="Request Progress Report"  
+              linkTo="/requestreport" 
+              //imageSrc={FinalReport} 
+              //className="transparent-image" 
+            />
+            <CustomCard 
+              title="Approve Budget Revision"  
+              linkTo="/aprovebudget" 
+              //imageSrc={budgetImage}
+              //className="transparent-image"  
+            />        
+          </>
+        );
+      default:
+        return <p>No dashboard available for your role.</p>;
+    }
+  };
+
+  return (
+    <div className="dashboard-background" style={{ backgroundImage: `url(${backgroundImage})` }}> {/* Add this wrapper */}
+      <Navbar />
+      <div className="dashboard-container">
+        {renderCards()}
+      </div>
+    </div>
+  );
+}
+

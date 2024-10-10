@@ -58,6 +58,7 @@ import { FormProvider } from './Pages/Applicant/MainForm'; // Import FormProvide
 
 import Profile from './Pages/AllUsers/Profile';
 
+
  // Applicante Pages
 import Dashboard from "./Pages/Applicant/Dashboard";
 import Grant from './Pages/Applicant/Grant';
@@ -95,6 +96,10 @@ import ApproveBudgetD from './Pages/Director/ApproveBudgetD';
 import SendReviewers from './Pages/Director/SendReviewers';
 import RequestApproval from './Pages/Director/RequestApproval';
 import ReviewCriteriaD from './Pages/Director/ReviewCriteriaD';
+
+
+import ShortlistedApplication from './Pages/New/ShortlistedApplication'; 
+import Test1 from './Pages/New/Test1';
 
 
 
@@ -142,6 +147,12 @@ class App extends React.Component {
             <Route path="/sendreviewers" element={<SendReviewers />} />
             <Route path="/requestapproval" element={<RequestApproval />} />
             <Route path="/reviewcriteriad" element={<ReviewCriteriaD />} />
+
+
+            <Route path="/shortlistedapplication" element={<ShortlistedApplication />} />
+            <Route path="/test1" element={<Test1 />} />
+
+     
             
 
 

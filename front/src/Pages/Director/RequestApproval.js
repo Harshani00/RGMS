@@ -303,6 +303,7 @@ export default function RequestApproval() {
   return (
     <div>
       <Navbar />
+      <h1 className="page-title">Request Approval</h1>
       <Table striped bordered hover>
         <thead>
           <th colSpan={6} className='tittle'>

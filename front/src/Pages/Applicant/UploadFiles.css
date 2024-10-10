@@ -45,7 +45,8 @@
     margin-top: 20px;
   }
   
-  .dropzone-container button:focus
+  .dropzone-container button:focus,
+  .dropzone-container button:hover
    {
     background-color: #005b96;
     border-color: #005b96; 

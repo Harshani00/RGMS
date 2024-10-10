@@ -6,12 +6,13 @@
   height: 200px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start; /* Move content slightly to the top */
+  flex-direction: column; /* Stack icon and title vertically */
   position: relative;
   text-align: center;
   overflow: hidden; /* Ensures content doesn’t overflow */
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transition effects */
-
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding-top: 20px; /* Adjust padding to control vertical positioning */
 }
 
 .custom-card:hover {
@@ -19,50 +20,55 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Add shadow on hover */
 }
 
-.card-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+.custom-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.custom-card-header {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.2); /* Semi-transparent overlay */
-  transition: opacity 0.3s ease; /* Transition for overlay */
+  width: 100%; /* Ensure header takes full width */
+
 }
 
-.custom-card:hover .card-overlay {
-  opacity: 1; /* Ensure overlay is fully visible on hover */
+.custom-card-image {
+  max-width: 100%;
+  height: auto;
 }
 
-.card-title {
-  margin-bottom: 10px;
-  font-size: 1.6rem;
+.custom-card-content {
+  padding: 15px;
+  color: #000;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Align icon and title in the center */
+  margin-bottom: 30px;
+}
+
+.icon-container {
+ 
+  font-size: 100%; /* Adjust this value to increase or decrease icon size */
+  color: #800000;
+  margin-bottom: 5px; /* Space between icon and title */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto; /* Auto width to match the icon size */
+  height: auto; /* Auto height to match the icon size */
+}
+
+.custom-card-title {
+  font-size: 22px;
+  color: black !important; /* Force black text */
+  font-weight: bold;
+  z-index: 999; /* Ensure it's not hidden behind other elements */
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
- 
- 
 }
 
 
-.card-hover-text {
-  display: none;
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
- 
-  
-  padding: 10px;
-  border-radius: 5px;
-  max-width: 90%;
-
-  
-  
-}
-
-.custom-card:hover .card-hover-text {
-  display: block; /* Show hover text on hover */
-}
 

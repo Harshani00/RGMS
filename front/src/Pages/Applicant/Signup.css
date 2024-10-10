@@ -1,38 +1,31 @@
 .access-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    overflow: auto;
-    background-size: cover; 
-   background-repeat: no-repeat; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
   
-}
-
-.access-title {
-    margin-bottom: 20px;
-    font-size: 30px;
-    font-weight: bold;
-    color: #333;
-    margin-left: 40%;
+  background-size: cover; /* Makes the image cover the entire screen */
+  background-position: center; /* Centers the image */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
 }
 
 .access-container1 {
+  background-color: rgba(255, 255, 255, 0.6); /* Adds a semi-transparent background to the form */
+  padding: 20px;
   border-radius: 10px;
-  padding: 50px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-  overflow: hidden;
-  width: 80%;
-  max-width: 480px;
-  margin:auto;
-  color:black;
-  background: linear-gradient(135deg, rgba(4, 5, 100, 0.2) 0%, rgba(5, 38, 89, 0.5) 10%, rgba(5, 38, 89, 0.3) 40%, rgba(5, 38, 89, 0.2) 70%, rgba(5, 38, 89, 0.1) 90%, rgba(5, 38, 89, 0.05) 100%);
-
-
-
- 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Adds a shadow to the form container */
+  max-width: 420px;
+  width: 100%;
 }
+
+.access-title {
+  margin-bottom: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+  color: #333;
+}
+
 
 .access-container1 .form-group {
     margin-bottom: 15px;

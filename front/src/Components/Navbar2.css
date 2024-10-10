@@ -1,3 +1,4 @@
+
 /* Center the Navbar items */
 .navbar-custom {
   display: flex;
@@ -15,14 +16,13 @@
 
 .navbar-custom .nav-link:hover,
 .navbar-custom .nav-item a:hover {
-  color: #555; /* Optional: Change color on hover */
+  color: black; /* Optional: Change color on hover */
   text-decoration: none; /* Keep underline removed on hover */
 }
 
 .nav-link.active {
-  background-color: #555; /* Highlight color */
-  color: white !important; /* Text color */
+  background-color: #ffea61; /* Highlight color */
+  color: black !important; /* Text color */
   font-weight: bold; /* Bold text */
   border-radius: 8px;
 }
-

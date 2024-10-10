@@ -9,6 +9,7 @@ import Sidebar from '../../Components/Sidebar';
 import { useForm } from './MainForm'; // Import useForm from your context
 import './Grant.css'; // Import the CSS file
 
+
 export default function Grant()  {
   const { formData, handleFormDataChange, updateCompletionStatus } = useForm(); // Use form context
   const [errors, setErrors] = useState({});
@@ -105,7 +106,7 @@ export default function Grant()  {
   };
 
   return (
-    <div>
+    <div >
       <Navbar />
       <Navbar2 />
       <Sidebar />

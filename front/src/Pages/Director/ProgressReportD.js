@@ -178,6 +178,7 @@ export default function ProgressReportD() {
   return (
     <div>
       <Navbar />
+      <h1 className="page-title">Request Progress Report</h1>
       <Table striped bordered hover>
         <thead>
           <tr>

@@ -1,305 +1,87 @@
 
-// import React, { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import Button from 'react-bootstrap/Button';
-// import Col from 'react-bootstrap/Col';
-// import Form from 'react-bootstrap/Form';
-// import Row from 'react-bootstrap/Row';
-// import './Grant.css'; // Import the CSS file
-// import Navbar from '../Components/Navbar';
-// import Navbar2 from '../Components/Navbar2';
-// import Sidebar from '../Components/Sidebar';
-// import { useForm } from './MainForm';
-
-// export default function Grant() {
-//   const { formData, handleFormDataChange } = useForm(); // Destructure formData and handleFormDataChange from useForm
-//   const [grantRows, setGrantRows] = useState([
-//     { fundingSource: '', duration: '', currency: '', amount: '' },
-//   ]);
-
-//   const navigate = useNavigate(); // Initialize useNavigate
-
-//   // Function to add a new row to the grant table
-//   const handleAddRow = () => {
-//     setGrantRows([...grantRows, { fundingSource: '', duration: '', currency: '', amount: '' }]);
-//   };
-
-//   // Function to handle input changes in the dynamic rows
-//   const handleChange = (index, event) => {
-//     const { name, value } = event.target;
-//     const newGrantRows = grantRows.map((row, i) => {
-//       if (i === index) {
-//         return { ...row, [name]: value };
-//       }
-//       return row;
-//     });
-//     setGrantRows(newGrantRows);
-//     handleFormDataChange({ [name]: value }); // Update the central form data
-//   };
-
-//   // Function to navigate to the next page
-//   const handleNext = () => {
-//     navigate('/supervisors'); // Navigate to Supervisors page
-//   };
-
-//   // Function to navigate to the previous page
-//   const handlePrevious = () => {
-//     navigate('/grant'); // Update this path to the correct previous page
-//   };
-
-//   return (
-//     <div>
-//       <Navbar />
-//       <Navbar2 />
-//       <Sidebar />
-
-//       <div className="form-container">
-//         <Form>
-//           <Row className="mb-3">
-//             <Form.Label>1. Project Title</Form.Label>
-//             <Form.Group as={Col} controlId="formGridTitle">
-//               <Form.Control
-//                 as="textarea"
-//                 rows={3}
-//                 placeholder=""
-//                 name="projectTitle"
-//                 value={formData.projectTitle || ''}
-//                 onChange={(e) => handleFormDataChange({ projectTitle: e.target.value })}
-//               />
-//             </Form.Group>
-//           </Row>
-
-//           <Row className="mb-3">
-//             <Form.Label>2. Please list any previous university or other grants you have received.</Form.Label>
-//           </Row>
-
-//           {/* Column headers */}
-//           <Row className="mb-3">
-//             <Col><Form.Label>Funding Source</Form.Label></Col>
-//             <Col><Form.Label>Duration</Form.Label></Col>
-//             <Col><Form.Label>Unit of Currency</Form.Label></Col>
-//             <Col><Form.Label>Amount (Numbers only)</Form.Label></Col>
-//           </Row>
-
-//           {/* Dynamically generated rows */}
-//           {grantRows.map((row, index) => (
-//             <Row className="mb-3" key={index}>
-//               <Col>
-//                 <Form.Control
-//                   name="fundingSource"
-//                   value={row.fundingSource}
-//                   onChange={(e) => handleChange(index, e)}
-//                   placeholder=""
-//                 />
-//               </Col>
-//               <Col>
-//                 <Form.Control
-//                   name="durationperiod"
-//                   value={row.durationperiod}
-//                   onChange={(e) => handleChange(index, e)}
-//                   placeholder="Ex: 01/01/2012-31/12/2012"
-//                 />
-//               </Col>
-//               <Col>
-//                 <Form.Control
-//                   name="currency"
-//                   value={row.currency}
-//                   onChange={(e) => handleChange(index, e)}
-//                   placeholder=""
-//                 />
-//               </Col>
-//               <Col>
-//                 <Form.Control
-//                   name="amount"
-//                   value={row.amount}
-//                   onChange={(e) => handleChange(index, e)}
-//                   placeholder=""
-//                 />
-//               </Col>
-//             </Row>
-//           ))}
-
-//           <Button variant="secondary" size="sm" onClick={handleAddRow} className="mb-3">
-//             Add Row
-//           </Button>
-
-//           <Row className="mb-3">
-//             <Form.Label>3. Are you currently involved in a project?</Form.Label>
-//             <Form.Group as={Col} controlId="formGridProject">
-//               <Row>
-//                 <Col xs={6}>
-//                   <Form.Check
-//                     type="radio"
-//                     label="Yes"
-//                     name="projectInvolved"
-//                     value="yes"
-//                     checked={formData.projectInvolved === 'yes'}
-//                     onChange={(e) => handleFormDataChange({ projectInvolved: e.target.value })}
-//                   />
-//                 </Col>
-//                 <Col xs={6}>
-//                   <Form.Check
-//                     type="radio"
-//                     label="No"
-//                     name="projectInvolved"
-//                     value="no"
-//                     checked={formData.projectInvolved === 'no'}
-//                     onChange={(e) => handleFormDataChange({ projectInvolved: e.target.value })}
-//                   />
-//                 </Col>
-//               </Row>
-//             </Form.Group>
-//           </Row>
-
-//           <Row className="mb-3">
-//             <Form.Label>4. Please list 3 of your recent publications (provide links related to the publications).</Form.Label>
-//             <Form.Group as={Col} controlId="formGridPublications">
-//               <Form.Label>Link 1</Form.Label>
-//               <Form.Control
-//                 placeholder=""
-//                 name="publication1"
-//                 value={formData.publication1 || ''}
-//                 onChange={(e) => handleFormDataChange({ publication1: e.target.value })}
-//               />
-//               <Form.Label>Link 2</Form.Label>
-//               <Form.Control
-//                 placeholder=""
-//                 name="publication2"
-//                 value={formData.publication2 || ''}
-//                 onChange={(e) => handleFormDataChange({ publication2: e.target.value })}
-//               />
-//               <Form.Label>Link 3</Form.Label>
-//               <Form.Control
-//                 placeholder=""
-//                 name="publication3"
-//                 value={formData.publication3 || ''}
-//                 onChange={(e) => handleFormDataChange({ publication3: e.target.value })}
-//               />
-//             </Form.Group>
-//           </Row>
-
-//           <Row className="mb-3">
-//             <Form.Label>5. Have received any grants from outside for this/similar project?</Form.Label>
-//             <Form.Group as={Col} controlId="formGridProject">
-//               <Row>
-//                 <Col xs={6}>
-//                   <Form.Check
-//                     type="radio"
-//                     label="Yes"
-//                     name="outsidegrants"
-//                     value="yes"
-//                     checked={formData.outsidegrants === 'yes'}
-//                     onChange={(e) => handleFormDataChange({ outsidegrants: e.target.value })}
-//                   />
-//                 </Col>
-//                 <Col xs={6}>
-//                   <Form.Check
-//                     type="radio"
-//                     label="No"
-//                     name="outsidegrants"
-//                     value="no"
-//                     checked={formData.outsidegrants === 'no'}
-//                     onChange={(e) => handleFormDataChange({ outsidegrants: e.target.value })}
-//                   />
-//                 </Col>
-//               </Row>
-//             </Form.Group>
-//           </Row>
-
-        
-//           {/* Column headers */}
-//           <Row className="mb-3">
-//             <Col><Form.Label>Funding Organization</Form.Label></Col>
-//             <Col><Form.Label>Amount</Form.Label></Col>
-            
-//           </Row>
-
-//           {/* Dynamically generated rows */}
-//           {grantRows.map((row, index) => (
-//             <Row className="mb-3" key={index}>
-//               <Col>
-//                 <Form.Control
-//                   name="fundingOrganization"
-//                   value={row.fundingOrganization}
-//                   onChange={(e) => handleChange(index, e)}
-//                   placeholder=""
-//                 />
-//               </Col>
-//               <Col>
-//                 <Form.Control
-//                   name="fundingAmount"
-//                   value={row.fundingAmount}
-//                   onChange={(e) => handleChange(index, e)}
-//                   placeholder="LKR"
-//                 />
-//               </Col>
-//             </Row>
-//           ))}
-//           <Row className="mb-3">
-//             <Form.Label>6. List the equipment/resources/facilities available in your Department/Faculty for your research </Form.Label>
-//             <Form.Group as={Col} controlId="formGridTitle">
-//               <Form.Control
-//                 as="textarea"
-//                 rows={3}
-//                 placeholder=""
-//                 name="researchFacilities"
-//                 value={formData.researchFacilities || ''}
-//                 onChange={(e) => handleFormDataChange({ researchFacilities: e.target.value })}
-//               />
-//             </Form.Group>
-//           </Row>
-
-
-//           <Button variant="primary" type="submit" className='savebutton'>
-//             Save
-//           </Button>
-//           <Button variant="primary" onClick={handlePrevious} className='previousbutton'>Previous</Button>
-//           <Button variant="primary" onClick={handleNext} className='nextbutton'>Next</Button>
-//         </Form>
-//       </div>
-//     </div>
-//   );
-// }
-
-
-// import React, { useState } from 'react';
+// import React, { useState, useEffect } from 'react';
 // import { useNavigate } from 'react-router-dom';
 // import Button from 'react-bootstrap/Button';
 // import Col from 'react-bootstrap/Col';
 // import Form from 'react-bootstrap/Form';
 // import Row from 'react-bootstrap/Row';
 // import axios from 'axios';
-// import './Grant.css'; // Import the CSS file
+// import { useForm } from './MainForm'; // Ensure useForm hook provides form context
 // import Navbar from '../../Components/Navbar';
 // import Navbar2 from '../../Components/Navbar2';
 // import Sidebar from '../../Components/Sidebar';
-// import { useForm } from './MainForm';
+// import './Grant.css'; // Import the CSS file
 
 // export default function Grant() {
-//   const { formData, handleFormDataChange, updateCompletionStatus } = useForm(); // Destructure formData and handleFormDataChange from useForm
-//   const [grantRows, setGrantRows] = useState([
-//     { fundingSource: '', duration: '', currency: '', amount: '' },
-//   ]);
+//   const { formData, handleFormDataChange, updateCompletionStatus,resetFormData  } = useForm();  // Use form context
+//   const [grantRows, setGrantRows] = useState(
+//     formData.grantRows || [{ fundingSource: '', durationperiod: '', currency: '', amount: '' }]
+//   );
+//   const [fundingRows, setFundingRows] = useState(
+//     formData.fundingRows || [{ fundingOrganization: '', fundingAmount: '' }]
+//   );
+  
+//   const navigate = useNavigate();
 //   const [submitted, setSubmitted] = useState(false); // Track form submission
+//   const [isSubmitted, setIsSubmitted] = useState(false); 
 //   const [errors, setErrors] = useState({});
-//   const navigate = useNavigate(); // Initialize useNavigate
 
-//   // Function to add a new row to the grant table
-//   const handleAddRow = () => {
-//     setGrantRows([...grantRows, { fundingSource: '', duration: '', currency: '', amount: '' }]);
+//   // Sync state with form data when it changes
+//   useEffect(() => {
+//     if (formData.grantRows) {
+//       setGrantRows(formData.grantRows);
+//     }
+//     if (formData.fundingRows) {
+//       setFundingRows(formData.fundingRows);
+//     }
+//   }, [formData.grantRows, formData.fundingRows]);
+
+//   // Handle changes in grant fields
+//   const handleGrantChange = (index, event) => {
+//     const { name, value } = event.target;
+//     const updatedGrantRows = [...grantRows];
+//     updatedGrantRows[index][name] = value;
+//     setGrantRows(updatedGrantRows);
+//     handleFormDataChange({ grantRows: updatedGrantRows }); // Update global form data
 //   };
 
-//   // Function to handle input changes in the dynamic rows
-//   const handleChange = (index, event) => {
+//   // Handle adding a new grant row
+//   const handleAddGrantRow = () => {
+//     const newRow = { fundingSource: '', durationperiod: '', currency: '', amount: '' };
+//     setGrantRows([...grantRows, newRow]);
+//     handleFormDataChange({ grantRows: [...grantRows, newRow] }); // Update global form data
+//   };
+
+//   // Handle removing a grant row
+//   const handleRemoveGrantRow = (index) => {
+//     const updatedGrantRows = [...grantRows];
+//     updatedGrantRows.splice(index, 1);
+//     setGrantRows(updatedGrantRows);
+//     handleFormDataChange({ grantRows: updatedGrantRows }); // Update global form data
+//   };
+
+//   // Handle changes in funding fields
+//   const handleFundingChange = (index, event) => {
 //     const { name, value } = event.target;
-//     const newGrantRows = grantRows.map((row, i) => {
-//       if (i === index) {
-//         return { ...row, [name]: value };
-//       }
-//       return row;
-//     });
-//     setGrantRows(newGrantRows);
-//     handleFormDataChange({ [`grantRow${index}_${name}`]: value }); // Update the central form data
+//     const updatedFundingRows = [...fundingRows];
+//     updatedFundingRows[index][name] = value;
+//     setFundingRows(updatedFundingRows);
+//     handleFormDataChange({ fundingRows: updatedFundingRows }); // Update global form data
+//   };
+
+//   // Handle adding a new funding row
+//   const handleAddFundingRow = () => {
+//     const newRow = { fundingOrganization: '', fundingAmount: '' };
+//     setFundingRows([...fundingRows, newRow]);
+//     handleFormDataChange({ fundingRows: [...fundingRows, newRow] }); // Update global form data
+//   };
+
+//   // Handle removing a funding row
+//   const handleRemoveFundingRow = (index) => {
+//     const updatedFundingRows = [...fundingRows];
+//     updatedFundingRows.splice(index, 1);
+//     setFundingRows(updatedFundingRows);
+//     handleFormDataChange({ fundingRows: updatedFundingRows }); // Update global form data
 //   };
 
 //   // Function to validate the form fields
@@ -316,344 +98,258 @@
 //   };
 
 //   // Function to handle form submission
+//   // const handleSubmit = async (event) => {
+//   //   event.preventDefault();
+
+//   //   if (validate()) {
+//   //     try {
+//   //       const response = await axios.post('/Grant.php', formData, {
+//   //         headers: {
+//   //           'Content-Type': 'application/x-www-form-urlencoded',
+//   //         },
+//   //         transformRequest: [(data) => {
+//   //           const params = new URLSearchParams();
+//   //           for (const key in data) {
+//   //             params.append(key, data[key]);
+//   //           }
+//   //           return params;
+//   //         }],
+//   //       });
+//   //       alert(response.data);
+//   //       setSubmitted(true); // Set form as submitted
+//   //     } catch (error) {
+//   //       alert('There was an error submitting the form. Please try again.');
+//   //     }
+//   //   }
+//   // };
+//   // Updated code for handleSubmit to explicitly send grantRows
 //   const handleSubmit = async (event) => {
 //     event.preventDefault();
-
+  
 //     if (validate()) {
+//       // Log the form data to the console
+//       console.log({
+//         ...formData,
+//         grantRows: grantRows // This will show the entire form data including grantRows
+//       });
+  
 //       try {
-//         const response = await axios.post('/Grant.php', formData, {
+//         const response = await axios.post('/Grant.php', { 
+//           ...formData, // Spread other form data
+//           grantRows: grantRows // Explicitly send the grant rows
+//         }, {
 //           headers: {
 //             'Content-Type': 'application/x-www-form-urlencoded',
 //           },
 //           transformRequest: [(data) => {
 //             const params = new URLSearchParams();
 //             for (const key in data) {
-//               params.append(key, data[key]);
+//               if (Array.isArray(data[key])) {
+//                 // Handle array data (grantRows)
+//                 data[key].forEach((item, index) => {
+//                   for (const subKey in item) {
+//                     params.append(`${key}[${index}][${subKey}]`, item[subKey]);
+//                   }
+//                 });
+//               } else {
+//                 params.append(key, data[key]);
+//               }
 //             }
 //             return params;
 //           }],
 //         });
 //         alert(response.data);
-//         setSubmitted(true); // Set form as submitted
+//         setSubmitted(true);
 //       } catch (error) {
 //         alert('There was an error submitting the form. Please try again.');
 //       }
 //     }
 //   };
+  
+  
 
-//   // Function to navigate to the next page
- 
-//   const handleNext = () => {
-//     if (validate()) {
-//       updateCompletionStatus('project', true);
-//       navigate('/supervisors'); // Update this path to the correct previous page
-//     }else {
-//       alert('Missing Fields Required.');
+//   const handleSave = async () => {
+//     if (isSubmitted) {
+//       alert('Form data has already been saved.');
+//       return; // Prevent further submissions
+//     }
+  
+//     try {
+//       // Save form data to SaveForm.php
+//       const response = await axios.post('/SaveForm.php', formData, {
+//         headers: {
+//           'Content-Type': 'application/x-www-form-urlencoded',
+//         },
+//         transformRequest: [(data) => {
+//           const params = new URLSearchParams();
+//           for (const key in data) {
+//             params.append(key, data[key]);
+//           }
+//           return params;
+//         }],
+//       });
+  
+//       // Check if the form data was saved successfully
+//       if (response.data.status === 'success') {
+//         setIsSubmitted(true); // Mark as submitted
+//         alert('Form saved successfully.');
+  
+//         // Now proceed with file upload to FileUploads.php
+//         const fileUploadResponse = await axios.post('/SaveFileUploads.php', formData, {
+//           headers: {
+//             'Content-Type': 'multipart/form-data', // Set content type to multipart/form-data for file upload
+//           },
+//         });
+  
+//         console.log(fileUploadResponse.data); // Log the file upload response for debugging
+  
+//         // Handle successful file upload
+//         if (fileUploadResponse.data.status === 'success') {
+//           alert('Files uploaded successfully.');
+  
+//           // Clear form data and reset form state
+         
+//           localStorage.removeItem('formData'); // Optional: Clear any saved form data in localStorage
+//           resetFormData();
+  
+//           // Navigate to the submitted grants page
+//           navigate('/submittedgrant'); // Use navigate instead of window.location.href
+//         } else {
+//           alert(fileUploadResponse.data.message); // Handle file upload failure
+//         }
+//       } else {
+//         alert(response.data.message); // Handle form save failure
+//       }
+//     } catch (error) {
+//       console.error('Error details:', error);
+//       alert('There was an error saving the data or uploading files. Please try again.');
 //     }
 //   };
   
+//  // Function to navigate to the previous page
+//  const handlePrevious = () => {
+//   navigate('/grant'); // Update this path to the correct previous page
+// };
+//   // Handle Next button click
+//  // Function to navigate to the next page
+//  const handleNext = async () => {
+//   if (validate()) {
+//     updateCompletionStatus('project', true);
+//     navigate('/supervisors'); // Navigate to the uploads page
+//   }else {
+//     alert('Missing Fields Required.');
+//   }
+// };
 
-//   // Function to navigate to the previous page
-//   const handlePrevious = () => {
-//     navigate('/grant'); // Update this path to the correct previous page
-//   };
-
-//   return (
-//     <div>
-//       <Navbar />
-//       <Navbar2 />
-//       <Sidebar />
-
-//       <div className="form-container">
-//       {submitted && (
-//           <div className="alert alert-success" role="alert">
-//             Form submitted successfully!
-//           </div>
-//         )}
-//         <Form onSubmit={handleSubmit}>
-//           <Row className="mb-3">
-//             <Form.Label>1. Project Title</Form.Label>
-//             <Form.Group as={Col} controlId="formGridTitle">
-//               <Form.Control
-//                 as="textarea"
-//                 rows={3}
-//                 placeholder=""
-//                 name="projectTitle"
-//                 value={formData.projectTitle || ''}
-//                 onChange={(e) => handleFormDataChange({ projectTitle: e.target.value })}
-//                 isInvalid={!!errors.projectTitle}
-//               />
-//               <Form.Control.Feedback type="invalid">
-//                 {errors.projectTitle}
-//               </Form.Control.Feedback>
-//             </Form.Group>
-//           </Row>
-
-//           <Row className="mb-3">
-//             <Form.Label>2. Please list any previous university or other grants you have received.</Form.Label>
-//           </Row>
-
-//           {/* Column headers */}
-//           <Row className="mb-3">
-//             <Col><Form.Label>Funding Source</Form.Label></Col>
-//             <Col><Form.Label>Duration</Form.Label></Col>
-//             <Col><Form.Label>Unit of Currency</Form.Label></Col>
-//             <Col><Form.Label>Amount (Numbers only)</Form.Label></Col>
-//           </Row>
-
-//           {/* Dynamically generated rows */}
-//           {grantRows.map((row, index) => (
-//             <Row className="mb-3" key={index}>
-//               <Col>
-//                 <Form.Control
-//                   name="fundingSource"
-//                   value={row.fundingSource || ''}
-//                   onChange={(e) => handleChange(index, e)}
-//                   placeholder=""
-//                 />
-//               </Col>
-//               <Col>
-//                 <Form.Control
-//                   name="durationperiod"
-//                   value={row.durationperiod || ''}
-//                   onChange={(e) => handleChange(index, e)}
-//                   placeholder="Ex: 01/01/2012-31/12/2012"
-//                 />
-//               </Col>
-//               <Col>
-//                 <Form.Control
-//                   name="currency"
-//                   value={row.currency || ''}
-//                   onChange={(e) => handleChange(index, e)}
-//                   placeholder=""
-//                 />
-//               </Col>
-//               <Col>
-//                 <Form.Control
-//                   name="amount"
-//                   value={row.amount || ''}
-//                   onChange={(e) => handleChange(index, e)}
-//                   placeholder=""
-//                 />
-//               </Col>
-//             </Row>
-//           ))}
-
-//           <Button variant="secondary" size="sm" onClick={handleAddRow} className="mb-3">
-//             Add Row
-//           </Button>
-
-          // <Row className="mb-3">
-          //   <Form.Label>3. Are you currently involved in a project?</Form.Label>
-          //   <Form.Group as={Col} controlId="formGridProject">
-          //     <Row>
-          //       <Col xs={6}>
-          //         <Form.Check
-          //           type="radio"
-          //           label="Yes"
-          //           name="projectInvolved"
-          //           value="yes"
-          //           checked={formData.projectInvolved === 'yes'}
-          //           onChange={(e) => handleFormDataChange({ projectInvolved: e.target.value })}
-          //           isInvalid={!!errors.projectInvolved}
-          //         />
-          //       </Col>
-          //       <Col xs={6}>
-          //         <Form.Check
-          //           type="radio"
-          //           label="No"
-          //           name="projectInvolved"
-          //           value="no"
-          //           checked={formData.projectInvolved === 'no'}
-          //           onChange={(e) => handleFormDataChange({ projectInvolved: e.target.value })}
-          //           isInvalid={!!errors.projectInvolved}
-          //         />
-          //       </Col>
-          //     </Row>
-          //     <Form.Control.Feedback type="invalid">
-          //       {errors.projectInvolved}
-          //     </Form.Control.Feedback>
-          //   </Form.Group>
-          // </Row>
-
-          // <Row className="mb-3">
-          //   <Form.Label>4. Please list 3 of your recent publications (provide links related to the publications).</Form.Label>
-          //   <Form.Group as={Col} controlId="formGridPublications">
-          //     <Form.Label>Link 1</Form.Label>
-          //     <Form.Control
-          //       placeholder=""
-          //       name="publication1"
-          //       value={formData.publication1 || ''}
-          //       onChange={(e) => handleFormDataChange({ publication1: e.target.value })}
-          //     />
-          //     <Form.Label>Link 2</Form.Label>
-          //     <Form.Control
-          //       placeholder=""
-          //       name="publication2"
-          //       value={formData.publication2 || ''}
-          //       onChange={(e) => handleFormDataChange({ publication2: e.target.value })}
-          //     />
-          //     <Form.Label>Link 3</Form.Label>
-          //     <Form.Control
-          //       placeholder=""
-          //       name="publication3"
-          //       value={formData.publication3 || ''}
-          //       onChange={(e) => handleFormDataChange({ publication3: e.target.value })}
-          //     />
-          //   </Form.Group>
-          // </Row>
-
-          // <Row className="mb-3">
-          //   <Form.Label>5. Have you received any grants from outside for this/similar project?</Form.Label>
-          //   <Form.Group as={Col} controlId="formGridProject">
-          //     <Row>
-          //       <Col xs={6}>
-          //         <Form.Check
-          //           type="radio"
-          //           label="Yes"
-          //           name="outsidegrants"
-          //           value="yes"
-          //           checked={formData.outsidegrants === 'yes'}
-          //           onChange={(e) => handleFormDataChange({ outsidegrants: e.target.value })}
-          //           isInvalid={!!errors.outsidegrants}
-          //         />
-          //       </Col>
-          //       <Col xs={6}>
-          //         <Form.Check
-          //           type="radio"
-          //           label="No"
-          //           name="outsidegrants"
-          //           value="no"
-          //           checked={formData.outsidegrants === 'no'}
-          //           onChange={(e) => handleFormDataChange({ outsidegrants: e.target.value })}
-          //           isInvalid={!!errors.outsidegrants}
-          //         />
-          //       </Col>
-          //       </Row>
-//             </Form.Group>
-//           </Row>
-
-        
-//           {/* Dynamically generated funding rows */}
-//           <Row className="mb-3">
-//             <Form.Label>5. Have you received any grants from outside for this/similar project?</Form.Label>
-//           </Row>
-//           <Row className="mb-3">
-//             <Col><Form.Label>Funding Organization</Form.Label></Col>
-//             <Col><Form.Label>Amount</Form.Label></Col>
-//           </Row>
-//           {fundingRows.map((row, index) => (
-//             <Row className="mb-3" key={index}>
-//               <Col>
-//                 <Form.Control
-//                   name="fundingOrganization"
-//                   value={row.fundingOrganization || ''}
-//                   onChange={(e) => handleFundingChange(index, e)}
-//                   placeholder=""
-//                 />
-//               </Col>
-//               <Col>
-//                 <Form.Control
-//                   name="fundingAmount"
-//                   value={row.fundingAmount || ''}
-//                   onChange={(e) => handleFundingChange(index, e)}
-//                   placeholder="LKR"
-//                 />
-//               </Col>
-//             </Row>
-//           ))}
-//           <Button variant="secondary" size="sm" onClick={handleAddFundingRow} className="mb-3">
-//             Add Funding Row
-//           </Button>
-//           <Row className="mb-3">
-//             <Form.Label>6. List the equipment/resources/facilities available in your Department/Faculty for your research </Form.Label>
-//             <Form.Group as={Col} controlId="formGridTitle">
-//               <Form.Control
-//                 as="textarea"
-//                 rows={3}
-//                 placeholder=""
-//                 name="researchFacilities"
-//                 value={formData.researchFacilities || ''}
-//                 onChange={(e) => handleFormDataChange({ researchFacilities: e.target.value })}
-//                 isInvalid={!!errors.researchFacilities}
-//               />
-//             </Form.Group>
-//           </Row>
-
-
-//           <Button variant="primary" type="submit" className='savebutton'>
-//             Save
-//           </Button>
-//           <Button variant="primary" onClick={handlePrevious} className='previousbutton'>Previous</Button>
-//           <Button variant="primary" onClick={handleNext} className='nextbutton'>Next</Button>
-//         </Form>
-//       </div>
-//     </div>
-//   );
-// }
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import axios from 'axios';
-import './Grant.css'; // Import the CSS file
+import { useForm } from './MainForm'; // Ensure useForm hook provides form context
 import Navbar from '../../Components/Navbar';
 import Navbar2 from '../../Components/Navbar2';
 import Sidebar from '../../Components/Sidebar';
-import { useForm } from './MainForm';
+import './Grant.css'; // Import the CSS file
 
 export default function Grant() {
-  const { formData, handleFormDataChange, updateCompletionStatus,resetFormData } = useForm(); // Destructure formData and handleFormDataChange from useForm
-  const [grantRows, setGrantRows] = useState([
-    { fundingSource: '', duration: '', currency: '', amount: '' },
-  ]);
-  const [fundingRows, setFundingRows] = useState([
-    { fundingOrganization: '', fundingAmount: '' },
-  ]); // Separate state for funding organization rows
+  const { formData, handleFormDataChange, updateCompletionStatus, resetFormData } = useForm();  // Use form context
+  const [grantRows, setGrantRows] = useState(
+    formData.grantRows || [{ fundingSource: '', durationperiod: '', currency: '', amount: '' }]
+  );
+  const [fundingRows, setFundingRows] = useState(
+    formData.fundingRows || [{ fundingOrganization: '', fundingAmount: '' }]
+  );
+  
+  const navigate = useNavigate();
   const [submitted, setSubmitted] = useState(false); // Track form submission
   const [isSubmitted, setIsSubmitted] = useState(false); 
   const [errors, setErrors] = useState({});
- 
-  const navigate = useNavigate(); // Initialize useNavigate
 
-  // Function to add a new row to the grant table
-  const handleAddGrantRow = () => {
-    setGrantRows([...grantRows, { fundingSource: '', duration: '', currency: '', amount: '' }]);
-  };
+  // Sync state with form data when it changes
+  useEffect(() => {
+    if (formData.grantRows) {
+      setGrantRows(formData.grantRows);
+    }
+    if (formData.fundingRows) {
+      setFundingRows(formData.fundingRows);
+    }
+  }, [formData.grantRows, formData.fundingRows]);
 
-  // Function to handle input changes in the dynamic grant rows
+  // Handle changes in grant fields
   const handleGrantChange = (index, event) => {
     const { name, value } = event.target;
-    const newGrantRows = grantRows.map((row, i) => {
-      if (i === index) {
-        return { ...row, [name]: value };
-      }
-      return row;
-    });
-    setGrantRows(newGrantRows);
-    handleFormDataChange({ [`grantRow${index}_${name}`]: value }); // Update the central form data
+    const updatedGrantRows = [...grantRows];
+    updatedGrantRows[index][name] = value;
+    setGrantRows(updatedGrantRows);
+    handleFormDataChange({ grantRows: updatedGrantRows }); // Update global form data
   };
 
-  // Function to add a new row to the funding table
-  const handleAddFundingRow = () => {
-    setFundingRows([...fundingRows, { fundingOrganization: '', fundingAmount: '' }]);
+  // Handle adding a new grant row
+  const handleAddGrantRow = () => {
+    const newRow = { fundingSource: '', durationperiod: '', currency: '', amount: '' };
+    setGrantRows([...grantRows, newRow]);
+    handleFormDataChange({ grantRows: [...grantRows, newRow] }); // Update global form data
   };
 
-  // Function to handle input changes in the dynamic funding rows
+  // Handle removing a grant row
+  const handleRemoveGrantRow = (index) => {
+    const updatedGrantRows = [...grantRows];
+    updatedGrantRows.splice(index, 1);
+    setGrantRows(updatedGrantRows);
+    handleFormDataChange({ grantRows: updatedGrantRows }); // Update global form data
+  };
+
+  // Handle changes in funding fields
   const handleFundingChange = (index, event) => {
     const { name, value } = event.target;
-    const newFundingRows = fundingRows.map((row, i) => {
-      if (i === index) {
-        return { ...row, [name]: value };
-      }
-      return row;
-    });
-    setFundingRows(newFundingRows);
-    handleFormDataChange({ [`fundingRow${index}_${name}`]: value }); // Update the central form data
+    const updatedFundingRows = [...fundingRows];
+    updatedFundingRows[index][name] = value;
+    setFundingRows(updatedFundingRows);
+    handleFormDataChange({ fundingRows: updatedFundingRows }); // Update global form data
   };
+
+  // Handle adding a new funding row
+  const handleAddFundingRow = () => {
+    const newRow = { fundingOrganization: '', fundingAmount: '' };
+    setFundingRows([...fundingRows, newRow]);
+    handleFormDataChange({ fundingRows: [...fundingRows, newRow] }); // Update global form data
+  };
+
+  // Handle removing a funding row
+  const handleRemoveFundingRow = (index) => {
+    const updatedFundingRows = [...fundingRows];
+    updatedFundingRows.splice(index, 1);
+    setFundingRows(updatedFundingRows);
+    handleFormDataChange({ fundingRows: updatedFundingRows }); // Update global form data
+  };
+
+
+  // const transformRequest = (data) => {
+  //   const params = new URLSearchParams();
+  
+  //   // Serialize each funding row as a JSON string
+  //   data.fundingRows.forEach((fundingRow, index) => {
+  //     params.append(`fundingRows[${index}]`, JSON.stringify(fundingRow));
+  //   });
+  
+  //   // Serialize each grant row as a JSON string
+  //   data.grantRows.forEach((grantRow, index) => {
+  //     params.append(`grantRows[${index}]`, JSON.stringify(grantRow));
+  //   });
+  
+  //   // Handle other form fields normally
+  //   for (const key in data) {
+  //     if (key !== 'fundingRows' && key !== 'grantRows') {
+  //       params.append(key, data[key]);
+  //     }
+  //   }
+  
+  //   return params;
+  // };
+  
 
   // Function to validate the form fields
   const validate = () => {
@@ -668,120 +364,99 @@ export default function Grant() {
     return Object.keys(formErrors).length === 0;
   };
 
-  // Function to handle form submission
+  
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  
+  //   if (validate()) {
+  //     // Create formData object for sending form data
+  //     const formDataToSend = new FormData();
+      
+  //     // Append non-array fields to formData
+  //     for (const key in formData) {
+  //       formDataToSend.append(key, formData[key]);
+  //     }
+  
+  //     // Serialize fundingRows and grantRows to JSON strings
+  //     formDataToSend.append('fundingRows', JSON.stringify(fundingRows));
+  //     formDataToSend.append('grantRows', JSON.stringify(grantRows));
+  
+  //     try {
+  //       const response = await axios.post('/Grant.php', formDataToSend, {
+  //         headers: {
+  //           'Content-Type': 'multipart/form-data',
+  //         },
+  //       });
+  
+  //       alert(response.data);
+  //       setSubmitted(true);
+  //     } catch (error) {
+  //       console.error('Submit error:', error);
+  //       alert('There was an error submitting the form. Please try again.');
+  //     }
+  //   }
+  // };
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  
+  //   if (validate()) {
+  //     try {
+  //       // Use transformRequest to serialize formData
+  //       const params = transformRequest({
+  //         ...formData,
+  //         fundingRows,
+  //         grantRows,
+  //       });
+  
+  //       const response = await axios.post('/Grant.php', params, {
+  //         headers: {
+  //           'Content-Type': 'application/x-www-form-urlencoded', // URL encoded
+  //         },
+  //       });
+  
+  //       alert(response.data);
+  //       setSubmitted(true);
+  //     } catch (error) {
+  //       console.error('Submit error:', error);
+  //       alert('There was an error submitting the form. Please try again.');
+  //     }
+  //   }
+  // };
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     if (validate()) {
       try {
-        const response = await axios.post('/Grant.php', formData, {
+        // Prepare the data to send to the backend
+        const params = {
+          ...formData,       // Include other form data
+          fundingRows,       // Include funding rows
+          grantRows,         // Include grant rows
+        };
+  
+        // Send the data to the backend using axios
+        const response = await axios.post('/Grant.php', params, {
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': 'application/json', // Sending as JSON
           },
-          transformRequest: [(data) => {
-            const params = new URLSearchParams();
-            for (const key in data) {
-              params.append(key, data[key]);
-            }
-            return params;
-          }],
         });
-        alert(response.data);
-        setSubmitted(true); // Set form as submitted
+  
+        // Assuming the PHP script will return an object with test1Id or success message
+        if (response.data.success) {
+          alert('All rows submitted successfully');
+          setSubmitted(true); // Mark as submitted
+        } else {
+          alert('Error submitting form: ' + response.data.error);
+        }
+  
       } catch (error) {
+        console.error('Submit error:', error);
         alert('There was an error submitting the form. Please try again.');
       }
     }
   };
+  
 
-  // Function to handle form save
-  // const handleSave = async () => {
-  //   if (validate()) {
-  //     if (isSubmitted) {
-  //       alert('Form data has already been saved.');
-  //       return; // Prevent further submissions
-  //     }
-  
-  //     try {
-  //       const response = await axios.post('/SaveForm.php', formData, {
-  //         headers: {
-  //           'Content-Type': 'application/x-www-form-urlencoded',
-  //         },
-  //         transformRequest: [(data) => {
-  //           const params = new URLSearchParams();
-  //           for (const key in data) {
-  //             params.append(key, data[key]);
-  //           }
-  //           return params;
-  //         }],
-  //       });
-  
-  //       if (response.data.status === "success") {
-  //         setIsSubmitted(true); // Mark as submitted
-  //         alert('Form saved successfully.');
-  //       } else {
-  //         alert(response.data.message);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error details:", error);
-  //       alert('There was an error saving the data. Please try again.');
-  //     }
-  //   } else {
-  //     alert('Missing Fields Required.');
-  //   }
-  // };
-
-  // Function to Save Form Data 
-  // const handleSave = async () => {
-  //   if (isSubmitted) {
-  //     alert('Form data has already been saved.');
-  //     return; // Prevent further submissions
-  //   }
-  
-  //   try {
-  //     // Save form data to SaveForm.php
-  //     const response = await axios.post('/SaveForm.php', formData, {
-  //       headers: {
-  //         'Content-Type': 'application/x-www-form-urlencoded',
-  //       },
-  //       transformRequest: [(data) => {
-  //         const params = new URLSearchParams();
-  //         for (const key in data) {
-  //           params.append(key, data[key]);
-  //         }
-  //         return params;
-  //       }],
-  //     });
-  
-  //     // Check if the form data was saved successfully
-  //     if (response.data.status === "success") {
-  //       setIsSubmitted(true); // Mark as submitted
-  //       alert('Form saved successfully.');
-  
-  //       // Now proceed with file upload to FileUploads.php
-  //       const fileUploadResponse = await axios.post('/SaveFileUploads.php', formData, {
-  //         headers: {
-  //           'Content-Type': 'multipart/form-data', // Set content type to multipart/form-data for file upload
-  //         },
-  //       });
-  
-  //       console.log(fileUploadResponse.data); // Log the file upload response for debugging
-  
-  //       // Handle successful file upload
-  //       if (fileUploadResponse.data.status === "success") {
-  //         alert('Files uploaded successfully.');
-  //       } else {
-  //         alert(fileUploadResponse.data.message); // Handle file upload failure
-  //       }
-  //     } else {
-  //       alert(response.data.message); // Handle form save failure
-  //     }
-  //   } catch (error) {
-  //     console.error("Error details:", error);
-  //     alert('There was an error saving the data or uploading files. Please try again.');
-  //   }
-  // };
-  
   const handleSave = async () => {
     if (isSubmitted) {
       alert('Form data has already been saved.');
@@ -789,7 +464,6 @@ export default function Grant() {
     }
   
     try {
-      // Save form data to SaveForm.php
       const response = await axios.post('/SaveForm.php', formData, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -802,37 +476,29 @@ export default function Grant() {
           return params;
         }],
       });
-  
-      // Check if the form data was saved successfully
+
       if (response.data.status === 'success') {
-        setIsSubmitted(true); // Mark as submitted
+        setIsSubmitted(true);
         alert('Form saved successfully.');
-  
-        // Now proceed with file upload to FileUploads.php
+
         const fileUploadResponse = await axios.post('/SaveFileUploads.php', formData, {
           headers: {
-            'Content-Type': 'multipart/form-data', // Set content type to multipart/form-data for file upload
+            'Content-Type': 'multipart/form-data',
           },
         });
-  
-        console.log(fileUploadResponse.data); // Log the file upload response for debugging
-  
-        // Handle successful file upload
+
+        console.log(fileUploadResponse.data); 
+
         if (fileUploadResponse.data.status === 'success') {
           alert('Files uploaded successfully.');
-  
-          // Clear form data and reset form state
-         
-          localStorage.removeItem('formData'); // Optional: Clear any saved form data in localStorage
+          localStorage.removeItem('formData');
           resetFormData();
-  
-          // Navigate to the submitted grants page
-          navigate('/submittedgrant'); // Use navigate instead of window.location.href
+          navigate('/submittedgrant'); 
         } else {
-          alert(fileUploadResponse.data.message); // Handle file upload failure
+          alert(fileUploadResponse.data.message);
         }
       } else {
-        alert(response.data.message); // Handle form save failure
+        alert(response.data.message);
       }
     } catch (error) {
       console.error('Error details:', error);
@@ -840,20 +506,19 @@ export default function Grant() {
     }
   };
 
-  // Function to navigate to the previous page
   const handlePrevious = () => {
-    navigate('/grant'); // Update this path to the correct previous page
+    navigate('/grant');
   };
 
-  // Function to navigate to the next page
   const handleNext = async () => {
     if (validate()) {
       updateCompletionStatus('project', true);
-      navigate('/supervisors'); // Navigate to the uploads page
-    }else {
+      navigate('/supervisors');
+    } else {
       alert('Missing Fields Required.');
     }
   };
+
 
   return (
     <div>
@@ -867,7 +532,6 @@ export default function Grant() {
             Form submitted successfully!
           </div>
         )}
-        
         <Form onSubmit={handleSubmit}>
           <Row className="mb-3">
             <Form.Label>1. Project Title <span className="text-danger">*</span></Form.Label>
@@ -875,7 +539,6 @@ export default function Grant() {
               <Form.Control
                 as="textarea"
                 rows={3}
-                placeholder=""
                 name="projectTitle"
                 value={formData.projectTitle || ''}
                 onChange={(e) => handleFormDataChange({ projectTitle: e.target.value })}
@@ -892,20 +555,21 @@ export default function Grant() {
           <Row className="mb-3">
             <Form.Label>2. Please list any previous university or other grants you have received.</Form.Label>
           </Row>
+
           <Row className="mb-3">
             <Col><Form.Label>Funding Source</Form.Label></Col>
             <Col><Form.Label>Duration</Form.Label></Col>
             <Col><Form.Label>Unit of Currency</Form.Label></Col>
             <Col><Form.Label>Amount (Numbers only)</Form.Label></Col>
           </Row>
+
           {grantRows.map((row, index) => (
             <Row className="mb-3" key={index}>
               <Col>
                 <Form.Control
-                  name="fundingSource"
-                  value={row.fundingSource || ''}
+                  name="fundingSource[]"
+                  value={row.fundingSource || '' }
                   onChange={(e) => handleGrantChange(index, e)}
-                  placeholder=""
                 />
               </Col>
               <Col>
@@ -921,7 +585,6 @@ export default function Grant() {
                   name="currency"
                   value={row.currency || ''}
                   onChange={(e) => handleGrantChange(index, e)}
-                  placeholder=""
                 />
               </Col>
               <Col>
@@ -929,14 +592,20 @@ export default function Grant() {
                   name="amount"
                   value={row.amount || ''}
                   onChange={(e) => handleGrantChange(index, e)}
-                  placeholder=""
                 />
               </Col>
+              {grantRows.length > 1 && (
+                <Button variant="secondary" size="sm" onClick={() => handleRemoveGrantRow(index)} className="mb-3" style={{ width: 'auto' }} >
+                  Remove
+                </Button>
+              )}
             </Row>
           ))}
+
           <Button variant="secondary" size="sm" onClick={handleAddGrantRow} className="mb-3">
             Add Grant Row
           </Button>
+
           <Row className="mb-3">
             <Form.Label>3. Are you currently involved in a project? <span className="text-danger">*</span></Form.Label>
             <Form.Group as={Col} controlId="formGridProject">
@@ -1028,30 +697,40 @@ export default function Grant() {
                 </Row>
             </Form.Group>
           </Row>
+
+          {/* Funding Organization Rows */}
           <Row className="mb-3">
             <Col><Form.Label>Funding Organization</Form.Label></Col>
             <Col><Form.Label>Amount</Form.Label></Col>
           </Row>
+
           {fundingRows.map((row, index) => (
             <Row className="mb-3" key={index}>
               <Col>
                 <Form.Control
                   name="fundingOrganization"
-                  value={row.fundingOrganization || ''}
+                  value={row.fundingOrganization|| ''}
                   onChange={(e) => handleFundingChange(index, e)}
-                  placeholder=""
+                  placeholder="Enter funding organization"
                 />
               </Col>
               <Col>
                 <Form.Control
                   name="fundingAmount"
-                  value={row.fundingAmount || ''}
+                  value={row.fundingAmount|| ''}
                   onChange={(e) => handleFundingChange(index, e)}
-                  placeholder="LKR"
+                  placeholder="Enter amount"
                 />
               </Col>
+              {fundingRows.length > 1 && (
+                <Button variant="secondary" size="sm" onClick={() => handleRemoveFundingRow(index)} className="mb-3" style={{ width: 'auto' }}  >
+                  Remove
+                </Button>
+              )}
             </Row>
           ))}
+          
+
           <Button variant="secondary" size="sm" onClick={handleAddFundingRow} className="mb-3">
             Add Funding Row
           </Button>
@@ -1069,13 +748,14 @@ export default function Grant() {
               />
             </Form.Group>
           </Row>
-          <Button variant="primary" type="button" onClick={handleSave} className='savebutton'>
+
+          <Button variant="primary" type="button" onClick={handleSave} className="savebutton">
             Save
           </Button>
           <Button variant="primary" onClick={handlePrevious} className="previousbutton">
             Previous
           </Button>
-          <Button variant="primary" type="button" onClick={handleNext} className='nextbutton'>
+          <Button variant="primary" type="button" onClick={handleNext} className="nextbutton">
             Next
           </Button>
         </Form>
@@ -1083,4 +763,3 @@ export default function Grant() {
     </div>
   );
 }
-

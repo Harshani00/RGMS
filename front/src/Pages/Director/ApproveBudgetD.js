@@ -42,6 +42,7 @@ export default function ApproveBudgetD() {
   return (
     <div>
       <Navbar />
+      <h1 className="page-title">Approve Budget Revision</h1>
       <Table striped bordered hover>
         <thead>
           <tr>

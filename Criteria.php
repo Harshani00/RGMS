@@ -1,5 +1,4 @@
 <?php
-
 // Enable CORS
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, OPTIONS');
@@ -44,15 +43,19 @@ function uploadFile($file, $targetDir, $allowedTypes) {
     }
 }
 
-// Function to fetch the uploaded file from the database
-function fetchUploadedFile($conn) {
-    $result = $conn->query("SELECT criteria FROM criteria ORDER BY C_Id DESC LIMIT 1"); // Assuming 'id' is the primary key
+// Function to fetch all uploaded files from the database
+function fetchUploadedFiles($conn) {
+    $result = $conn->query("SELECT criteria FROM criteria ORDER BY C_Id DESC"); // Fetch all criteria files
+    $files = [];
+    
+    // Check if there are any results
     if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        return $row['criteria']; // Return the file path or name
-    } else {
-        return "No file uploaded yet.";
+        while ($row = $result->fetch_assoc()) {
+            $files[] = $row['criteria']; // Collect all file paths or names
+        }
     }
+    
+    return $files; // Return the array of files
 }
 
 // Check if a POST request was made (for uploading a file)
@@ -82,13 +85,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Return the response as JSON
     echo json_encode($responses);
 
-// Check if a GET request was made (for fetching the file to view)
+// Check if a GET request was made (for fetching the files to view)
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $file = fetchUploadedFile($conn);
-    echo json_encode(['criteria' => $file]);
+    $files = fetchUploadedFiles($conn);
+    echo json_encode(['criteria' => $files]); // Return the array of file paths
 }
 
 // Close the database connection
 $conn->close();
-
 ?>

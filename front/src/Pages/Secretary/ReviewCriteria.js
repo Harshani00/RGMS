@@ -210,6 +210,236 @@
 //     </div>
 //   );
 // }
+// import React, { useState, useEffect } from 'react';
+// import Table from 'react-bootstrap/Table';
+// import Navbar from '../../Components/Navbar';
+// import { useDropzone } from 'react-dropzone';
+// import './Table.css';
+// import axios from 'axios';
+
+// export default function ViewApplication() {
+
+//   const [files, setFiles] = useState([]);
+//   const [criteriaFile, setCriteriaFile] = useState(null);
+
+//   // Use react-dropzone to handle drag-and-drop
+//   const { getRootProps, getInputProps } = useDropzone({
+//     onDrop: (acceptedFiles) => {
+//       setFiles(acceptedFiles);
+//     }
+//   });
+
+//   // Function to handle file upload
+//   const handleSubmit = async () => {
+//     if (files.length > 0) {
+//       const formData = new FormData();
+//       formData.append('criteria', files[0]); // Only upload the first file
+  
+//       try {
+//         const response = await axios.post('/Criteria.php', formData, {
+//           headers: {
+//             'Content-Type': 'multipart/form-data',
+//           },
+//         });
+        
+//         const result = response.data;
+//         console.log(result);
+  
+//         if (result.criteria && result.criteria.includes('Error')) {
+//           alert('Error: ' + result.criteria);
+//         } else {
+//           alert('File uploaded successfully!');
+//           setFiles([]); // Clear the files after successful submission
+//           fetchCriteriaFile(); // Fetch the latest file to display in the table
+//         }
+//       } catch (error) {
+//         console.error('Error uploading file:', error);
+//         alert('Error uploading file.');
+//       }
+//     } else {
+//       alert('Please select or drop files to upload.');
+//     }
+//   };
+
+//   // Function to fetch the uploaded criteria file
+//   const fetchCriteriaFile = async () => {
+//     try {
+//       const response = await axios.get('/Criteria.php');
+//       const result = response.data;
+//       setCriteriaFile(result.criteria); // Set the retrieved file name/path
+//     } catch (error) {
+//       console.error('Error fetching criteria file:', error);
+//     }
+//   };
+
+//   // Fetch criteria file when the component is mounted
+//   useEffect(() => {
+//     fetchCriteriaFile();
+//   }, []);
+
+//   return (
+//     <div>
+//       <Navbar />
+//       <Table striped bordered hover>
+//         <thead>
+//           <tr>
+//             <th>Upload Criteria (Word File)</th>
+//             <th className="view-criteria-header">View Criteria</th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           <tr>
+//             <td>
+//               <div className="upload-box">
+//                 <div {...getRootProps({ className: 'dropzone' })}>
+//                   <input {...getInputProps()} />
+//                   {files.length > 0 ? (
+//                     <ul>
+//                       {files.map((file) => (
+//                         <li key={file.path}>{file.path}</li>
+//                       ))}
+//                     </ul>
+//                   ) : (
+//                     <p>Drag & drop files here, or click to select files.</p>
+//                   )}
+//                 </div>
+//               </div>
+//               <button type="button" onClick={handleSubmit} className="Submitcriteria">
+//                 Submit
+//               </button>
+//             </td>
+//             <td>
+//               <div className="view-box">
+//                 {criteriaFile ? (
+//                   <a href={criteriaFile} target="_blank" rel="noopener noreferrer">
+//                     View Criteria Document
+//                   </a>
+//                 ) : (
+//                   <p>No criteria file uploaded yet.</p>
+//                 )}
+//               </div>
+//             </td>
+//           </tr>
+//         </tbody>
+//       </Table>
+//     </div>
+//   );
+// }
+
+// import React, { useState, useEffect } from 'react';
+// import Table from 'react-bootstrap/Table';
+// import Navbar from '../../Components/Navbar';
+// import { useDropzone } from 'react-dropzone';
+// import './Table.css';
+// import axios from 'axios';
+
+// export default function ViewApplication() {
+//   const [files, setFiles] = useState([]);
+//   const [criteriaFile, setCriteriaFile] = useState(null);
+
+//   // Use react-dropzone to handle drag-and-drop
+//   const { getRootProps, getInputProps } = useDropzone({
+//     onDrop: (acceptedFiles) => {
+//       setFiles(acceptedFiles);
+//     }
+//   });
+
+//   // Function to handle file upload
+//   const handleSubmit = async () => {
+//     if (files.length > 0) {
+//       const formData = new FormData();
+//       formData.append('criteria', files[0]); // Only upload the first file
+  
+//       try {
+//         const response = await axios.post('/Criteria.php', formData, {
+//           headers: {
+//             'Content-Type': 'multipart/form-data',
+//           },
+//         });
+        
+//         const result = response.data;
+//         console.log(result);
+  
+//         if (result.criteria && result.criteria.includes('Error')) {
+//           alert('Error: ' + result.criteria);
+//         } else {
+//           alert('File uploaded successfully!');
+//           setFiles([]); // Clear the files after successful submission
+//           fetchCriteriaFile(); // Fetch the latest file to display in the table
+//         }
+//       } catch (error) {
+//         console.error('Error uploading file:', error);
+//         alert('Error uploading file.');
+//       }
+//     } else {
+//       alert('Please select or drop files to upload.');
+//     }
+//   };
+
+//   // Function to fetch the uploaded criteria file
+//   const fetchCriteriaFile = async () => {
+//     try {
+//       const response = await axios.get('/Criteria.php');
+//       const result = response.data;
+//       setCriteriaFile(result.criteria); // Set the retrieved file name/path
+//     } catch (error) {
+//       console.error('Error fetching criteria file:', error);
+//     }
+//   };
+
+//   // Fetch criteria file when the component is mounted
+//   useEffect(() => {
+//     fetchCriteriaFile();
+//   }, []);
+
+//   return (
+//     <div>
+//       <Navbar />
+//       <Table striped bordered hover>
+//         <thead>
+//           <tr>
+//             <th>Upload Criteria (Word File)</th>
+//             <th className="view-criteria-header">View Criteria</th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           <tr>
+//             <td>
+//               <div className="upload-box">
+//                 <div {...getRootProps({ className: 'dropzone' })}>
+//                   <input {...getInputProps()} />
+//                   {files.length > 0 ? (
+//                     <ul>
+//                       {files.map((file) => (
+//                         <li key={file.path}>{file.path}</li>
+//                       ))}
+//                     </ul>
+//                   ) : (
+//                     <p>Drag & drop files here, or click to select files.</p>
+//                   )}
+//                 </div>
+//               </div>
+//               <button type="button" onClick={handleSubmit} className="Submitcriteria">
+//                 Submit
+//               </button>
+//             </td>
+//             <td>
+//               <div className="view-box">
+//                 {criteriaFile ? (
+//                   <a href={criteriaFile} target="_blank" rel="noopener noreferrer">
+//                     View Criteria Document
+//                   </a>
+//                 ) : (
+//                   <p>No criteria file uploaded yet.</p>
+//                 )}
+//               </div>
+//             </td>
+//           </tr>
+//         </tbody>
+//       </Table>
+//     </div>
+//   );
+// }
 import React, { useState, useEffect } from 'react';
 import Table from 'react-bootstrap/Table';
 import Navbar from '../../Components/Navbar';
@@ -218,9 +448,8 @@ import './Table.css';
 import axios from 'axios';
 
 export default function ViewApplication() {
-
   const [files, setFiles] = useState([]);
-  const [criteriaFile, setCriteriaFile] = useState(null);
+  const [criteriaFiles, setCriteriaFiles] = useState([]); // Change to an array
 
   // Use react-dropzone to handle drag-and-drop
   const { getRootProps, getInputProps } = useDropzone({
@@ -234,7 +463,7 @@ export default function ViewApplication() {
     if (files.length > 0) {
       const formData = new FormData();
       formData.append('criteria', files[0]); // Only upload the first file
-  
+
       try {
         const response = await axios.post('/Criteria.php', formData, {
           headers: {
@@ -244,13 +473,13 @@ export default function ViewApplication() {
         
         const result = response.data;
         console.log(result);
-  
+
         if (result.criteria && result.criteria.includes('Error')) {
           alert('Error: ' + result.criteria);
         } else {
           alert('File uploaded successfully!');
           setFiles([]); // Clear the files after successful submission
-          fetchCriteriaFile(); // Fetch the latest file to display in the table
+          fetchCriteriaFiles(); // Fetch the latest files to display in the table
         }
       } catch (error) {
         console.error('Error uploading file:', error);
@@ -261,25 +490,27 @@ export default function ViewApplication() {
     }
   };
 
-  // Function to fetch the uploaded criteria file
-  const fetchCriteriaFile = async () => {
+  // Function to fetch the uploaded criteria files
+  const fetchCriteriaFiles = async () => {
     try {
       const response = await axios.get('/Criteria.php');
       const result = response.data;
-      setCriteriaFile(result.criteria); // Set the retrieved file name/path
+      setCriteriaFiles(result.criteria); // Set the retrieved file names/paths
     } catch (error) {
-      console.error('Error fetching criteria file:', error);
+      console.error('Error fetching criteria files:', error);
     }
   };
 
-  // Fetch criteria file when the component is mounted
+  // Fetch criteria files when the component is mounted
   useEffect(() => {
-    fetchCriteriaFile();
+    fetchCriteriaFiles();
   }, []);
 
   return (
     <div>
       <Navbar />
+      <h1 className="page-title">Upload and Veiw Criteria</h1>
+      
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -291,7 +522,7 @@ export default function ViewApplication() {
           <tr>
             <td>
               <div className="upload-box">
-                <div {...getRootProps({ className: 'dropzone' })}>
+                <div {...getRootProps({ className: 'dropzone2' })}>
                   <input {...getInputProps()} />
                   {files.length > 0 ? (
                     <ul>
@@ -310,10 +541,14 @@ export default function ViewApplication() {
             </td>
             <td>
               <div className="view-box">
-                {criteriaFile ? (
-                  <a href={criteriaFile} target="_blank" rel="noopener noreferrer">
-                    View Criteria Document
-                  </a>
+                {criteriaFiles.length > 0 ? (
+                  criteriaFiles.map((file, index) => (
+                    <div key={index}>
+                      <a href={file} target="_blank" rel="noopener noreferrer">
+                        View Criteria Document {index + 1}
+                      </a>
+                    </div>
+                  ))
                 ) : (
                   <p>No criteria file uploaded yet.</p>
                 )}

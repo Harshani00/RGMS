@@ -66,15 +66,16 @@
 }
 
 .view-box {
-    width: 150%; /* adjust width for the view box */
+    width: 100%; /* adjust width for the view box */
 }
 
 /* Increase the width of the 'View Criteria' column */
 .view-criteria-header {
     width: 50%; /* increase the width of the column header */
+    overflow-x: hidden;
 }
 /* Centering text inside the upload box */
-.dropzone {
+.dropzone2 {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -83,7 +84,7 @@
   background-color: #f9f9f9;
 }
 
-.dropzone p {
+.dropzone2 p {
   margin: 0;
   color: #666;
 }
@@ -189,4 +190,12 @@
 .Reviewer{
   text-align: center;
   font-weight: bold;
+}
+
+/* Page Title for URC Director and Secretary */
+.page-title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.5em;
+  margin-bottom: 20px;
 }

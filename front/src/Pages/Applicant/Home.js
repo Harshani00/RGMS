@@ -42,9 +42,12 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 import './Home.css'; // Import the CSS file
 import backgroundImage from '../../Assets/img5.png'; // Import your background image
+import Navbar from '../../Components/Navbar';
 
 export default function HomePage() {
   return (
+    <div>
+      <Navbar />
     <div className="home-background" style={{ backgroundImage: `url(${backgroundImage})` }}>
       <div className="home-page-container">
         <div className="content-container">
@@ -58,6 +61,7 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }

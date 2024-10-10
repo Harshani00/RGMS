@@ -192,7 +192,7 @@ function Budget() {
           <input {...getInputProps1()} />
           <p>Drag & drop some files here, or click to select files</p>
           <p>Rename Your File Name to ProjectTitle_PerviousBudget</p>
-          <Button variant="primary">Browse Files</Button>
+          <Button variant="primary" className='browsefiles'>Browse Files</Button>
         </div>
         <aside>
           <h6>Files:</h6>

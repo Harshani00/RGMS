@@ -46,6 +46,7 @@ export default function ViewApplication() {
   return (
     <div>
       <Navbar />
+      <h1 className="page-title">Request Agreements</h1>
       <Table striped bordered hover>
         <thead>
           <tr>
