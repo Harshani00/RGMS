@@ -1,0 +1,28 @@
+
+/* Center the Navbar items */
+.navbar-custom {
+  display: flex;
+  justify-content: center; /* Center items horizontally */
+  flex-grow: 8; /* Allow the Nav to grow and fill available space */
+  height: 20px;
+}
+
+.navbar-custom .nav-link,
+.navbar-custom .nav-item a {
+  margin: 0 30px; /* Increase space between items */
+  color: black; /* Ensure text color is black */
+  text-decoration: none; /* Remove underline */
+}
+
+.navbar-custom .nav-link:hover,
+.navbar-custom .nav-item a:hover {
+  color: black; /* Optional: Change color on hover */
+  text-decoration: none; /* Keep underline removed on hover */
+}
+
+.nav-link.active {
+  background-color: #ffea61; /* Highlight color */
+  color: black !important; /* Text color */
+  font-weight: bold; /* Bold text */
+  border-radius: 8px;
+}

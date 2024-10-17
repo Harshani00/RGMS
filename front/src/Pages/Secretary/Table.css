@@ -1,0 +1,201 @@
+.dropdown-row {
+    padding: 10px 0;
+  }
+  
+  .dropdown-row label {
+    margin-right: 40px; /* Space between the label and the dropdown */
+    font-weight: bold;
+  }
+  
+  .dropdown-row select {
+    margin-right: 20px; /* Space between the two dropdowns */
+  }
+  .title
+  {
+    margin-right: 40px; /* Space between the label and the dropdown */
+    font-weight: bold;
+  }
+  
+  table {
+    margin-top: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  .view-button {
+    background-color: #052659;
+    border-color: #052659;
+    color: white;
+    width:70px;
+    border-radius:5px;
+    margin-left: 15px;
+
+  }
+  
+  .view-button:focus,
+  .view-button:hover {
+    background-color: #005b96;
+    border-color: #005b96; 
+    color: white;
+  }
+  
+   /* Css for Review Criteria */
+
+   .Submitcriteria {
+    background-color: #052659;
+    border-color: #052659;
+    color: white;
+    margin-top: 20px;
+    border-radius: 5px;
+    margin-left: 30px;
+    height: 40px;
+    width: 100px;
+}
+
+.Submitcriteria:focus,
+.Submitcriteria:hover {
+    background-color: #005b96;
+    border-color: #005b96;
+    color: white;
+}
+
+.upload-box {
+    border: 2px dashed #cccccc;
+    padding: 20px;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    width: 100%; /* width of the upload column */
+}
+
+.view-box {
+    width: 100%; /* adjust width for the view box */
+}
+
+/* Increase the width of the 'View Criteria' column */
+.view-criteria-header {
+    width: 50%; /* increase the width of the column header */
+    overflow-x: hidden;
+}
+/* Centering text inside the upload box */
+.dropzone2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px; /* Set a fixed height */
+  text-align: center;
+  background-color: #f9f9f9;
+}
+
+.dropzone2 p {
+  margin: 0;
+  color: #666;
+}
+
+
+
+ 
+
+/* Css for Order Application (Secretary) */
+
+  .select-button{
+    background-color: #136113;
+    border-color: #136113;
+    color: white;
+    margin-left: 15px;
+    border-radius: 5px;
+    height: 35px;
+    width: 90px;
+  }
+
+  .select-button:focus,
+  .select-button:hover {
+  background-color:#18392B;
+  border-color: #18392B; 
+  color: white;
+}
+.unselect-button{
+  background-color: #cf150ece;
+  border-color: #cf150ece;
+  color: white;
+  margin-left: 15px;
+  border-radius: 5px;
+  height: 35px;
+  width: 90px;
+}
+
+ .unselect-button:focus,
+ .unselect-button:hover {
+  background-color: #5c162e;
+  border-color: #5c162e; 
+  color: white;
+}
+
+
+
+
+/* Css for Request Agreement (Director) */
+
+.uploadRequest_button {
+  background-color: #052659;
+  border-color: #052659;
+  color: white;
+  width:70px;
+  border-radius:8px;
+  margin-left: 8px;
+
+}
+.uploadRequest_button:focus,
+.uploadRequest_button:hover {
+  background-color: #005b96;
+  border-color: #005b96; 
+  color: white;
+}
+/* Css for Request Progress Report (Director) */
+
+.Email-button{
+  background-color: #052659;
+  border-color: #052659;
+  color: white;
+  width:90px;
+  height: 30px;
+  border-radius:5px;
+  margin-left: 10px;
+}
+.Email-button:focus,
+.Email-button:hover {
+  background-color: #005b96;
+  border-color: #005b96; 
+  color: white;
+}
+
+
+.btn-approved{
+  margin-top: 10px;
+  margin-left: 10px;
+  background-color: #136113;
+  border-color: #136113;
+  color: white;
+  border-radius: 5px;
+  height: 30px;
+}
+
+.btn-rejected{
+  margin-top: 10px;
+  margin-left: 10px;
+  background-color: #cf150ece;
+  border-color: #cf150ece;
+  color: white;
+  border-radius: 5px;
+  height: 30px;
+}
+
+.Reviewer{
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Page Title for URC Director and Secretary */
+.page-title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.5em;
+  margin-bottom: 20px;
+}

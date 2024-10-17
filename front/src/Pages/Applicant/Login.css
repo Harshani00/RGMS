@@ -1,0 +1,47 @@
+.login-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: b;
+    overflow: auto;
+
+}
+
+
+.login-title
+{
+    margin-bottom: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+.access-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+   
+    background-size: cover; /* Makes the image cover the entire screen */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+  }
+  
+  .access-container1 {
+    background-color: rgba(255, 255, 255, 0.8); /* Adds a semi-transparent background to the form */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Adds a shadow to the form container */
+    max-width: 400px;
+    width: 100%;
+  }
+  
+  .access-title {
+    margin-bottom: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+  }
+  

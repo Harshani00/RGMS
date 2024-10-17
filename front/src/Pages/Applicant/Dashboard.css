@@ -1,0 +1,89 @@
+.dashboard-background {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  min-height: 100vh;
+  width: 100%;
+  
+}
+
+.dashboard-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+  justify-items: center;
+  padding: 2%;
+  width: 80%;
+  margin: 100px auto;
+  align-items: center;
+ 
+}
+
+.custom-card {
+  position: relative;
+  width: 260px;
+  height: 230px;
+  margin-bottom: 20px;
+  background-color: white; /* Transparent dark background */
+  border: 2px solid white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+  cursor:pointer;
+}
+
+.custom-card h2, /* Assuming your title is in an h2 tag */
+.custom-card h3,
+.custom-card p {
+  background-color: transparent; /* Removes background for text */
+  margin: 0;
+  padding: 0;
+  color: white;
+}
+
+.custom-card:hover {
+  background-color: white; /* Dark purple on hover */
+  border-color: white;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.dropdown-menu {
+  background-color: rgba(255, 255, 255, 0.5); /* White with transparency */
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+}
+
+.dropdown-item {
+  color: black;
+}
+
+.dropdown-item:hover {
+  background-color: gray;
+}
+
+#dropdown-basic-button {
+  background-color: transparent;
+  border: 1px solid #ccc;
+  color: white;
+  font-weight: bold;
+}
+
+#dropdown-basic-button:hover,
+#dropdown-basic-button:focus {
+  color: white;
+}
+/* Class for transparent image */
+.transparent-image {
+  
+    filter: blur(px); /* Adjust the value to control the blur intensity */
+}
+.card-title{
+  color: black;
+}

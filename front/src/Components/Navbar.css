@@ -1,0 +1,71 @@
+.nav-bar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 20px;
+  background-color: #800000; 
+  height: 100px;
+  width: 100%;
+
+}
+
+.nav-left, .nav-right {
+  flex: 1;
+}
+
+.nav-center {
+  flex: 2;
+  text-align: center;
+}
+
+.main-title {
+  color: #fff; 
+  font-size: 24px;
+  margin: 0;
+  font-weight: bold;
+}
+
+.nav-right {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px; 
+}
+
+.Logo
+{
+  width: 300px;
+  margin-left:40px
+}
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Adjust gap between links */
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-weight:600;
+  cursor: pointer;
+  font-size: 16px;
+  transition: transform 0.2s ease, background-color 0.2s ease; /* Smooth animation */
+}
+
+.nav-link:hover {
+  
+  background-color: #ffea61; /* Optional hover effect */
+  border-radius: 5px;
+  transform: scale(1.1); /* Enlarges the link by 10% on hover */
+  padding: 5px; /* Adds padding to the element for better visibility when hovered */
+  
+}
+
+.logout-link {
+  cursor: pointer;
+  color: white;
+}
+
+.logout-link:hover {
+  background-color: #ffea61; /* Optional hover effect */
+  border-radius: 5px;
+}

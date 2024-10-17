@@ -1,0 +1,93 @@
+.sidebar {
+  position: fixed;
+  left: 0; /* Always fixed on the left */
+  top: 100px; /* Adjust as needed */
+  width: 240px;
+  height: 86%;
+  margin-left: 2px;
+  background-color: #800000;
+  color: black;
+  border: 1px solid #ddd;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease; /* Smooth transition */
+  transform: translateX(0); /* Start visible */
+  border-radius: 20px;}
+
+.sidebar.closed {
+  transform: translateX(-100%); /* Hidden */
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-top: 150px; /* Adjust margin as needed */
+  display: flex; /* Use flexbox to align items */
+  flex-direction: column; /* Arrange menu items vertically */
+  width: 100%; /* Full width of the sidebar */
+}
+
+.sidebar-menu li {
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%; /* Full width of the sidebar */
+  border-bottom: 1px solid #ddd; /* Add a bottom border */
+}
+
+.sidebar-menu li:last-child {
+  border-bottom: none; /* Remove border for the last item */
+}
+
+.sidebar-item {
+  color: black;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+  width: 100%; /* Full width to fill menu item */
+  background-color: #f9f9f9; /* Light background for items */
+  padding: 12px;
+  border-radius: 5px; /* Rounded corners */
+  transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transition */
+}
+
+.sidebar-item:hover {
+  background-color: #555;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+}
+
+.toggle-button {
+  position: absolute;
+  left: 20px; /* Adjust based on your layout */
+  top: 100px; /* Align with the sidebar's top */
+  background-color: #e5e5e5;
+  color: black;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 1000; /* Ensure the button is above other content */
+  border-radius: 5px; /* Rounded corners for the button */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add shadow to the button */
+}
+
+.toggle-button:hover {
+  background-color: #e5e5e5;
+}
+
+/* Adjust for smaller screens */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 200px;
+    transform: translateX(-200px); /* Adjust hidden position */
+  }
+
+  .sidebar.open {
+    transform: translateX(0); /* Show sidebar */
+  }
+
+  .toggle-button {
+    display: block; /* Ensure button is shown on smaller screens */
+  }
+}

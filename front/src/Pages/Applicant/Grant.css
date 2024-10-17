@@ -1,0 +1,83 @@
+.form-container {
+    width: 70%;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff; /* White background */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Box shadow for a subtle effect */
+    margin-left:17%; /* Add this line to move the form to the right */
+  
+
+  }
+  
+  @media (max-width: 768px) {
+    .form-container {
+      width: 90%; /* Adjust width for smaller screens */
+      padding: 15px;
+    }
+  }
+ 
+.custom-select {
+    width: auto; /* Adjusts the width of the select box */
+    padding: 5px 10px; /* Adjusts padding for a smaller placeholder */
+    min-width: 300px; /* Sets a minimum width to avoid the select box becoming too small */
+  }
+  .form-success {
+    border-color: #28a745; /* Green border for success */
+  }
+  
+  .form-success-text {
+    color: #28a745; /* Green color for success tick */
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-top: 0.5em;
+  }
+  .savebutton {
+    background-color: #052659;
+    border-color: #052659;
+    color: white;
+  }
+  
+  .savebutton:focus,
+  .savebutton:hover {
+    background-color: #005b96;
+    border-color: #005b96; 
+    color: white;
+  }
+
+  .previousbutton {
+    background-color: #052659;
+    border-color: #052659;
+    color: white;
+    margin-left: 20px;
+  }
+  
+  .previousbutton:focus,
+  .previousbutton:hover {
+    background-color: #005b96;
+    border-color: #005b96; 
+    color: white;
+  }
+
+  .nextbutton {
+    background-color: #052659;
+    border-color: #052659;
+    color: white;
+    margin-left: 20px;
+  }
+  
+  .nextbutton:focus,
+  .nextbutton:hover {
+    background-color: #005b96;
+    border-color: #005b96; 
+    color: white;
+  }
+  .form-control {
+    margin-bottom: 10px; /* Adds space between each Form.Control element */
+    padding-left: 10px; /* Adds space between the placeholder text and the left edge of the input field */
+}
+
+
+  
+  
+  

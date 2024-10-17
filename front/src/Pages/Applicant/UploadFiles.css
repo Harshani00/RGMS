@@ -1,0 +1,92 @@
+
+  .label-container1 {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 58%; /* Adjust this value as needed */
+    margin-top: 20px; /* Adjust this value for spacing between label and box */
+  }
+  .label-container2 {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 58%; /* Adjust this value as needed */
+    margin-top: 20px; /* Adjust this value for spacing between label and box */
+  }
+  .label-container3{
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 64%; /* Adjust this value as needed */
+    margin-top: 20px; /* Adjust this value for spacing between label and box */
+  }
+
+
+  
+  .dropzone-container {
+    width: 50%; /* Adjust the width as needed */
+    margin: 20px auto; /* Centers the box */
+    padding: 50px;
+    border: 2px dashed #000;
+    border-radius: 5px;
+    text-align: center;
+    background-color: #f8f9fa;
+    position: relative;
+    margin-top: 43px;
+  }
+  
+  .dropzone-container p {
+    margin-bottom: 15px;
+    color: #6c757d;
+  }
+  
+  
+  .dropzone-container button {
+    background-color: #052659;
+    border-color: #052659;
+    color: white;
+    margin-top: 20px;
+  }
+  
+  .dropzone-container button:focus,
+  .dropzone-container button:hover
+   {
+    background-color: #005b96;
+    border-color: #005b96; 
+    color: white;
+  
+  }
+.submitbutton {
+  background-color: #052659;
+  border-color: #052659;
+  color: white;
+  margin-left: 80%;
+  position: relative;
+  top: -60px;
+  width: 10%;
+    
+  
+  }
+  
+  .submitbutton:focus,
+  .submitbutton:hover {
+    background-color: #005b96;
+    border-color: #005b96; 
+    color: white;
+  }
+  /* ProgressReport.css */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Align content to the left */
+  padding: 20px;
+}
+
+.label-container {
+  margin-bottom: 10px;
+}
+
+.select-dropdown {
+  padding: 5px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
