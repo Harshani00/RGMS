@@ -1,1 +1,1 @@
-# RGMS
+# RGMS ( Research Grant Managment System)
