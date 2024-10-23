@@ -1,5 +1,5 @@
 .sidebar {
-  position: fixed;
+  position: relative;
   left: 0; /* Always fixed on the left */
   top: 100px; /* Adjust as needed */
   width: 240px;
@@ -11,7 +11,9 @@
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s ease; /* Smooth transition */
   transform: translateX(0); /* Start visible */
-  border-radius: 20px;}
+  border-radius: 20px;
+  overflow:y ;}
+
 
 .sidebar.closed {
   transform: translateX(-100%); /* Hidden */

@@ -731,10 +731,7 @@ export default function Grant() {
     if (!coInvestigators[0].departmentUniversity) 
       errors.co_investigator_departmentUniversity = 'Affiliated Department and University are required.';
 
-    // Validation for foreign collaborators
-    if (!formData.foreign_collaborators) errors.foreign_collaborators = 'Foreign collaborators are required.';
-    if (!formData.foreign_collaborator_departmentUniversity)
-      errors.foreign_collaborator_departmentUniversity = 'Affiliated Department and University for foreign collaborators are required.';
+   
 
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
@@ -756,30 +753,7 @@ export default function Grant() {
 
  
 
-  // Function to handle form submission
-   // Function to handle form submission
-  //  const handleSubmit = async () => {
-  //   if (validate()) {
-  //     try {
-  //       const response = await axios.post('/Grant.php', formData, {
-  //         headers: {
-  //           'Content-Type': 'application/x-www-form-urlencoded',
-  //         },
-  //         transformRequest: [(data) => {
-  //           const params = new URLSearchParams();
-  //           for (const key in data) {
-  //             params.append(key, data[key]);
-  //           }
-  //           return params;
-  //         }],
-  //       });
-  //       alert(response.data);
-  //       setSubmitted(true); // Set form as submitted
-  //     } catch (error) {
-  //       alert('There was an error submitting the form. Please try again.');
-  //     }
-  //   }
-  // };
+ 
 
   const handleSubmit = async () => {
     if (validate()) {
@@ -938,25 +912,25 @@ export default function Grant() {
           </Button>
 
           <Form.Group controlId="formGridforeign">
-            <Form.Label>2. Foreign Collaborators of the Project <span className="text-danger">*</span></Form.Label>              
+            <Form.Label>2. Foreign Collaborators of the Project </Form.Label>              
             <Form.Control
               name="foreign_collaborators"
               value={formData.foreign_collaborators || ''}
               onChange={handleForeignChange}
               placeholder="Enter foreign collaborator's Name"
-              isInvalid={!!formErrors.foreign_collaborators}
+              //isInvalid={!!formErrors.foreign_collaborators}
             />
             <Form.Control.Feedback type="invalid">
               {formErrors.foreign_collaborators}
             </Form.Control.Feedback>
 
-            <Form.Label>Affiliated Department and University <span className="text-danger">*</span></Form.Label>
+            <Form.Label>Affiliated Department and University </Form.Label>
             <Form.Control
               name="foreign_collaborator_departmentUniversity"
               value={formData.foreign_collaborator_departmentUniversity || ''}
               onChange={handleForeignChange}
               placeholder="Enter affiliated Department and University"
-              isInvalid={!!formErrors.foreign_collaborator_departmentUniversity}
+              //isInvalid={!!formErrors.foreign_collaborator_departmentUniversity}
             />
             <Form.Control.Feedback type="invalid">
               {formErrors.foreign_collaborator_departmentUniversity}

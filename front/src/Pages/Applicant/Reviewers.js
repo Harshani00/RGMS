@@ -188,79 +188,7 @@ export default function Grant() {
   };
   
   
-  // const handleFinish = async (e) => {
-  //   e.preventDefault(); // Prevent default form submission behavior
-  //   const isValid = validate(); // Validate form
-  //   if (isValid) {
-  //     updateCompletionStatus('reviewers', true);
-  //     await handleSubmit(e); // Pass the event object to handleSubmit
-  //   } else {
-  //     window.alert('Missing Fields Required.');
-  //   }
-  // };
-
-  //////////
-
-   // Function to handle form submission (Finish and Submit)
-  // const handleFinish = async (e) => {  // handle Finish and Submit Action in the From
-  //   e.preventDefault(); // Prevent default form submission behavior
   
-  //   // Validate the form
-  //   const isValid = validate(); 
-  
-  //   if (isValid) {
-  //     try {
-  //       // Submit the grant form data to Grant.php
-  //       const grantResponse = await axios.post('/Grant.php', formData, {  // Store the grant response data in grantResponse variable
-  //         headers: {
-  //           'Content-Type': 'application/x-www-form-urlencoded', // Send the from data to Grant.php using hhtp POST request via axios
-  //         },
-  //         transformRequest: [(data) => {
-  //           const params = new URLSearchParams();
-  //           for (const key in data) {
-  //             params.append(key, data[key]);
-  //           }
-  //           return params;
-  //         }],
-  //       });
-  
-  //       console.log(grantResponse.data); // Log the response for debugging
-  
-  //       if (grantResponse.data.status === "success") {
-  //         // Call updateCompletionStatus for the reviewers form
-  //         updateCompletionStatus('reviewers', true);
-  
-  //         // Proceed to submit the files to FileUploads.php
-  //         const fileUploadResponse = await axios.post('/FileUploads.php', formData, { // Send the from data to FileUploads.php using hhtp POST request via axios and  Store the upload response data in grantResponse variable
-  //           headers: {
-  //             'Content-Type': 'multipart/form-data', // the content type is set to multipart/form-data, which is suitable for file uploads.
-  //           },
-  //         });
-  
-  //         console.log(fileUploadResponse.data); // Log the response for debugging
-  
-  //         if (fileUploadResponse.data.status === "success") {
-  //           // Handle successful file upload
-  //           window.alert('All forms submitted successfully!');
-  
-  //           // Clear form data and local storage
-  //           localStorage.removeItem('formData');
-  //           resetFormData(); // Reset formData to initial state
-  //           setSubmitted(true); // Set form as submitted only on success
-  //         } else {
-  //           window.alert('File upload failed. Please try again.');
-  //         }
-  //       } else {
-  //         window.alert('Grant form submission failed. Please Fill all the Required Fields.');
-  //       }
-  //     } catch (error) {
-  //       console.error('There was an error submitting the form:', error);
-  //       window.alert('There was an error submitting the form. Please try again.');
-  //     }
-  //   } else {
-  //     window.alert('Missing Required Fields.');
-  //   }
-  // };
   // const handleFinish = async (e) => {
   //   e.preventDefault(); // Prevent default form submission behavior
   
@@ -269,7 +197,7 @@ export default function Grant() {
   //   if (isValid) {
   //     try {
   //       // Step 1: Submit the grant form data to Grant.php
-  //       const grantResponse = await axios.post('/Grant.php', formData, {  // Store the grant response data in grantResponse variable
+  //       const grantResponse = await axios.post('/Grant.php', formData, { // Store the grant response data in grantResponse variable
   //         headers: {
   //           'Content-Type': 'application/x-www-form-urlencoded', // Send the form data to Grant.php using POST request via axios
   //         },
@@ -298,8 +226,15 @@ export default function Grant() {
   //         console.log(fileUploadResponse.data); // Log the response for debugging
   
   //         if (fileUploadResponse.data.status === "success") {
-  //           // Step 3: Submit data to MultipleRows.php using JSON
-  //           const multipleRowsResponse = await axios.post('/MultipleRows.php', formData, { // Send form data to MultipleRows.php using POST request
+  //           // Step 3: Filter out only the relevant data (grantRows and fundingRows)
+  //           const relevantData = {
+  //             grantRows: formData.grantRows,
+  //             fundingRows: formData.fundingRows,
+            
+  //           };
+  
+  //           // Step 4: Submit the filtered data to MultipleRows.php using JSON
+  //           const multipleRowsResponse = await axios.post('/MultipleRows.php', relevantData, { // Send relevant form data to MultipleRows.php using POST request
   //             headers: {
   //               'Content-Type': 'application/json', // Set content type to JSON for MultipleRows.php
   //             },
@@ -307,17 +242,19 @@ export default function Grant() {
   
   //           console.log(multipleRowsResponse.data); // Log the response for debugging
   
+           
   //           if (multipleRowsResponse.data.status === "success") {
-  //             // Handle successful submissions
   //             window.alert('All forms and files submitted successfully!');
-  
-  //             // Clear form data and local storage
   //             localStorage.removeItem('formData');
   //             resetFormData(); // Reset formData to initial state
   //             setSubmitted(true); // Set form as submitted only on success
-  //           } else {
-  //             window.alert('Submission to MultipleRows.php failed. Please try again.');
-  //           }
+  //         } else {
+  //             // Log the error returned from the server for debugging
+  //             console.error('Error from server:', multipleRowsResponse.data.message);
+  //             window.alert('Submission to MultipleRows.php failed: ' + multipleRowsResponse.data.message);
+  //         }
+          
+              
   //         } else {
   //           window.alert('File upload failed. Please try again.');
   //         }
@@ -340,7 +277,7 @@ export default function Grant() {
     if (isValid) {
       try {
         // Step 1: Submit the grant form data to Grant.php
-        const grantResponse = await axios.post('/Grant.php', formData, { // Store the grant response data in grantResponse variable
+        const grantResponse = await axios.post('/Grant.php', formData, {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded', // Send the form data to Grant.php using POST request via axios
           },
@@ -360,7 +297,7 @@ export default function Grant() {
           updateCompletionStatus('reviewers', true);
   
           // Step 2: Proceed to submit the files to FileUploads.php
-          const fileUploadResponse = await axios.post('/FileUploads.php', formData, { // Send the form data to FileUploads.php using POST request via axios and store the upload response data
+          const fileUploadResponse = await axios.post('/FileUploads.php', formData, {
             headers: {
               'Content-Type': 'multipart/form-data', // The content type is set to multipart/form-data, which is suitable for file uploads
             },
@@ -369,15 +306,15 @@ export default function Grant() {
           console.log(fileUploadResponse.data); // Log the response for debugging
   
           if (fileUploadResponse.data.status === "success") {
-            // Step 3: Filter out only the relevant data (grantRows and fundingRows)
+            // Step 3: Filter out only the relevant data (grantRows, fundingRows, and supervisorRows)
             const relevantData = {
               grantRows: formData.grantRows,
               fundingRows: formData.fundingRows,
-            
+              co_investigators: formData.co_investigators, // Add the multiple rows for supervisors here
             };
   
             // Step 4: Submit the filtered data to MultipleRows.php using JSON
-            const multipleRowsResponse = await axios.post('/MultipleRows.php', relevantData, { // Send relevant form data to MultipleRows.php using POST request
+            const multipleRowsResponse = await axios.post('/MultipleRows.php', relevantData, {
               headers: {
                 'Content-Type': 'application/json', // Set content type to JSON for MultipleRows.php
               },
@@ -385,27 +322,17 @@ export default function Grant() {
   
             console.log(multipleRowsResponse.data); // Log the response for debugging
   
-            // if (multipleRowsResponse.data.status === "success") {
-            //   window.alert('All forms and files submitted successfully!');
-            //   localStorage.removeItem('formData');
-            //   resetFormData(); // Reset formData to initial state
-            //   setSubmitted(true); // Set form as submitted only on success
-            // } else {
-            //   //console.error('Error from server:', multipleRowsResponse.data.error); // Log server error
-            //   window.alert('Submission to MultipleRows.php failed: ' + multipleRowsResponse.data.error);
-            // }
             if (multipleRowsResponse.data.status === "success") {
               window.alert('All forms and files submitted successfully!');
               localStorage.removeItem('formData');
               resetFormData(); // Reset formData to initial state
               setSubmitted(true); // Set form as submitted only on success
-          } else {
+            } else {
               // Log the error returned from the server for debugging
               console.error('Error from server:', multipleRowsResponse.data.message);
               window.alert('Submission to MultipleRows.php failed: ' + multipleRowsResponse.data.message);
-          }
-          
-              
+            }
+  
           } else {
             window.alert('File upload failed. Please try again.');
           }
@@ -420,6 +347,7 @@ export default function Grant() {
       window.alert('Missing required fields.');
     }
   };
+  
   
   // const handleFinish = async (e) => {  
   //   e.preventDefault(); 

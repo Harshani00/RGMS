@@ -84,6 +84,8 @@ $publication2 = isset($_POST['publication2']) ? $conn->real_escape_string($_POST
 $publication3 = isset($_POST['publication3']) ? $conn->real_escape_string($_POST['publication3']) : '';
 $outsidegrants = isset($_POST['outsidegrants']) ? $conn->real_escape_string($_POST['outsidegrants']) : '';
 $researchFacilities = isset($_POST['researchFacilities']) ? $conn->real_escape_string($_POST['researchFacilities']) : '';
+$foreign_collaborators = isset($_POST['foreign_collaborators']) ? $conn->real_escape_string($_POST['foreign_collaborators']) : '';
+$foreign_collaborator_departmentUniversity = isset($_POST['foreign_collaborator_departmentUniversity']) ? $conn->real_escape_string($_POST['foreign_collaborator_departmentUniversity']) : '';
 
 $reviewer1Name = isset($_POST['reviewer1Name']) ? $conn->real_escape_string($_POST['reviewer1Name']) : '';
 $reviewer2Name = isset($_POST['reviewer2Name']) ? $conn->real_escape_string($_POST['reviewer2Name']) : '';
@@ -131,298 +133,24 @@ if ($conn->query($sql) === TRUE) {
         exit();
     }
 
+    //Insert into supervisors table
+  
+   $foreign_collaborators = isset($_POST['foreign_collaborators']) ? $conn->real_escape_string($_POST['foreign_collaborators']) : '';
+   $foreign_collaborator_departmentUniversity = isset($_POST['foreign_collaborator_departmentUniversity']) ? $conn->real_escape_string($_POST['foreign_collaborator_departmentUniversity']) : '';
+
+   $sql_supervisors = "INSERT INTO supervisors (app_ID, foreign_collaborators, foreign_collaborator_departmentUniversity) VALUES ('$app_ID', '$foreign_collaborators', '$foreign_collaborator_departmentUniversity')";
+
+   if (!$conn->query($sql_supervisors)) {
+       echo json_encode([
+           "status" => "error",
+           "message" => "Error inserting into supervisors: " . $conn->error
+       ]);
+       exit();
+   } 
+
+
     
-   // Check if the grant rows data is set and valid
-// if (isset($_POST['grantRows']) && is_array($_POST['grantRows'])) {
-//     foreach ($_POST['grantRows'] as $index => $grantRow) {
-//         // Ensure each key exists before using it
-//         $fundingSource = isset($grantRow['fundingSource']) ? $conn->real_escape_string($grantRow['fundingSource']) : '';
-//         $durationperiod = isset($grantRow['durationperiod']) ? $conn->real_escape_string($grantRow['durationperiod']) : '';
-//         $currency = isset($grantRow['currency']) ? $conn->real_escape_string($grantRow['currency']) : '';
-//         $amount = isset($grantRow['amount']) ? $conn->real_escape_string($grantRow['amount']) : '';
 
-//         // Insert query for prev_university_grants
-//         $sql_funding = "INSERT INTO prev_university_grants (fundingSource, durationperiod, currency, amount, app_ID) 
-//                         VALUES ('$fundingSource', '$durationperiod', '$currency', '$amount', '$app_ID')";
-
-//         if (!$conn->query($sql_funding)) {
-//             echo json_encode([
-//                 "status" => "error",
-//                 "message" => "Error inserting into prev_university_grants: " . $conn->error
-//             ]);
-//             exit();
-//         }
-//     }
-// }
-
-//Handle other grants
-// $fundingOrganizations = isset($_POST['fundingOrganization']) ? $_POST['fundingOrganization'] : [];
-// $fundingAmounts = isset($_POST['fundingAmount']) ? $_POST['fundingAmount'] : [];
-
-// if (count($fundingOrganizations) > 0 && count($fundingAmounts) > 0) {
-//     for ($i = 0; $i < count($fundingOrganizations); $i++) {
-//         $fundingOrganization = $conn->real_escape_string($fundingOrganizations[$i]);
-//         $fundingAmount = $conn->real_escape_string($fundingAmounts[$i]);
-
-//         // Insert into other_grants table
-//         $sql = "INSERT INTO other_grants (fundingOrganization, fundingAmount, app_ID) 
-//                 VALUES ('$fundingOrganization', '$fundingAmount', '$app_ID')";
-
-//         if (!$conn->query($sql)) {
-//             echo json_encode([
-//                 "status" => "error",
-//                 "message" => "Error inserting into other_grants: " . $conn->error
-//             ]);
-//             exit();
-//         }
-//     }
-// } 
-
-// if (isset($_POST['fundingRows']) && is_array($_POST['fundingRows'])) {
-//     foreach ($_POST['fundingRows'] as $fundingRow) {
-//         $fundingOrganization = $fundingRow['fundingOrganization'];
-//         $fundingAmount = $fundingRow['fundingAmount'];
-
-//         // Insert each row into the database (assuming a funding table)
-//         $sql = "INSERT INTO other_grants (fundingOrganization,fundingAmount,app_ID) VALUES ('$fundingOrganization', '$fundingAmount', '$app_ID')";
-//         $result = mysqli_query($conn, $sql);
-//         if (!$result) {
-//             echo "Error inserting funding row: " . mysqli_error($conn);
-//         }
-//     }
-// }
-//Check if fundingRows is set and is an array
-// if (isset($_POST['fundingRows']) && is_array($_POST['fundingRows'])) {
-//     foreach ($_POST['fundingRows'] as $index => $fundingRow) {
-//         // Get funding organization and amount from the current row
-//         $fundingOrganization = isset($fundingRow['fundingOrganization']) ? $fundingRow['fundingOrganization'] : null;
-//         $fundingAmount = isset($fundingRow['fundingAmount']) ? $fundingRow['fundingAmount'] : null;
-
-//         // Only proceed if both values are present
-//         if ($fundingOrganization && $fundingAmount) {
-//             // Insert into database table other_grants
-//             $sql = "INSERT INTO other_grants (fundingOrganization, fundingAmount, app_ID) 
-//                     VALUES ('$fundingOrganization', '$fundingAmount', '$app_ID')";
-
-//             // Execute the query and check for errors
-//             if (mysqli_query($conn, $sql)) {
-//                 echo "Funding row $index inserted successfully.";
-//             } else {
-//                 echo "Error inserting funding row $index: " . mysqli_error($conn);
-//             }
-//         }
-//     }
-// }
-
-// // Decode JSON strings to arrays
-// $fundingRows = isset($_POST['fundingRows']) ? json_decode($_POST['fundingRows'], true) : [];
-// $grantRows = isset($_POST['grantRows']) ? json_decode($_POST['grantRows'], true) : [];
-
-// if (is_array($fundingRows)) {
-//     foreach ($fundingRows as $index => $fundingRow) {
-//         // Get funding organization and amount from the current row
-//         $fundingOrganization = isset($fundingRow['fundingOrganization']) ? $conn->real_escape_string($fundingRow['fundingOrganization']) : null;
-//         $fundingAmount = isset($fundingRow['fundingAmount']) ? $conn->real_escape_string($fundingRow['fundingAmount']) : null;
-
-//         // Only proceed if both values are present
-//         if ($fundingOrganization && $fundingAmount) {
-//             // Insert into database table other_grants
-//             $sql = "INSERT INTO other_grants (fundingOrganization, fundingAmount, app_ID) 
-//                     VALUES ('$fundingOrganization', '$fundingAmount', '$app_ID')";
-
-//             if ($conn->query($sql)) {
-//                 echo "Funding row $index inserted successfully.";
-//             } else {
-//                 echo "Error inserting funding row $index: " . $conn->error;
-//             }
-//         }
-//     }
-// }
-
-// if (is_array($grantRows)) {
-//     foreach ($grantRows as $index => $grantRow) {
-//         // Get the necessary data from the current row
-//         $fundingSource = isset($grantRow['fundingSource']) ? $conn->real_escape_string($grantRow['fundingSource']) : null;
-//         $durationperiod = isset($grantRow['durationperiod']) ? $conn->real_escape_string($grantRow['durationperiod']) : null;
-//         $currency = isset($grantRow['currency']) ? $conn->real_escape_string($grantRow['currency']) : null;
-//         $amount = isset($grantRow['amount']) ? $conn->real_escape_string($grantRow['amount']) : null;
-
-//         // Insert into database
-//         if ($fundingSource && $durationperiod && $currency && $amount) {
-//             $sql_funding = "INSERT INTO prev_university_grants (fundingSource, durationperiod, currency, amount, app_ID) 
-//                             VALUES ('$fundingSource', '$durationperiod', '$currency', '$amount', '$app_ID')";
-
-//             if ($conn->query($sql_funding)) {
-//                 echo "Grant row $index inserted successfully.";
-//             } else {
-//                 echo "Error inserting grant row $index: " . $conn->error;
-//             }
-//         }
-//     }
-// }
-// Decode JSON strings to arrays
-// $fundingRows = isset($_POST['fundingRows']) ? json_decode($_POST['fundingRows'], true) : [];
-// $grantRows = isset($_POST['grantRows']) ? json_decode($_POST['grantRows'], true) : [];
-
-// if (is_array($fundingRows)) {
-//     foreach ($fundingRows as $index => $fundingRow) {
-//         $fundingOrganization = isset($fundingRow['fundingOrganization']) ? $conn->real_escape_string($fundingRow['fundingOrganization']) : null;
-//         $fundingAmount = isset($fundingRow['fundingAmount']) ? $conn->real_escape_string($fundingRow['fundingAmount']) : null;
-
-//         if ($fundingOrganization && $fundingAmount) {
-//             $sql = "INSERT INTO other_grants (fundingOrganization, fundingAmount, app_ID) 
-//                     VALUES ('$fundingOrganization', '$fundingAmount', '$app_ID')";
-
-//             if (!$conn->query($sql)) {
-//                 echo "Error inserting funding row $index: " . $conn->error;
-//                 exit(); // Stop if there is an error with a specific funding row
-//             }
-//         }
-//     }
-// }
-
-// if (is_array($grantRows)) {
-    
-//     foreach ($grantRows as $index => $grantRow) {
-//         $fundingSource = isset($grantRow['fundingSource']) ? $conn->real_escape_string($grantRow['fundingSource']) : null;
-//         $durationperiod = isset($grantRow['durationperiod']) ? $conn->real_escape_string($grantRow['durationperiod']) : null;
-//         $currency = isset($grantRow['currency']) ? $conn->real_escape_string($grantRow['currency']) : null;
-//         $amount = isset($grantRow['amount']) ? $conn->real_escape_string($grantRow['amount']) : null;
-
-//         if ($fundingSource && $durationperiod && $currency && $amount) {
-//             $sql_funding = "INSERT INTO prev_university_grants (fundingSource, durationperiod, currency, amount, app_ID) 
-//                             VALUES ('$fundingSource', '$durationperiod', '$currency', '$amount', '$app_ID')";
-
-//             if (!$conn->query($sql_funding)) {
-//                 echo "Error inserting grant row $index: " . $conn->error;
-//                 exit(); // Stop if there is an error with a specific grant row
-//             }
-//         }
-//     }
-// }
-// Get the raw POST data
-
-// Get the raw POST data
-// $data = json_decode(file_get_contents('php://input'), true);
-
-// // Check if 'fundingRows' and 'grantRows' are provided
-// if (isset($data['fundingRows']) && isset($data['grantRows'])) {
-
-//     $fundingRows = $data['fundingRows'];  // Get the funding rows from the decoded JSON data
-//     $grantRows = $data['grantRows'];  // Get the grant rows from the decoded JSON data
-
-//     // Start a transaction to ensure all rows are inserted together
-//     $conn->begin_transaction();
-
-//     // Prepare SQL for funding rows
-//     $stmt_funding = $conn->prepare("INSERT INTO other_grants (fundingOrganization, fundingAmount, app_ID) VALUES (?, ?, ?)");
-//     if (!$stmt_funding) {
-//         echo json_encode(['error' => 'Failed to prepare funding statement: ' . $conn->error]);
-//         exit();
-//     }
-
-//     // Insert funding rows
-//    foreach ($fundingRows as $fundingRow) {
-    // Ensure the values are not empty before binding them
-    // $fundingOrganization = $fundingRow['fundingOrganization'];
-    // $fundingAmount = $fundingRow['fundingAmount'];
-    // $app_ID = $fundingRow['app_ID']; // Assuming app_ID is part of each row
-
-    // Only bind and execute if none of the values are empty
-    // if (!empty($fundingOrganization) && !empty($fundingAmount) && !empty($app_ID)) {
-        // Bind the parameters (use 'sss' if all are strings, adjust as needed)
-//         $stmt_funding->bind_param("sss", $fundingOrganization, $fundingAmount, $app_ID);
-        
-//         // Execute the statement and handle errors
-//         if (!$stmt_funding->execute()) {
-//             // Rollback the transaction if an error occurs
-//             $conn->rollback();
-//             echo json_encode(['error' => 'Error inserting funding row: ' . $conn->error]);
-//             exit();
-//         }
-//     // }
-// }
-
-
-//     // Prepare SQL for grant rows
-//     $stmt_grant = $conn->prepare("INSERT INTO prev_university_grants (fundingSource, durationperiod, currency, amount, app_ID) VALUES (?, ?, ?, ?, ?)");
-//     if (!$stmt_grant) {
-//         echo json_encode(['error' => 'Failed to prepare grant statement: ' . $conn->error]);
-//         exit();
-//     }
-
-//     // Insert grant rows
-//     foreach ($grantRows as $grantRow) {
-        // Ensure the values are not empty before binding them
-        // $fundingSource = $conn->real_escape_string($grantRow['fundingSource']);
-        // $durationperiod = $conn->real_escape_string($grantRow['durationperiod']);
-        // $currency = $conn->real_escape_string($grantRow['currency']);
-        // $amount = $conn->real_escape_string($grantRow['amount']);
-        // $app_ID = $conn->real_escape_string($grantRow['app_ID']); // Assuming app_ID is part of each row
-
-//         if ($fundingSource && $durationperiod && $currency && $amount && $app_ID) {
-//             $stmt_grant->bind_param("sssss", $fundingSource, $durationperiod, $currency, $amount, $app_ID);
-//             if (!$stmt_grant->execute()) {
-//                 $conn->rollback();
-//                 echo json_encode(['error' => 'Error inserting grant row: ' . $conn->error]);
-//                 exit();
-//             }
-//         }
-//     }
-
-//     // Commit the transaction after all rows are inserted
-//     $conn->commit();
-
-//     // Return success response
-//     echo json_encode(['success' => 'Rows inserted successfully']);
-
-//     // Close prepared statements
-//     $stmt_funding->close();
-//     $stmt_grant->close();
-
-// } 
-
-
- // Insert into supervisors table
-//    $co_investigators = isset($_POST['co_investigators']) ? $conn->real_escape_string($_POST['co_investigators']) : '';
-//      $co_investigator_departmentUniversity = isset($_POST['co_investigator_departmentUniversity']) ? $conn->real_escape_string($_POST['co_investigator_departmentUniversity']) : '';
-//      $foreign_collaborators = isset($_POST['foreign_collaborators']) ? $conn->real_escape_string($_POST['foreign_collaborators']) : '';
-//      $foreign_collaborator_departmentUniversity = isset($_POST['foreign_collaborator_departmentUniversity']) ? $conn->real_escape_string($_POST['foreign_collaborator_departmentUniversity']) : '';
- 
-//      $sql_supervisors = "INSERT INTO supervisors (app_ID, co_investigators, co_investigator_departmentUniversity, foreign_collaborators, foreign_collaborator_departmentUniversity) VALUES ('$app_ID', '$co_investigators', '$co_investigator_departmentUniversity', '$foreign_collaborators', '$foreign_collaborator_departmentUniversity')";
- 
-//      if (!$conn->query($sql_supervisors)) {
-//          echo json_encode([
-//              "status" => "error",
-//              "message" => "Error inserting into supervisors: " . $conn->error
-//          ]);
-//          exit();
-//      } 
-
-// $co_investigators = isset($_POST['co_investigators']) ? json_decode($_POST['co_investigators'], true) : [];
-// $co_investigator_departmentUniversity = isset($_POST['co_investigator_departmentUniversity']) ? json_decode($_POST['co_investigator_departmentUniversity'], true) : [];
-// $foreign_collaborators = isset($_POST['foreign_collaborators']) ? $conn->real_escape_string($_POST['foreign_collaborators']) : '';
-// $foreign_collaborator_departmentUniversity = isset($_POST['foreign_collaborator_departmentUniversity']) ? $conn->real_escape_string($_POST['foreign_collaborator_departmentUniversity']) : '';
-
-// // Check if co_investigators is an array before proceeding
-// if (is_array($co_investigators) && is_array($co_investigator_departmentUniversity)) {
-//     foreach ($co_investigators as $index => $investigator) {
-//         $investigator_name = $conn->real_escape_string($investigator);
-//         $investigator_department = isset($co_investigator_departmentUniversity[$index]) ? $conn->real_escape_string($co_investigator_departmentUniversity[$index]) : '';
-
-//         // Insert into supervisors table for each co-investigator
-//         $sql_supervisors = "INSERT INTO supervisors (app_ID, co_investigators, co_investigator_departmentUniversity, foreign_collaborators, foreign_collaborator_departmentUniversity) 
-//                             VALUES ('$app_ID', '$investigator_name', '$investigator_department', '$foreign_collaborators', '$foreign_collaborator_departmentUniversity')";
-
-//         if (!$conn->query($sql_supervisors)) {
-//             echo json_encode([
-//                 "status" => "error",
-//                 "message" => "Error inserting into supervisors: " . $conn->error
-//             ]);
-//             exit();
-//         }
-//     }
-// } 
 
 
 // Prepare and execute the app_status insertion
@@ -468,6 +196,38 @@ if ($stmt = $conn->prepare($sql_update_application)) {
     ]);
     exit();
 }
+
+// Insert or update 'sent' column to 0 (No) in 'dean_approval' table
+$stmt_dean = $conn->prepare("
+    INSERT INTO dean_approval (app_ID, sent)
+    VALUES (?, 0)
+    ON DUPLICATE KEY UPDATE sent = 0
+");
+if (!$stmt_dean) {
+    echo json_encode(['status' => 'error', 'message' => 'Failed to prepare dean approval statement: ' . $conn->error]);
+    exit();
+}
+$stmt_dean->bind_param("s", $app_ID);
+
+if (!$stmt_dean->execute()) {
+    echo json_encode(['status' => 'error', 'message' => 'Error updating dean_approval: ' . $conn->error]);
+    exit();
+}
+
+// Insert or update 'sent' column to 0 (No) in 'hod_approval' table
+$stmt_hod = $conn->prepare("INSERT INTO hod_approval (app_ID, sent)VALUES (?, 0) ON DUPLICATE KEY UPDATE sent = 0
+");
+if (!$stmt_hod) {
+    echo json_encode(['status' => 'error', 'message' => 'Failed to prepare HOD approval statement: ' . $conn->error]);
+    exit();
+}
+$stmt_hod->bind_param("s", $app_ID);
+
+if (!$stmt_hod->execute()) {
+    echo json_encode(['status' => 'error', 'message' => 'Error updating hod_approval: ' . $conn->error]);
+    exit();
+}
+
 
 // Final response after all operations
 echo json_encode([
