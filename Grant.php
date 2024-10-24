@@ -135,8 +135,6 @@ if ($conn->query($sql) === TRUE) {
 
     //Insert into supervisors table
   
-   $foreign_collaborators = isset($_POST['foreign_collaborators']) ? $conn->real_escape_string($_POST['foreign_collaborators']) : '';
-   $foreign_collaborator_departmentUniversity = isset($_POST['foreign_collaborator_departmentUniversity']) ? $conn->real_escape_string($_POST['foreign_collaborator_departmentUniversity']) : '';
 
    $sql_supervisors = "INSERT INTO supervisors (app_ID, foreign_collaborators, foreign_collaborator_departmentUniversity) VALUES ('$app_ID', '$foreign_collaborators', '$foreign_collaborator_departmentUniversity')";
 

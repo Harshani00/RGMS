@@ -1,5 +1,4 @@
 <?php
-
 // Enable CORS
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, OPTIONS');
@@ -86,12 +85,40 @@ if (isset($data['fundingRows']) && isset($data['grantRows']) && isset($data['co_
         }
     }
 
-// $foreign_collaborators = isset($_POST['foreign_collaborators']) ? $conn->real_escape_string($_POST['foreign_collaborators']) : '';
-// $foreign_collaborator_departmentUniversity = isset($_POST['foreign_collaborator_departmentUniversity']) ? $conn->real_escape_string($_POST['foreign_collaborator_departmentUniversity']) : '';
+    // Prepare SQL for supervisor rows (co-investigators)
+    // $stmt_supervisor = $conn->prepare("INSERT INTO supervisors (co_investigators, co_investigator_departmentUniversity, foreign_collaborators, foreign_collaborator_departmentUniversity, app_ID) VALUES (?, ?, ?, ?, ?)");
+    // if (!$stmt_supervisor) {
+    //     echo json_encode(['status' => 'error', 'message' => 'Failed to prepare supervisor statement: ' . $conn->error]);
+    //     exit();
+    // }
 
+    // // Insert supervisor rows (co-investigators)
+    // foreach ($co_investigators as $investigator) {
+    //     $name = $investigator['name'];
+    //     $departmentUniversity = $investigator['departmentUniversity'];
+    //     $foreign_collaborators = isset($data['foreign_collaborators']) ? $data['foreign_collaborators'] : '';
+    //     $foreign_collaborator_departmentUniversity = isset($data['foreign_collaborator_departmentUniversity']) ? $data['foreign_collaborator_departmentUniversity'] : '';
 
-   // Prepare SQL for supervisor rows (co-investigators)
-$stmt_supervisor = $conn->prepare("INSERT INTO supervisors (co_investigators, co_investigator_departmentUniversity, foreign_collaborators, foreign_collaborator_departmentUniversityapp_ID) VALUES (?, ?, ?, ?, ?)", array);
+    //     // Only bind and execute if none of the values are empty
+    //     if (!empty($name) && !empty($departmentUniversity)) {
+    //         $stmt_supervisor->bind_param("sssss", $name, $departmentUniversity, $foreign_collaborators, $foreign_collaborator_departmentUniversity, $app_ID);
+
+    //         // Execute the statement and handle errors
+    //         if (!$stmt_supervisor->execute()) {
+    //             // Rollback the transaction if an error occurs
+    //             $conn->rollback();
+    //             echo json_encode(['status' => 'error', 'message' => 'Error inserting supervisor row: ' . $conn->error]);
+    //             exit();
+    //         }
+    //     }
+    // }
+    // Retrieve foreign collaborators and their department/university from the POST data
+$foreign_collaborators = isset($data['foreign_collaborators']) ? $conn->real_escape_string($data['foreign_collaborators']) : '';
+$foreign_collaborator_departmentUniversity = isset($data['foreign_collaborator_departmentUniversity']) ? $conn->real_escape_string($data['foreign_collaborator_departmentUniversity']) : '';
+
+// Prepare SQL for supervisor rows (co-investigators)
+// Updated to include foreign collaborators and their department/university
+$stmt_supervisor = $conn->prepare("INSERT INTO supervisors (co_investigators, co_investigator_departmentUniversity, foreign_collaborators, foreign_collaborator_departmentUniversity, app_ID) VALUES (?, ?, ?, ?, ?)");
 if (!$stmt_supervisor) {
     echo json_encode(['status' => 'error', 'message' => 'Failed to prepare supervisor statement: ' . $conn->error]);
     exit();
@@ -102,9 +129,9 @@ foreach ($co_investigators as $investigator) {
     $name = $investigator['name'];
     $departmentUniversity = $investigator['departmentUniversity'];
 
-    // Only bind and execute if none of the values are empty
+    // Only bind and execute if the name and department/university are not empty
     if (!empty($name) && !empty($departmentUniversity)) {
-        $stmt_supervisor->bind_param("sss", $name, $departmentUniversity, $app_ID);
+        $stmt_supervisor->bind_param("sssss", $name, $departmentUniversity, $foreign_collaborators, $foreign_collaborator_departmentUniversity, $app_ID);
 
         // Execute the statement and handle errors
         if (!$stmt_supervisor->execute()) {
@@ -115,35 +142,7 @@ foreach ($co_investigators as $investigator) {
         }
     }
 }
-// $foreign_collaborators = isset($_POST['foreign_collaborators']) ? $conn->real_escape_string($_POST['foreign_collaborators']) : '';
-// $foreign_collaborator_departmentUniversity = isset($_POST['foreign_collaborator_departmentUniversity']) ? $conn->real_escape_string($_POST['foreign_collaborator_departmentUniversity']) : '';
-// //$app_ID = isset($_POST['app_ID']) ? $conn->real_escape_string($_POST['app_ID']) : ''; // Ensure app_ID is set
 
-// // Prepare SQL for supervisor rows (co-investigators)
-// $stmt_supervisor = $conn->prepare("INSERT INTO supervisors (co_investigators, co_investigator_departmentUniversity, foreign_collaborators, foreign_collaborator_departmentUniversity, app_ID) VALUES (?, ?, ?, ?, ?)");
-// if (!$stmt_supervisor) {
-//     echo json_encode(['status' => 'error', 'message' => 'Failed to prepare supervisor statement: ' . $conn->error]);
-//     exit();
-// }
-
-// // Insert supervisor rows (co-investigators)
-// foreach ($co_investigators as $investigator) {
-//     $name = $investigator['name'];
-//     $departmentUniversity = $investigator['departmentUniversity'];
-
-//     // Only bind and execute if none of the values are empty
-//     if (!empty($name) && !empty($departmentUniversity)) {
-//         $stmt_supervisor->bind_param("sssss", $name, $departmentUniversity, $foreign_collaborators, $foreign_collaborator_departmentUniversity, $app_ID);
-
-//         // Execute the statement and handle errors
-//         if (!$stmt_supervisor->execute()) {
-//             // Rollback the transaction if an error occurs
-//             $conn->rollback();
-//             echo json_encode(['status' => 'error', 'message' => 'Error inserting supervisor row: ' . $conn->error]);
-//             exit();
-//         }
-//     }
-// }
 
     // Commit the transaction after all rows are inserted
     $conn->commit();
@@ -159,5 +158,4 @@ foreach ($co_investigators as $investigator) {
 } else {
     echo json_encode(['status' => 'error', 'message' => 'No funding, grant, or supervisor rows provided']);
 }
-
 ?>

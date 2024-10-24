@@ -11,8 +11,8 @@ session_start();
 include("dbConnection.php");
 
 // Define the target directory where files will be uploaded
-$targetDir = "D:/GrantData/CriteriaFiles/"; // Make sure this folder exists
-$allowedTypes = array('docx'); // Allowed file types
+$targetDir = "D:/Xampp/htdocs/uploads/CriteriaFiles/"; // Make sure this folder exists
+$allowedTypes = array('docx', 'pdf' ); // Allowed file types
 
 // Ensure the uploads directory exists
 if (!file_exists($targetDir)) {
@@ -22,7 +22,7 @@ if (!file_exists($targetDir)) {
 // Function to handle file upload
 function uploadFile($file, $targetDir, $allowedTypes) {
     $fileName = basename($file["name"]);
-    $targetFilePath = $targetDir . $fileName;
+    $targetFilePath = $targetDir . $fileName; // Concatenate directory and filename
     $fileType = strtolower(pathinfo($targetFilePath, PATHINFO_EXTENSION));
 
     // Check if the file type is allowed
@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($stmt) {
                 // Insert the file path (or name) into the `criteria` column
-                $filePath = $targetDir . $uploadResult;
+                $filePath = $uploadResult; // Use the uploaded file name
                 $stmt->bind_param("s", $filePath);
                 $stmt->execute();
                 $stmt->close();

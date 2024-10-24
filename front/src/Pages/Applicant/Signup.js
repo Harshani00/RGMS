@@ -280,7 +280,7 @@ const SignupForm = () => {
                     </Button>
                 </Form>
 
-                <p className="mt-3">Already have an account? <Button variant="link" onClick={handleLoginRedirect} >Login Here</Button></p>
+                <p className="account">Already have an account? <Button variant="link" className="signuphyperlink" onClick={handleLoginRedirect} >Login Here</Button></p>
             </div>
         </div>
     );

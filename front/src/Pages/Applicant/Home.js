@@ -94,14 +94,126 @@
 //     </div>
 //   );
 // }
-import React from 'react';
+// import React from 'react';
+// import './Home.css'; // Import the CSS file
+// import Navbar from '../../Components/Navbar';
+// import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+// import videoSource from '../../Assets/vedio (2).mp4'; // Import your video file
+// import Footer from '../../Components/Footer';
+
+// export default function HomePage() {
+//   const navigate = useNavigate(); // Initialize navigate for routing
+
+//   const handleLoginClick = () => {
+//     navigate('/login'); // Navigate to the login page
+//   };
+
+//   const handleSignupClick = () => {
+//     navigate('/signup'); // Navigate to the signup page
+//   };
+
+//   return (
+//     <div className="home-page">
+//       <Navbar />
+    
+//       <video className="background-video" autoPlay loop muted>
+//         <source src={videoSource} type="video/mp4" />
+//         Your browser does not support the video tag.
+//       </video>
+//       <div className="content">
+//         <h1 className="title1">Research Grant Management System</h1>
+//         <lable className="title2"> UNIVERSITY OF PERADENIYA</lable>
+//         <div className="buttons">
+//           <button className="accessbuttons" onClick={handleLoginClick}>Login</button>
+//           <button className="accessbuttons" onClick={handleSignupClick}>Sign Up</button>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+// import React, { useEffect, useState } from 'react';
+// import './Home.css'; // Import the CSS file
+// import Navbar from '../../Components/Navbar';
+// import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+
+
+// const imageSources = [
+//   require('../../Assets/background.png'), // Replace with your actual image paths
+//   require('../../Assets/background3.png'),
+//   require('../../Assets/bb.jpg'),
+// ];
+
+// export default function HomePage() {
+//   const navigate = useNavigate(); // Initialize navigate for routing
+//   const [currentImage, setCurrentImage] = useState(imageSources[0]); // Set initial image
+//   const [imageIndex, setImageIndex] = useState(0); // Index for the current image
+
+//   // Function to change images
+//   const changeImage = () => {
+//     const nextIndex = (imageIndex + 1) % imageSources.length;
+//     setCurrentImage(imageSources[nextIndex]);
+//     setImageIndex(nextIndex);
+//   };
+
+//   useEffect(() => {
+//     const intervalId = setInterval(changeImage, 1000); // Change image every 5 seconds
+//     return () => clearInterval(intervalId); // Cleanup on unmount
+//   }, [imageIndex]);
+
+//   const handleLoginClick = () => {
+//     navigate('/login'); // Navigate to the login page
+//   };
+
+//   const handleSignupClick = () => {
+//     navigate('/signup'); // Navigate to the signup page
+//   };
+
+//   return (
+//     <div className="home-page">
+//       <Navbar />
+//       <div
+//         className="background-image"
+//         style={{ backgroundImage: `url(${currentImage})` }}
+//       ></div>
+//       <div className="content">
+//         <h1 className="title1">Research Grant Management System</h1>
+//         <label className="title2">UNIVERSITY OF PERADENIYA</label>
+//         <div className="buttons">
+//           <button className="accessbuttons" onClick={handleLoginClick}>Login</button>
+//           <button className="accessbuttons" onClick={handleSignupClick}>Sign Up</button>
+//         </div>
+//       </div>
+     
+//     </div>
+//   );
+// }
+import React, { useEffect, useState } from 'react';
 import './Home.css'; // Import the CSS file
 import Navbar from '../../Components/Navbar';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
-import videoSource from '../../Assets/vedio (2).mp4'; // Import your video file
+
+const imageSources = [
+  require('../../Assets/background.png'), // Replace with your actual image paths
+  require('../../Assets/background3.png'),
+  require('../../Assets/bb.jpg'),
+];
 
 export default function HomePage() {
   const navigate = useNavigate(); // Initialize navigate for routing
+  const [currentImage, setCurrentImage] = useState(imageSources[0]); // Set initial image
+  const [imageIndex, setImageIndex] = useState(0); // Index for the current image
+
+  // Function to change images
+  const changeImage = () => {
+    const nextIndex = (imageIndex + 1) % imageSources.length;
+    setCurrentImage(imageSources[nextIndex]);
+    setImageIndex(nextIndex);
+  };
+
+   useEffect(() => {
+    const intervalId = setInterval(changeImage, 5000); // Change image every 5 seconds
+    return () => clearInterval(intervalId); // Cleanup on unmount
+  }, [imageIndex]);
 
   const handleLoginClick = () => {
     navigate('/login'); // Navigate to the login page
@@ -114,17 +226,22 @@ export default function HomePage() {
   return (
     <div className="home-page">
       <Navbar />
-      <video className="background-video" autoPlay loop muted>
-        <source src={videoSource} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+      <div
+        className="background-image"
+        style={{ backgroundImage: `url(${currentImage})` }}
+      ></div>
       <div className="content">
-        <h1 className="title">Research Grant Management System</h1>
-        <lable className="title2"> UNIVERSITY OF PERADENIYA</lable>
+        <h1 className="title1">Research Grant Management System</h1>
+        <label className="title2">UNIVERSITY OF PERADENIYA</label>
         <div className="buttons">
           <button className="accessbuttons" onClick={handleLoginClick}>Login</button>
           <button className="accessbuttons" onClick={handleSignupClick}>Sign Up</button>
         </div>
+      </div>
+      <div className="info-card">
+       
+        <p className="card-text">Please download the necessary documents here.</p>
+       
       </div>
     </div>
   );

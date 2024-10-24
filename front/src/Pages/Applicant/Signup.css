@@ -49,4 +49,12 @@
     color: white;
   }
 
-  
+  .account{
+    color: #000;
+  }
+  .signuphyperlink
+  {
+    text-decoration: none;
+    font-weight: bold;
+    color:rgb(10, 10, 151);
+  }

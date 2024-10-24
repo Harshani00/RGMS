@@ -757,7 +757,7 @@ export default function Dashboard() {
             />
             <CustomCard 
               title="Approve Budget Revision"  
-              linkTo="/aprovebudget" 
+              linkTo="/approvebudget" 
               //imageSrc={budgetImage}
               //className="transparent-image"  
             />        

@@ -1,0 +1,36 @@
+.footer-background {
+    position: relative;
+    padding: 20px 0;
+    color: white; /* Setting text color to white */
+   
+  }
+  
+  .footer-background::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6); /* Dark overlay on top of the background image */
+    z-index: 1; /* Ensure overlay is above the background but below the content */
+  }
+  
+  .footer-overlay {
+    position: relative; /* Position relative to contain the overlay */
+    z-index: 2; /* Ensure content is above the overlay */
+  }
+  
+  h5, p {
+    color: white; /* Ensuring text remains white */
+    font-weight: bold;
+  }
+  
+  img {
+    width: 350px;
+    height: auto;
+  }
+  .text-left{
+    width: 500px;
+  }
+  
