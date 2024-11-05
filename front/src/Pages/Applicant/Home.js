@@ -190,10 +190,12 @@
 import React, { useEffect, useState } from 'react';
 import './Home.css'; // Import the CSS file
 import Navbar from '../../Components/Navbar';
+import Navbar3 from '../../Components/Navbar3';
+
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 
 const imageSources = [
-  require('../../Assets/background.png'), // Replace with your actual image paths
+  require('../../Assets/uni1.jpg'), // Replace with your actual image paths
   require('../../Assets/background3.png'),
   require('../../Assets/bb.jpg'),
 ];
@@ -215,28 +217,24 @@ export default function HomePage() {
     return () => clearInterval(intervalId); // Cleanup on unmount
   }, [imageIndex]);
 
-  const handleLoginClick = () => {
-    navigate('/login'); // Navigate to the login page
-  };
-
-  const handleSignupClick = () => {
-    navigate('/signup'); // Navigate to the signup page
-  };
-
+  
   return (
     <div className="home-page">
+      
       <Navbar />
+      <Navbar3 />
+      <div className="img-card">
       <div
         className="background-image"
         style={{ backgroundImage: `url(${currentImage})` }}
       ></div>
+      </div>
       <div className="content">
-        <h1 className="title1">Research Grant Management System</h1>
-        <label className="title2">UNIVERSITY OF PERADENIYA</label>
-        <div className="buttons">
+        
+        {/* <div className="buttons">
           <button className="accessbuttons" onClick={handleLoginClick}>Login</button>
           <button className="accessbuttons" onClick={handleSignupClick}>Sign Up</button>
-        </div>
+        </div> */}
       </div>
       <div className="info-card">
        

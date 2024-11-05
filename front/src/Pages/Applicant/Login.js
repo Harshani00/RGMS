@@ -166,7 +166,7 @@ export default function LoginForm() {
       <div className="image-half" style={{ backgroundImage: `url(${backgroundImage})` }}>
         {/* Optional: You can also add additional content over the image */}
       </div>
-      <div className="form-half">
+      <div className="form-half" >
         <div className="access-container1">
           <h2 className="access-title">Log In</h2>
           <Form onSubmit={handleSubmit}>
@@ -225,4 +225,3 @@ export default function LoginForm() {
     </div>
   );
 }
-

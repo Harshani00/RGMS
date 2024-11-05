@@ -695,7 +695,13 @@ export default function Dashboard() {
               title="Request Agreements" 
               linkTo="/requestagreement" 
               //imageSrc={AgreementImage} 
-            />   
+            /> 
+             <CustomCard 
+              title="Shortlisted Applications"   
+              linkTo="/shortlistedapplicationd" 
+              //imageSrc={FinalReport} 
+              //className="transparent-image" 
+            />     
           </>
         );
       case 'Applicant':
@@ -725,7 +731,6 @@ export default function Dashboard() {
               icon={<MenuBookIcon/>}
              // imageSrc={SubmittedGrant} 
             />
-          
           </>
         );
       case 'Admin':
@@ -760,7 +765,13 @@ export default function Dashboard() {
               linkTo="/approvebudget" 
               //imageSrc={budgetImage}
               //className="transparent-image"  
-            />        
+            />   
+             <CustomCard 
+              title="Shortlisted Applications"   
+              linkTo="/shortlistedapplication" 
+              //imageSrc={FinalReport} 
+              //className="transparent-image" 
+            />     
           </>
         );
       default:

@@ -5,6 +5,7 @@
   justify-content: center; /* Center items horizontally */
   flex-grow: 8; /* Allow the Nav to grow and fill available space */
   height: 20px;
+
 }
 
 .navbar-custom .nav-link,
@@ -12,6 +13,7 @@
   margin: 0 30px; /* Increase space between items */
   color: black; /* Ensure text color is black */
   text-decoration: none; /* Remove underline */
+  font-weight: bold;
 }
 
 .navbar-custom .nav-link:hover,
@@ -25,4 +27,14 @@
   color: black !important; /* Text color */
   font-weight: bold; /* Bold text */
   border-radius: 8px;
+}
+
+
+.navbar-custom .separator {
+  color: #000; /* Adjust separator color as needed */
+  font-weight: 500;
+}
+
+.navbar-custom .nav-link:hover {
+  text-decoration: underline;
 }

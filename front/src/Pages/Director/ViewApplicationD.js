@@ -69,7 +69,6 @@ export default function ViewApplication() {
               <label htmlFor="status-select">Status: </label>
               <select id="status-select" onChange={handleStatusChange}>
                 <option value="">Select Status</option>
-                <option value="Save">Save</option>
                 <option value="Submitted">Submitted</option>
                 <option value="Granted">Granted</option>
                 <option value="Pending Approvals">Pending Approvals</option>
@@ -79,6 +78,7 @@ export default function ViewApplication() {
             </th>
           </tr>
           <tr>
+            <th>Appliant Name</th> 
             <th>Application Id</th>
             <th>Project Title</th>
             <th>Submitted Date</th>
@@ -89,6 +89,7 @@ export default function ViewApplication() {
         <tbody>
           {filteredApplications.map((app) => (
             <tr key={app.app_ID}>
+              <td>{app.name}</td>
               <td>{app.app_ID}</td>
               <td>{app.projectTitle}</td>
               <td>{app.submittedDate}</td>

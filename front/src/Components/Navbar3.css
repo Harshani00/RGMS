@@ -1,0 +1,21 @@
+.navbar-custom1 .nav-link {
+    color: white; /* Adjust color as needed */
+    font-weight: 500;
+    font-weight: bold;
+    
+  }
+  
+  .navbar-custom1 .separator {
+    color: #000; /* Adjust separator color as needed */
+    font-weight: 500;
+  }
+  
+  .navbar-custom1 .nav-link:hover {
+    text-decoration: underline;
+    color: #000;
+    font-weight: bold;
+  }
+  .bg-body-tertiary1{
+    background-color: #5C1010;
+    height: 50px;
+  }

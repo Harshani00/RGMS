@@ -12,7 +12,7 @@ session_start();
 include("dbConnection.php");
 
 // Use ROUND() to avoid floating-point comparison issues
-$sql = "SELECT p.app_ID, p.projectTitle, p.submittedDate, a.Status 
+$sql = "SELECT p.app_ID, p.projectTitle, p.submittedDate, a.name, a.Status 
         FROM project p 
         JOIN application a ON p.app_ID = a.Id
         WHERE ROUND(a.Status, 1) IN (1, 2.1, 2.2)"; // Using ROUND() for float comparison

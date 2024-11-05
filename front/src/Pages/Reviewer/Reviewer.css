@@ -1,0 +1,111 @@
+.evaluation-section .download-section .criteria-section,
+.evaluation-section .download-section .marks-section {
+margin-bottom: 20px; /* Add some space between sections */
+}
+
+.criteria-section {
+margin-bottom: 20px; /* Space between the Download and Upload sections */
+display: flex;
+align-items: center;  /* Align label and button in a row */
+}
+
+.criteria-section label {
+margin-right: 15px; /* Add space between the label and the download button */
+}
+
+.download-button {
+background-color: #007bff; /* Bootstrap blue */
+color: white;
+padding: 8px 16px;
+font-size: 16px;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+transition: background-color 0.3s ease;
+}
+
+.download-button:hover {
+background-color: #0056b3; /* Darker blue on hover */
+}
+
+.upload-section {
+margin-top: 20px; /* Add space above the upload section */
+display: flex;
+align-items: center; /* Align label and input horizontally */
+}
+
+.upload-section label {
+margin-right: 15px; /* Add space between label and file input */
+}
+
+.upload-section input[type="file"] {
+padding: 8px;
+font-size: 16px;
+}
+
+.evaluation-section {
+margin-top: 20px; /* Existing margin above */
+margin-bottom: 30px; /* Add margin below the evaluation section */
+}
+
+
+.dpage-title {
+text-align: center;
+font-weight:bold;
+font-size: 1.5em;
+margin-bottom: 20px;
+}
+
+label {
+font-weight: bold;
+}
+
+.marks-section {
+margin-top: 20px;
+display: flex;
+align-items: center;  /* Align label, input, and button vertically */
+}
+
+.marks-section label {
+margin-right: 15px;  /* Add space between the label and the input */
+}
+
+.marks-input {
+width: 150px;  /* Adjust width of the textbox */
+padding: 8px;  /* Padding inside the textbox */
+font-size: 16px;  /* Font size for the text */
+border: 1px solid #ccc;  /* Light border around the textbox */
+border-radius: 4px;  /* Slightly rounded corners */
+margin-right: 20px;  /* Add space between the textbox and button */
+}
+
+.marks-input:focus {
+outline: none;
+border-color: #007bff;  /* Blue border when focused */
+box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);  /* Soft blue glow */
+}
+
+.submit-button {
+background-color: #007bff;  /* Bootstrap primary blue */
+color: white;  /* White text */
+padding: 8px 16px;  /* Padding for a bigger button */
+font-size: 16px;  /* Font size for the button text */
+border: none;  /* Remove default border */
+border-radius: 4px;  /* Rounded corners */
+cursor: pointer;  /* Pointer cursor on hover */
+transition: background-color 0.3s ease;  /* Smooth transition effect */
+}
+
+.submit-button:hover {
+background-color: #0056b3;  /* Darker blue on hover */
+}
+
+.submit-button:active {
+background-color: #004085;  /* Even darker blue when clicked */
+}
+
+.criteria-section p {
+margin-bottom: 2px; /* Add some space below the sentence */
+font-size: 15px; /* Adjust font size if necessary */
+color: #fa0606; /* Change color if needed */
+}

@@ -206,6 +206,7 @@ import ReviewCriteria from './Pages/Secretary/ReviewCriteria';
 import RequestReport from './Pages/Secretary/RequestReport';
 import ApproveBudget from './Pages/Secretary/ApproveBudget';
 import OrderApplication from './Pages/Secretary/OrderApplication';
+import ShortlistedApplication from './Pages/Secretary/ShortlistedApplication'; 
 
 // URC Director Pages
 import RequestAgreement from './Pages/Director/RequestAgreement';
@@ -215,9 +216,15 @@ import ApproveBudgetD from './Pages/Director/ApproveBudgetD';
 import SendReviewers from './Pages/Director/SendReviewers';
 import RequestApproval from './Pages/Director/RequestApproval';
 import ReviewCriteriaD from './Pages/Director/ReviewCriteriaD';
+import ShortlistedApplicationD from './Pages/Director/ShortlistedApplicationD';
 
-import ShortlistedApplication from './Pages/New/ShortlistedApplication'; 
+// Reviewer Pages
+import Reviewer from './Pages/Reviewer/Reviewer';
+import Reviewer2 from './Pages/Reviewer/Reviewer2';
+
+
 import Test1 from './Pages/New/Test1';
+
 
 class App extends React.Component {
   render() {
@@ -248,6 +255,7 @@ class App extends React.Component {
             <Route path="/requestreport" element={<RequestReport />} />
             <Route path="/approvebudget" element={<ApproveBudget />} />
             <Route path="/orderapplication" element={<OrderApplication />} />
+            <Route path="/shortlistedapplication" element={<ShortlistedApplication />} />
 
             <Route path="/viewapplicationd" element={<ViewApplicationD />} />
             <Route path="/progressreportd" element={<ProgressReportD />} />
@@ -256,8 +264,12 @@ class App extends React.Component {
             <Route path="/sendreviewers" element={<SendReviewers />} />
             <Route path="/requestapproval" element={<RequestApproval />} />
             <Route path="/reviewcriteriad" element={<ReviewCriteriaD />} />
+            <Route path="/shortlistedapplicationd" element={<ShortlistedApplicationD />} />
 
-            <Route path="/shortlistedapplication" element={<ShortlistedApplication />} />
+            <Route path="/reviewer" element={<Reviewer />} />
+            <Route path="/reviewer2" element={<Reviewer2 />} />
+
+           
             <Route path="/test1" element={<Test1 />} />
           </Routes>
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../../Components/Navbar';
 import Table from 'react-bootstrap/Table';
 import { useNavigate } from 'react-router-dom';
-import '../Secretary/Table.css';
+import './Table.css';
 
 export default function ShortlistedApplication() {
   const [submittedGrants, setSubmittedGrants] = useState([]);

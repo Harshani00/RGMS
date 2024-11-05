@@ -48,18 +48,40 @@ export default function EditGrant() {
               });
       }
   }, []);  // Empty array to run only once on mount
-  useEffect(() => {
-    // Fetch faculties and departments
+   // Fetch faculties when the component mounts
+   useEffect(() => {
     axios.get('/FacultyDepartment.php')
       .then(response => {
-        setFaculties(response.data.faculties);
-        setDepartments(response.data.departments);
+        setFaculties(response.data.faculties || []);
       })
       .catch(error => {
-        console.error("There was an error fetching faculties and departments!", error);
+        console.error("Error fetching faculties:", error);
       });
   }, []);
+  
+  const handleFacultyChange = (e) => {
+    const facultyId = e.target.value;
+    // Update formData.faculty to reflect the selected faculty
+    handleFormDataChange({ faculty: facultyId });
+  
+    // Fetch departments for the selected faculty
+    axios.post('/FacultyDepartment.php', { fid: facultyId })
+      .then(response => {
+        setDepartments(response.data.departments || []);
+      })
+      .catch(error => {
+        console.error("Error fetching departments:", error);
+      });
+  };
 
+
+// Handle department change
+const handleDepartmentChange = (e) => {
+  const departmentId = e.target.value;
+
+  // Update formData with the selected department ID (did)
+  handleFormDataChange({ department: departmentId });
+};
 
   const handleChange = (e) => {
     handleFormDataChange({ [e.target.name]: e.target.value });
@@ -180,51 +202,49 @@ export default function EditGrant() {
           </Row>
 
           <Row className="mb-3">
-            <Form.Label>3. Affiliation <span className="text-danger">*</span></Form.Label>
-
+          <Form.Label>3. Affiliation <span className="text-danger">*</span></Form.Label>
             <Form.Group as={Col} xs={12} md={6} controlId="formGridFaculty">
-              <Form.Label>Faculty</Form.Label>
-              <Form.Select
+            <Form.Label>Faculty</Form.Label>
+            <Form.Select
                 name="faculty"
                 value={formData.faculty}
-                onChange={handleChange}
+                onChange={handleFacultyChange}
                 isInvalid={!!errors.faculty}
-                className="required" // Add class for red asterisk
+                // className="required" // Add class for red asterisk
               >
-                <option value="">Select Faculty</option>
-                {faculties.length > 0 ? (
-                  faculties.map(faculty => (
-                    <option key={faculty} value={faculty}>{faculty}</option>
-                  ))
-                ) : (
-                  <option disabled>No faculties available</option>
-                )}
-              </Form.Select>
-              <Form.Control.Feedback type="invalid">{errors.faculty}</Form.Control.Feedback>
+              <option value="">Select Faculty</option>
+              {faculties.map(faculty => (
+                <option key={faculty.fid} value={faculty.fid}>
+                  {faculty.faculty}
+                </option>
+              ))}
+            </Form.Select>
             </Form.Group>
 
             <Form.Group as={Col} xs={12} md={6} controlId="formGridDepartment">
-              <Form.Label>Department</Form.Label>
-              <Form.Select
+            <Form.Label>Department</Form.Label>
+            <Form.Select
                 name="department"
                 value={formData.department}
-                onChange={handleChange}
+                onChange={handleDepartmentChange}
+                // onChange={handleChange}
                 isInvalid={!!errors.department}
-                className="required" // Add class for red asterisk
+                // className="required" // Add class for red asterisk
               >
-                <option value="">Select Department</option>
-                {departments.length > 0 ? (
-                  departments.map(department => (
-                    <option key={department} value={department}>{department}</option>
-                  ))
-                ) : (
-                  <option disabled>No departments available</option>
-                )}
-              </Form.Select>
-              <Form.Control.Feedback type="invalid">{errors.department}</Form.Control.Feedback>
+                  <option value="">Select Department</option>
+                    {departments.length > 0 ? (
+                      departments.map(department => (
+                        <option key={department.did} value={department.did}>
+                          {department.department}
+                    </option>
+             
+                ))
+              ) : (
+                <option disabled>No departments available</option>
+              )}
+            </Form.Select>
             </Form.Group>
           </Row>
-
           <Row className="mb-3">
             <Form.Label>4. Contacts <span className="text-danger">*</span></Form.Label>
             <Form.Group as={Col} xs={12} md={6} controlId="formGridEmail">

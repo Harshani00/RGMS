@@ -12,7 +12,7 @@ session_start();
 include("dbConnection.php");
 
 // Fetch only submitted grants (Status = 1) from the `project` table and join with `application` table
-$sql = "SELECT p.app_ID, p.projectTitle, p.submittedDate, a.Status 
+$sql = "SELECT p.app_ID, p.projectTitle, p.submittedDate, a.name , a.Status
         FROM project p 
         JOIN application a ON p.app_ID = a.Id
         WHERE a.Status = 1"; // Filter for Submitted grants only

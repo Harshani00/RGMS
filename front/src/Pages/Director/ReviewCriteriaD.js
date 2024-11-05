@@ -245,7 +245,7 @@ export default function ViewApplication() {
       if (result.criteria) {
         const filesWithNames = result.criteria.map((file) => ({
           name: file,
-          path: `/uploads/CriteriaFiles/${file}`,
+          path: `D:/Xampp/htdocs/uploads/CriteriaFiles/${file}`,
         }));
         setCriteriaFiles(filesWithNames);
       } else {

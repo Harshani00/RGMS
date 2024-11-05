@@ -34,87 +34,74 @@
     position: relative;
     overflow: hidden;
     height: 100vh; /* Full height of the viewport */
-  }
-  
-  .background-image {
-    position: absolute;
-    top: 0; /* Align to top */
-    left: 50%; /* Center the image horizontally */
-    width: 100%; /* Full viewport width */
-    height: 60%; /* Full viewport height */
-    object-fit: cover; /* Cover the area while maintaining aspect ratio */
-    transform: translate(-50%, 0); /* Center the image */
-    z-index: -1; /* Send the image behind other elements */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+}
+
+.img-card {
+    
+        width: 100%; /* Adjust width as needed */
+        height: 50%; /* Height for the image card */
+        overflow: hidden;
+        border-radius: 1px; /* Rounded corners for the card */
+        
+        margin: 1px 0 5px 0; /* Move up by adjusting the top margin */
+        position: relative;
+        border: 2px solid rgba(0, 0, 0, 0.848); /* Change the thickness by adjusting the number */
    
-  }
-  
-  .content {
-    position: relative;
-    z-index: 1; /* Bring content above the image */
+    
+}
+
+.background-image {
+    width: 100%;
+    height: 100%;
+    background-size: cover; /* Make sure image covers the card area */
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 1px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.content {
     text-align: center;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Center the content vertically */
-    height: 50%; /* Full height to center vertically */
-    color: black; /* Text color */
-    
-  }
-  
-  .title1 {
-    font-size: 3em; /* Title font size */
-    margin-bottom: 20px; /* Spacing below title */
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  }
-  
-  .title2 {
-    font-size: 2em;
-    font-family: 'Times New Roman', Times, serif;
-    font-weight: 700;
-  }
-  
-  .buttons {
+    justify-content: center;
+    color: black;
+}
+
+.buttons {
     display: flex;
-    justify-content: center; /* Center buttons */
-    gap: 20px; /* Space between buttons */
-  }
-  
-  .accessbuttons {
+    justify-content: center;
+    gap: 20px;
+}
+
+.accessbuttons {
     background-color: #052659;
-    border-color: #052659;
     color: white;
-    padding: 10px 20px; /* Button padding */
-    font-size: 1rem; /* Button font size */
-    border: none; /* No border */
-    border-radius: 5px; /* Rounded corners */
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
     font-weight: bold;
-  }
-  
-  .accessbuttons:focus,
-  .accessbuttons:hover {
+}
+
+.accessbuttons:hover {
     background-color: #005b96;
-    border-color: #005b96;
-    color: white;
-  }
-  
-  /* Styles for the info card */
-  .info-card {
-    background-color: #fff; /* White background */
-    border-radius: 10px; /* Rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Box shadow for a subtle effect */
-    padding: 20px; /* Padding inside the card */
-    width: 100%; /* Maximum width for the card */
-    margin-bottom: 10px ; /* Center card horizontally with margin */
-    text-align: center; /* Center text */
-    height: 38%;
-    margin: -22px auto 20px; /* Negative top margin to move it up, adjust as needed */
-   
-   
-  }
-  
-  
-  
-  .card-text {
+}
+
+.info-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+    height: 27%;
+}
+
+.card-text {
     font-size: 20px; /* Font size for card text */
     color: white; /* Text color red */
     margin-right: 60%;
@@ -123,6 +110,4 @@
     background-color: #800000;
     border-radius: 10px;
    width: 35%;
-  }
-  
-  
+}

@@ -1,3 +1,129 @@
+// import React, { useState, useEffect } from 'react';
+// import axios from 'axios';
+// import { Form, Col, Row } from 'react-bootstrap';
+// import Button from 'react-bootstrap/Button';
+// import { useNavigate } from 'react-router-dom';
+// import Navbar from '../../Components/Navbar';
+// import Navbar2 from '../../Components/Navbar2';
+// import Sidebar from '../../Components/Sidebar';
+// import { useForm } from './MainForm'; // Import useForm from your context
+// import './Grant.css'; // Import the CSS file
+
+
+// export default function Grant()  {
+//   const { formData, handleFormDataChange, updateCompletionStatus } = useForm(); // Use form context
+//   const [errors, setErrors] = useState({});
+//   const [submitted, setSubmitted] = useState(false);
+//   const [faculties, setFaculties] = useState([]);
+//   const [departments, setDepartments] = useState([]);
+//   const navigate = useNavigate(); // Initialize useNavigate hook
+
+//    // Fetch faculties when the component mounts
+//    useEffect(() => {
+//     axios.get('/FacultyDepartment.php')
+//       .then(response => {
+//         setFaculties(response.data.faculties || []);
+//       })
+//       .catch(error => {
+//         console.error("Error fetching faculties:", error);
+//       });
+//   }, []);
+  
+//   const handleFacultyChange = (e) => {
+//     const facultyId = e.target.value;
+//     // Update formData.faculty to reflect the selected faculty
+//     handleFormDataChange({ faculty: facultyId });
+  
+//     // Fetch departments for the selected faculty
+//     axios.post('/FacultyDepartment.php', { fid: facultyId })
+//       .then(response => {
+//         setDepartments(response.data.departments || []);
+//       })
+//       .catch(error => {
+//         console.error("Error fetching departments:", error);
+//       });
+//   };
+
+
+// // Handle department change
+// const handleDepartmentChange = (e) => {
+//   const departmentId = e.target.value;
+
+//   // Update formData with the selected department ID (did)
+//   handleFormDataChange({ department: departmentId });
+// };
+
+
+
+//   const handleChange = (e) => {
+//     handleFormDataChange({ [e.target.name]: e.target.value });
+//     setErrors({ ...errors, [e.target.name]: '' }); // Clear error when user types
+//   };
+
+//   const validateForm = () => {
+//     const newErrors = {};
+
+//     if (!formData.title) newErrors.title = 'Title is required';
+//     if (!formData.name) newErrors.name = 'Name is required';
+//     if (!formData.faculty) newErrors.faculty = 'Faculty is required';
+//     if (!formData.department) newErrors.department = 'Department is required';
+//     if (!formData.email) newErrors.email = 'Email is required';
+//     if (!formData.phone) newErrors.phone = 'Phone number is required';
+//     if (!formData.position) newErrors.position = 'Position is required';
+//     if (!formData.degree) newErrors.degree = 'Degree is required';
+//     if (!formData.university) newErrors.university = 'University is required';
+//     if (!formData.year) newErrors.year = 'Year is required';
+//     if (!formData.field) newErrors.field = 'Field is required';
+//     if (!formData.Leave_Get) newErrors.Leave_Get = 'Leave Get is required';
+//     if (!formData.Leave_Date) newErrors.Leave_Date = 'Leave Date is required';
+//     if (!formData.Leave_Duration) newErrors.Leave_Duration = 'Leave Duration is required';
+
+//     setErrors(newErrors);
+
+//     // If no errors, return true, otherwise return false
+//     return Object.keys(newErrors).length === 0;
+//   };
+
+//   const handleSubmit = async (event) => {
+//     event.preventDefault();
+
+//     if (validateForm()) {
+//       try {
+//         const response = await axios.post('/Grant.php', formData, {
+//           headers: {
+//             'Content-Type': 'application/x-www-form-urlencoded',
+//           },
+//           transformRequest: [(data) => {
+//             const params = new URLSearchParams();
+//             for (const key in data) {
+//               params.append(key, data[key]);
+//             }
+//             return params;
+//           }],
+//         });
+
+//         if (response.data === "Form submitted successfully!") {
+//           setSubmitted(true); // Set form as submitted only on success
+//           alert(response.data);
+//         } else {
+//           alert('Form submission failed. Please try again.');
+//         }
+//       } catch (error) {
+//         alert('There was an error submitting the form. Please try again.');
+//       }
+//     }
+//   };
+
+//   const handleNext = (e) => {
+//     e.preventDefault();
+
+//     if (validateForm()) {
+//       updateCompletionStatus('profile', true); // Mark the profile section as completed
+//       navigate('/project'); // Navigate to the "project" page
+//     } else {
+//       alert('Missing Fields Required.');
+//     }
+//   };
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Form, Col, Row } from 'react-bootstrap';
@@ -9,7 +135,6 @@ import Sidebar from '../../Components/Sidebar';
 import { useForm } from './MainForm'; // Import useForm from your context
 import './Grant.css'; // Import the CSS file
 
-
 export default function Grant()  {
   const { formData, handleFormDataChange, updateCompletionStatus } = useForm(); // Use form context
   const [errors, setErrors] = useState({});
@@ -18,22 +143,40 @@ export default function Grant()  {
   const [departments, setDepartments] = useState([]);
   const navigate = useNavigate(); // Initialize useNavigate hook
 
+  // Log formData to the console on component load
   useEffect(() => {
-    // Fetch faculties and departments
+    console.log("Form data on load:", formData);
+  }, [formData]);
+
+  // Fetch faculties when the component mounts
+  useEffect(() => {
     axios.get('/FacultyDepartment.php')
       .then(response => {
-        // Assuming the response data structure is { faculties: [...], departments: [...] }
-        console.log('Faculties:', response.data.faculties); // Log faculties for debugging
-        console.log('Departments:', response.data.departments); // Log departments for debugging
-        
-        // Update state based on response data structure
-        setFaculties(response.data.faculties);
-        setDepartments(response.data.departments);
+        setFaculties(response.data.faculties || []);
       })
       .catch(error => {
-        console.error("There was an error fetching faculties and departments!", error);
+        console.error("Error fetching faculties:", error);
       });
   }, []);
+  
+  const handleFacultyChange = (e) => {
+    const facultyId = e.target.value;
+    handleFormDataChange({ faculty: facultyId });
+  
+    // Fetch departments for the selected faculty
+    axios.post('/FacultyDepartment.php', { fid: facultyId })
+      .then(response => {
+        setDepartments(response.data.departments || []);
+      })
+      .catch(error => {
+        console.error("Error fetching departments:", error);
+      });
+  };
+
+  const handleDepartmentChange = (e) => {
+    const departmentId = e.target.value;
+    handleFormDataChange({ department: departmentId });
+  };
 
   const handleChange = (e) => {
     handleFormDataChange({ [e.target.name]: e.target.value });
@@ -105,6 +248,7 @@ export default function Grant()  {
     }
   };
 
+
   return (
     <div >
       <Navbar />
@@ -155,48 +299,47 @@ export default function Grant()  {
           </Row>
 
           <Row className="mb-3">
-            <Form.Label>3. Affiliation <span className="text-danger">*</span></Form.Label>
-
+          <Form.Label>3. Affiliation <span className="text-danger">*</span></Form.Label>
             <Form.Group as={Col} xs={12} md={6} controlId="formGridFaculty">
-              <Form.Label>Faculty</Form.Label>
-              <Form.Select
+            <Form.Label>Faculty</Form.Label>
+            <Form.Select
                 name="faculty"
                 value={formData.faculty}
-                onChange={handleChange}
+                onChange={handleFacultyChange}
                 isInvalid={!!errors.faculty}
-                className="required" // Add class for red asterisk
+                // className="required" // Add class for red asterisk
               >
-                <option value="">Select Faculty</option>
-                {faculties.length > 0 ? (
-                  faculties.map(faculty => (
-                    <option key={faculty} value={faculty}>{faculty}</option>
-                  ))
-                ) : (
-                  <option disabled>No faculties available</option>
-                )}
-              </Form.Select>
-              <Form.Control.Feedback type="invalid">{errors.faculty}</Form.Control.Feedback>
+              <option value="">Select Faculty</option>
+              {faculties.map(faculty => (
+                <option key={faculty.fid} value={faculty.fid}>
+                  {faculty.faculty}
+                </option>
+              ))}
+            </Form.Select>
             </Form.Group>
 
             <Form.Group as={Col} xs={12} md={6} controlId="formGridDepartment">
-              <Form.Label>Department</Form.Label>
-              <Form.Select
+            <Form.Label>Department</Form.Label>
+            <Form.Select
                 name="department"
                 value={formData.department}
-                onChange={handleChange}
+                onChange={handleDepartmentChange}
+                // onChange={handleChange}
                 isInvalid={!!errors.department}
-                className="required" // Add class for red asterisk
+                // className="required" // Add class for red asterisk
               >
-                <option value="">Select Department</option>
-                {departments.length > 0 ? (
-                  departments.map(department => (
-                    <option key={department} value={department}>{department}</option>
-                  ))
-                ) : (
-                  <option disabled>No departments available</option>
-                )}
-              </Form.Select>
-              <Form.Control.Feedback type="invalid">{errors.department}</Form.Control.Feedback>
+                  <option value="">Select Department</option>
+                    {departments.length > 0 ? (
+                      departments.map(department => (
+                        <option key={department.did} value={department.did}>
+                          {department.department}
+                    </option>
+             
+                ))
+              ) : (
+                <option disabled>No departments available</option>
+              )}
+            </Form.Select>
             </Form.Group>
           </Row>
 
