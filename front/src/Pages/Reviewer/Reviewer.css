@@ -55,6 +55,12 @@ font-weight:bold;
 font-size: 1.5em;
 margin-bottom: 20px;
 }
+.reviewer_title{
+text-align: center;
+font-weight:bold;
+font-size: 1.5em;
+margin-bottom: 20px;
+}
 
 label {
 font-weight: bold;

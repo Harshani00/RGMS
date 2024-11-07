@@ -490,42 +490,44 @@ export default function RequestApproval() {
     setName('');
   };
 
-  // const handleShowEmail = (appId, role, email) => {
-  //   const selectedApp = applications.find(app => app.app_ID === appId);
-  //   if (selectedApp) {
-  //       setCurrentApp(selectedApp);
-  //       setReportType(role);
-  //       setRecipientRole(role);
-  //       setRecipientEmail(email);
-  //       setEmailBody(`This is the email body for the ${role} report for application ${appId}.`);
-  //       console.log('Selected Application:', selectedApp); // Debugging log
-  //   } else {
-  //       console.error('Application not found for ID:', appId); // Debugging log
-  //   }
-  //   const DeanHODLink = `${window.location.origin}/dean_hod?app_ID=${appId}&Role=${role}`;
-
-  //   setEmailBody(`Please use Following Link the Access the Details:\n ${DeanHODLink}`);
-
-  //   setShowEmailModal(true);
-  // };
-  const handleShowEmail = (appId, role, email) => {
-    const selectedApp = applications.find(app => app.app_ID === appId);
-    if (selectedApp) {
-        setCurrentApp(selectedApp);
-        setReportType(role);
-        setRecipientRole(role);
-        setrecipientName(name);
-        setRecipientEmail(email);
+  
+//   const handleShowEmail = (appId, role, email) => {
+//     const selectedApp = applications.find(app => app.app_ID === appId);
+//     if (selectedApp) {
+//         setCurrentApp(selectedApp);
+//         setReportType(role);
+//         setRecipientRole(role);
+//         setrecipientName(name);
+//         setRecipientEmail(email);
         
-        // Construct the clickable link for the email body
-        const DeanHODLink = `${window.location.origin}/dean_hod?app_ID=${appId}&Role=${role}`;
-        setEmailBody(`<span style="color: black;">Please use the following link to access the details:</span> <a href="${DeanHODLink}" target="_blank">${DeanHODLink}</a>`);
-    } else {
-        console.error('Application not found for ID:', appId);
-    }
-    setShowEmailModal(true);
-};
+//         // Construct the clickable link for the email body
+//         const DeanHODLink = `${window.location.origin}/dean_hod?app_ID=${appId}&Role=${role}`;
+//         setEmailBody(`<span style="color: black;">Please use the following link to access the details:</span> <a href="${DeanHODLink}" target="_blank">${DeanHODLink}</a>`);
+//     } else {
+//         console.error('Application not found for ID:', appId);
+//     }
+//     setShowEmailModal(true);
+// };
 
+
+
+const handleShowEmail = (appId, role, email) => {
+  const selectedApp = applications.find(app => app.app_ID === appId);
+  if (selectedApp) {
+    setCurrentApp(selectedApp);
+    setReportType(role);
+    setRecipientRole(role);
+    setrecipientName(name);
+    setRecipientEmail(email);
+
+    // Construct the clickable link for the email body
+    const DeanHODLink = `${window.location.origin}/${role.toLowerCase()}?app_ID=${appId}&Role=${role}`;
+    setEmailBody(`<span style="color: black;">Please use the following link to access the details:</span> <a href="${DeanHODLink}" target="_blank">${DeanHODLink}</a>`);
+  } else {
+    console.error('Application not found for ID:', appId);
+  }
+  setShowEmailModal(true);
+};
 
 
   const handleSendEmail = () => {
@@ -616,42 +618,50 @@ export default function RequestApproval() {
       </Table>
 
      {/* Send Email Modal */}
-<Modal show={showEmailModal} onHide={handleCloseEmail}>
+     <Modal show={showEmailModal} onHide={handleCloseEmail}>
   <Modal.Header closeButton>
     <Modal.Title>Send Email to {recipientRole}</Modal.Title>
   </Modal.Header>
   <Modal.Body>
-  <Form>
-    <Form.Group controlId="formProjectTitle">
-      <Form.Label>Project Title</Form.Label>
-      <Form.Control type="text" value={currentApp ? currentApp.projectTitle : ''} readOnly />
-    </Form.Group>
-    
-    <Form.Group controlId="formRecipientRole">
-      <Form.Label>Recipient Role</Form.Label>
-      <Form.Control type="text" value={recipientRole} readOnly />
-    </Form.Group>
+    <Form>
+      <Form.Group controlId="formProjectTitle">
+        <Form.Label>Project Title</Form.Label>
+        <Form.Control type="text" value={currentApp ? currentApp.projectTitle : ''} readOnly />
+      </Form.Group>
 
-    <Form.Group controlId="formRecipientName">
-      <Form.Label>Recipient Name</Form.Label>
-      <Form.Control type="name" value={recipientName} readOnly />
-    </Form.Group>
-    
-    <Form.Group controlId="formRecipientEmail">
-      <Form.Label>Recipient Email</Form.Label>
-      <Form.Control type="email" value={recipientEmail} readOnly />
-    </Form.Group>
+      <Form.Group controlId="formRecipientRole">
+        <Form.Label>Recipient Role</Form.Label>
+        <Form.Control type="text" value={recipientRole} readOnly />
+      </Form.Group>
 
-    
+      {/* Editable Name Field */}
+      <Form.Group controlId="formRecipientName">
+        <Form.Label>Recipient Name</Form.Label>
+        <Form.Control
+          type="text"
+          value={recipientName}
+          onChange={(e) => setrecipientName(e.target.value)}  // Update the state when the user types
+        />
+      </Form.Group>
 
-    <Form.Group controlId="formEmailBody">
-      <Form.Label>Email Body</Form.Label>
-      <div style={{ color: 'black', padding: '8px', backgroundColor: '#f8f9fa', border: '1px solid #ced4da', borderRadius: '4px' }}>
-        <p dangerouslySetInnerHTML={{ __html: emailBody }} />
-      </div>
-    </Form.Group>
-  </Form>
-</Modal.Body>
+      {/* Editable Email Field */}
+      <Form.Group controlId="formRecipientEmail">
+        <Form.Label>Recipient Email</Form.Label>
+        <Form.Control
+          type="email"
+          value={recipientEmail}
+          onChange={(e) => setRecipientEmail(e.target.value)}  // Update the state when the user types
+        />
+      </Form.Group>
+
+      <Form.Group controlId="formEmailBody">
+        <Form.Label>Email Body</Form.Label>
+        <div style={{ color: 'black', padding: '8px', backgroundColor: '#f8f9fa', border: '1px solid #ced4da', borderRadius: '4px' }}>
+          <p dangerouslySetInnerHTML={{ __html: emailBody }} />
+        </div>
+      </Form.Group>
+    </Form>
+  </Modal.Body>
 
   <Modal.Footer>
     <Button variant="secondary" onClick={handleCloseEmail}>Cancel</Button>
@@ -659,53 +669,7 @@ export default function RequestApproval() {
   </Modal.Footer>
 </Modal>
 
-
    
-      {/* <Modal show={showAddModal} onHide={handleCloseAdd}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add Comment for Application ID: {currentApp ? currentApp.app_ID : ''}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group controlId="formFaculty">
-              <Form.Label>Faculty</Form.Label>
-              <Form.Control
-                type="text"
-                value={faculty}
-                onChange={(e) => setFaculty(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group controlId="formDepartment">
-              <Form.Label>Department</Form.Label>
-              <Form.Control
-                type="text"
-                value={department}
-                onChange={(e) => setDepartment(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group controlId="formEmail">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group controlId="formName">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseAdd}>Cancel</Button>
-          <Button variant="primary" onClick={handleAddComment}>Add Comment</Button>
-        </Modal.Footer>
-      </Modal> */}
     </div>
   );
 }

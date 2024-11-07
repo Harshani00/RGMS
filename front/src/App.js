@@ -219,9 +219,11 @@ import ReviewCriteriaD from './Pages/Director/ReviewCriteriaD';
 import ShortlistedApplicationD from './Pages/Director/ShortlistedApplicationD';
 
 // Reviewer Pages
-import Reviewer from './Pages/Reviewer/Reviewer';
 
-import Dean_HOD from './Pages/Dean/HOD/Dean_HOD';
+import Dean from './Pages/Dean/HOD/Dean';
+import HOD from './Pages/Dean/HOD/HOD';
+import Reviewer1 from './Pages/Reviewer/Reviewer1';
+import Reviewer2 from './Pages/Reviewer/Reviewer2';
 
 
 
@@ -265,12 +267,14 @@ class App extends React.Component {
             <Route path="/reviewcriteriad" element={<ReviewCriteriaD />} />
             <Route path="/shortlistedapplicationd" element={<ShortlistedApplicationD />} />
 
-            <Route path="/reviewer" element={<Reviewer />} />
-            <Route path="/dean_hod" element={<Dean_HOD/>} />
+            <Route path="/reviewer1" element={<Reviewer1 />} />
+            <Route path="/reviewer2" element={<Reviewer2/>}/>
+           
+            <Route path="dean" element={<Dean/>} />
+            <Route path="hod" element={<HOD/>} />
            
           </Routes>
 
-          {/* Place the Footer here, outside of Routes */}
           <Footer />
         </BrowserRouter>
       </FormProvider>

@@ -477,21 +477,21 @@ export default function SendReviewers() {
     const app = applications.find(app => app.app_ID === appId);
     setCurrentApp(app);
     setCurrentReviewer(reviewer);
-
-     
-    // const reviewerLink = `http://yourdomain.com/review/${appId}?reviewer=${type}`;
-    // setEmailBody(
-    //   `This is the email body for the ${type} report for application ${appId}.\n\n` +
-    //   `Please click the following link to access the review page: \n` +
-    //   `<a href="${reviewerLink}">Review Application ${appId} as Reviewer ${type === 'one' ? 'One' : 'Two'}</a>`
-    // );
-
-    // Generate the dynamic link
-    const reviewerLink = `${window.location.origin}/reviewer?app_ID=${appId}&reviewer=${type}`;
-
-    setEmailBody(`<span style="color: black;">Please review at the following link:</span>\n<a href="${reviewerLink}" target="_blank">${reviewerLink}</a>`);
+  
+    // Generate the dynamic link based on the reviewer type (Reviewer One or Reviewer Two)
+    const reviewerLink = `${window.location.origin}/${type === 'Reviewer One' ? 'reviewer1' : 'reviewer2'}?app_ID=${appId}`;
+  
+    // Set the email body with the dynamic link
+    setEmailBody(
+      `<span style="color: black;">Please review at the following link:</span>\n` +
+      `<a href="${reviewerLink}" target="_blank">${reviewerLink}</a>`
+    );
+  
     setShowModal(true);
   };
+  
+
+  
 
   const handleSendEmail = () => {
     console.log(`Sending email to ${currentReviewer.email} for application ${currentApp.app_ID}`);
