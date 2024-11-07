@@ -1,0 +1,33 @@
+.hod-decision{
+    margin-top: 20px;
+    margin-left: 50px;
+    width:70px;
+  }
+  .submit-button{
+    background-color: #052659;
+    border-color: #052659;
+    color: white;
+    margin-top: 20px;
+    margin-left: 20px;
+  }
+  .submit-button:focus,
+  .submit-button:hover {
+    background-color: #005b96;
+    border-color: #005b96; 
+    color: white;
+  }
+
+  .remarks-section
+  {
+    margin-bottom: 20px;
+  
+  }
+.remarks-label{
+    margin-bottom: 10px; /* Adjust the value as needed */
+    display: block; /* Ensures it takes a full line */
+    margin-left: 20px;
+}
+.remarks-input{
+    margin-left: 20px;
+    width: 500px;
+}

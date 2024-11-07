@@ -220,10 +220,9 @@ import ShortlistedApplicationD from './Pages/Director/ShortlistedApplicationD';
 
 // Reviewer Pages
 import Reviewer from './Pages/Reviewer/Reviewer';
-import Reviewer2 from './Pages/Reviewer/Reviewer2';
 
+import Dean_HOD from './Pages/Dean/HOD/Dean_HOD';
 
-import Test1 from './Pages/New/Test1';
 
 
 class App extends React.Component {
@@ -267,10 +266,8 @@ class App extends React.Component {
             <Route path="/shortlistedapplicationd" element={<ShortlistedApplicationD />} />
 
             <Route path="/reviewer" element={<Reviewer />} />
-            <Route path="/reviewer2" element={<Reviewer2 />} />
-
+            <Route path="/dean_hod" element={<Dean_HOD/>} />
            
-            <Route path="/test1" element={<Test1 />} />
           </Routes>
 
           {/* Place the Footer here, outside of Routes */}

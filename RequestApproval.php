@@ -11,7 +11,7 @@ session_start();
 include("dbConnection.php");
 
 // SQL query to fetch applications with Status = 2.1
-$sql = "SELECT p.app_ID, p.projectTitle, p.submittedDate, a.Status ,a.reviewer1Name, a.reviewer2Name , a.reviewer1Email ,a.reviewer2Email ,a.reviewer1Affiliation ,a.reviewer2Affiliation 
+$sql = "SELECT p.app_ID, p.projectTitle, p.submittedDate, a.Status 
         FROM project p
         JOIN application a ON p.app_ID = a.Id
         WHERE ROUND(a.Status, 1) = 2.1";  // Rounding to one decimal point if necessary

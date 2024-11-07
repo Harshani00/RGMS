@@ -441,7 +441,7 @@
 //   );
 // }
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // for navigation
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Table from 'react-bootstrap/Table';
 import Navbar from '../../Components/Navbar';
@@ -478,10 +478,7 @@ export default function SendReviewers() {
     setCurrentApp(app);
     setCurrentReviewer(reviewer);
 
-    // Generate the dynamic link
-    const reviewerLink = `${window.location.origin}/reviewer?app_ID=${appId}&reviewer=${type}`;
-
-    setEmailBody(`Please review at the following link:\n ${reviewerLink}`);
+     
     // const reviewerLink = `http://yourdomain.com/review/${appId}?reviewer=${type}`;
     // setEmailBody(
     //   `This is the email body for the ${type} report for application ${appId}.\n\n` +
@@ -489,6 +486,10 @@ export default function SendReviewers() {
     //   `<a href="${reviewerLink}">Review Application ${appId} as Reviewer ${type === 'one' ? 'One' : 'Two'}</a>`
     // );
 
+    // Generate the dynamic link
+    const reviewerLink = `${window.location.origin}/reviewer?app_ID=${appId}&reviewer=${type}`;
+
+    setEmailBody(`<span style="color: black;">Please review at the following link:</span>\n<a href="${reviewerLink}" target="_blank">${reviewerLink}</a>`);
     setShowModal(true);
   };
 
@@ -531,7 +532,9 @@ export default function SendReviewers() {
                   <label className="Reviewer">{app.reviewer1Name}</label>
                 </div>
                 <button className="Email-button" onClick={() => handleShow(app.app_ID, { 
-                  name: app.reviewer1Name, 
+                  name: app.reviewer1Name,
+                  email: app.reviewer1Email,
+                  affiliation: app.reviewer1Affiliation,
                 }, 'Reviewer One')}>Send Email</button>
                 <br />
                 <button className="btn-rejected" onClick={() => handleView(app.app_ID, 'mid')}>Final Mark</button>
@@ -542,7 +545,9 @@ export default function SendReviewers() {
                   <label className="Reviewer">{app.reviewer2Name}</label>
                 </div>
                 <button className="Email-button" onClick={() => handleShow(app.app_ID, { 
-                  name: app.reviewer2Name, 
+                  name: app.reviewer2Name,
+                  email: app.reviewer2Email,
+                  affiliation: app.reviewer2Affiliation, 
                 }, 'Reviewer Two')}>Send Email</button>
                 <br />
                 <button className="btn-rejected" onClick={() => handleView(app.app_ID, 'end')}>Final Mark</button>
@@ -593,12 +598,12 @@ export default function SendReviewers() {
             </Form.Group>
             <Form.Group controlId="formEmailBody">
               <Form.Label>Email Body</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                value={emailBody}
-                onChange={(e) => setEmailBody(e.target.value)}
-              />
+              <div style={{ color: 'black', padding: '8px', backgroundColor: '#f8f9fa', border: '1px solid #ced4da', borderRadius: '4px' }}>
+        <p dangerouslySetInnerHTML={{ __html: emailBody }} />
+      </div>
+             
+               
+              
             </Form.Group>
           </Form>
         </Modal.Body>
