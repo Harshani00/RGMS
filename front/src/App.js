@@ -225,6 +225,8 @@ import HOD from './Pages/Dean/HOD/HOD';
 import Reviewer1 from './Pages/Reviewer/Reviewer1';
 import Reviewer2 from './Pages/Reviewer/Reviewer2';
 
+import Email from './Pages/Dean/HOD/Email';
+
 
 
 class App extends React.Component {
@@ -272,13 +274,18 @@ class App extends React.Component {
            
             <Route path="dean" element={<Dean/>} />
             <Route path="hod" element={<HOD/>} />
+
+            <Route path="email" element={<Email/>} />
            
           </Routes>
 
           <Footer />
         </BrowserRouter>
+        
       </FormProvider>
+      
     );
+    
   }
 }
 

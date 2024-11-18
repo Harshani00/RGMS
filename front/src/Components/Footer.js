@@ -27,7 +27,7 @@ const Footer = () => {
               <span className="mt-3">Copyright © 2024 University of Peradeniya. All rights reserved.</span>
             </Col>
             <Col md={6}>
-              {/* Additional content if needed */}
+             
             </Col>
           </Row>
         </Container>

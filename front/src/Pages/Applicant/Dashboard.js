@@ -650,6 +650,13 @@ import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import MoneyIcon from '@mui/icons-material/Money';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
+import ChecklistRoundedIcon from '@mui/icons-material/ChecklistRounded';
+import AssessmentRoundedIcon from '@mui/icons-material/AssessmentRounded';
+import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+import AttachEmailRoundedIcon from '@mui/icons-material/AttachEmailRounded';
+import DescriptionIcon from '@mui/icons-material/Description';
+import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
+import ReorderRoundedIcon from '@mui/icons-material/ReorderRounded';
 
 export default function Dashboard() {
   
@@ -658,47 +665,56 @@ export default function Dashboard() {
 
   const renderCards = () => {
     switch (userRole) {
-      case 'urc':
+      case 'urc': // Director
         return (
           <>
             <CustomCard 
               title="View Applications" 
-              linkTo="/viewapplicationd" 
+              linkTo="/viewapplicationd"
+              icon={<MenuBookIcon/>} 
               //imageSrc={grantImage} 
             />
             <CustomCard 
               title="View Criteria" 
               linkTo="/reviewcriteriad" 
+              icon={<ChecklistRoundedIcon/>}
               //imageSrc={CriteriaImage} 
             />
             <CustomCard 
               title="Request Progress Report" 
               linkTo="/progressreportd"  
               //imageSrc={progressImage}
+              icon={<AssessmentRoundedIcon/>}
             />
             <CustomCard 
               title="Approve Budget Revision" 
-              linkTo="/approvebudgetd" 
+              linkTo="/approvebudgetd"
+              icon={<MoneyIcon/>} 
               //imageSrc={budgetImage} 
+
             />
             <CustomCard 
               title="Request Approvals" 
               linkTo="/requestapproval" 
+              icon={<CheckCircleRoundedIcon/>}
               //imageSrc={budgetImage} 
             />   
             <CustomCard 
               title="Send Reviewers" 
               linkTo="/sendreviewers" 
+              icon={<AttachEmailRoundedIcon/>}
               //imageSrc={budgetImage} 
             />  
             <CustomCard 
               title="Request Agreements" 
               linkTo="/requestagreement" 
+              icon={<DescriptionIcon/>} 
               //imageSrc={AgreementImage} 
             /> 
              <CustomCard 
-              title="Shortlisted Applications"   
+              title="Shortlisted Applications (Approved Applications)"   
               linkTo="/shortlistedapplicationd" 
+              icon={<AssignmentRoundedIcon/>}
               //imageSrc={FinalReport} 
               //className="transparent-image" 
             />     
@@ -739,36 +755,42 @@ export default function Dashboard() {
             <CustomCard 
               title="View Applications" 
               linkTo="/viewapplication" 
+              icon={<MenuBookIcon/>} 
               //imageSrc={grantImage}
               //className="transparent-image"  
             />
             <CustomCard 
               title="Customize Review Criteria (Criteria, Weight, Marks)"  
               linkTo="/reviewcriteria" 
+              icon={<ChecklistRoundedIcon/>}
               //imageSrc={CriteriaImage} 
               //className="transparent-image" 
             />
             <CustomCard 
               title="Order Applications and View" 
               linkTo="/orderapplication" 
+              icon={<ReorderRoundedIcon/>}
               //imageSrc={SubmittedGrant} 
               //className="transparent-image" 
             />
             <CustomCard 
               title="Request Progress Report"  
               linkTo="/requestreport" 
+              icon={<AssessmentRoundedIcon/>}
               //imageSrc={FinalReport} 
               //className="transparent-image" 
             />
             <CustomCard 
               title="Approve Budget Revision"  
               linkTo="/approvebudget" 
+              icon={<MoneyIcon/>} 
               //imageSrc={budgetImage}
               //className="transparent-image"  
             />   
              <CustomCard 
-              title="Shortlisted Applications"   
+              title="Shortlisted Applications (Approved Applications)"   
               linkTo="/shortlistedapplication" 
+              icon={<AssignmentRoundedIcon/>}
               //imageSrc={FinalReport} 
               //className="transparent-image" 
             />     

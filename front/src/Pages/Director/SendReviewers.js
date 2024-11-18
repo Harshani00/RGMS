@@ -476,7 +476,12 @@ export default function SendReviewers() {
   const handleShow = (appId, reviewer, type) => {
     const app = applications.find(app => app.app_ID === appId);
     setCurrentApp(app);
-    setCurrentReviewer(reviewer);
+    setCurrentReviewer({
+      name: reviewer.name,
+      email: reviewer.email,
+      affiliation: reviewer.affiliation,
+      type: type,  // 'Reviewer One' or 'Reviewer Two'
+    });
   
     // Generate the dynamic link based on the reviewer type (Reviewer One or Reviewer Two)
     const reviewerLink = `${window.location.origin}/${type === 'Reviewer One' ? 'reviewer1' : 'reviewer2'}?app_ID=${appId}`;
@@ -492,13 +497,47 @@ export default function SendReviewers() {
   
 
   
-
-  const handleSendEmail = () => {
-    console.log(`Sending email to ${currentReviewer.email} for application ${currentApp.app_ID}`);
-    console.log(`Email body: ${emailBody}`);
-    handleClose();
+  const handleSendEmail = async (event) => {
+    event.preventDefault();
+  
+    try {
+      const endpoint = currentReviewer.type === 'Reviewer One' ? '/SaveReviewer1.php' : '/SaveReviewer2.php';
+  
+      const response = await axios.post(endpoint, {
+        app_ID: currentApp.app_ID,
+        reviewerEmail: currentReviewer.email,
+        reviewerName: currentReviewer.name,
+        reviewerAffiliation: currentReviewer.affiliation,
+      }, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        transformRequest: [(data) => {
+          const params = new URLSearchParams();
+          for (const key in data) {
+            params.append(key, data[key]);
+          }
+          return params;
+        }],
+      });
+  
+      if (response.data.status === "success") {
+        console.log("Reviewer details saved successfully");
+        alert("Reviewer details saved successfully");
+      } else {
+        console.log("Error:", response.data.message);
+        alert('There was an error saving reviewer details. Please try again.');
+      }
+    } catch (error) {
+      console.error("Error saving reviewer details:", error);
+      alert('There was an error submitting the form. Please try again.');
+    }
   };
+  
+  
+  
 
+  
   const handleView = (id, reportType) => {
     navigate(`/reviewerOne?app_ID=${id}&reportType=${reportType}`);
   };
@@ -509,6 +548,12 @@ export default function SendReviewers() {
       <h1 className="page-title">Send Reviewers</h1>
       <Table striped bordered hover>
         <thead>
+        <tr>
+          <th colSpan={5}>
+          <label>Approved Applications ( By Dean)</label>
+          </th>
+          </tr>
+          
           <tr>
             <th className="title">Application ID</th>
             <th className="title">Project Title</th>
@@ -615,3 +660,186 @@ export default function SendReviewers() {
     </div>
   );
 }
+// import React, { useState, useEffect } from 'react';
+// import { useNavigate } from 'react-router-dom';
+// import axios from 'axios';
+// import Table from 'react-bootstrap/Table';
+// import Navbar from '../../Components/Navbar';
+// import Modal from 'react-bootstrap/Modal';
+// import Button from 'react-bootstrap/Button';
+// import Form from 'react-bootstrap/Form';
+// import '../Secretary/Table.css';
+
+// export default function SendReviewers() {
+//   const [applications, setApplications] = useState([]);
+//   const [showModal, setShowModal] = useState(false);
+//   const [currentApp, setCurrentApp] = useState(null);
+//   const [currentReviewer, setCurrentReviewer] = useState({});
+//   const [emailBody, setEmailBody] = useState('');
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     const fetchApplications = async () => {
+//       try {
+//         const response = await axios.get('/SendReviewers.php');
+//         setApplications(response.data);
+//       } catch (error) {
+//         console.error('Error fetching applications:', error);
+//       }
+//     };
+  
+//     fetchApplications();
+//   }, []);
+
+//   const handleClose = () => setShowModal(false);
+
+//   const handleShow = (appId, reviewer, type) => {
+//     const app = applications.find(app => app.app_ID === appId);
+//     setCurrentApp(app);
+//     setCurrentReviewer(reviewer);
+  
+//     // Generate the dynamic link based on the reviewer type (Reviewer One or Reviewer Two)
+//     const reviewerLink = `${window.location.origin}/${type === 'Reviewer One' ? 'reviewer1' : 'reviewer2'}?app_ID=${appId}`;
+  
+//     // Set the email body with the dynamic link, but make sure the link is uneditable
+//     setEmailBody(
+//       `Please review at the following link:\n` +
+//       `<span contentEditable="false"><a href="${reviewerLink}" target="_blank">${reviewerLink}</a></span>`
+//     );
+  
+//     setShowModal(true);
+//   };
+
+//   const handleEmailBodyChange = (e) => {
+//     // Only allow editing of the non-link portion of the email body
+//     setEmailBody(e.target.innerHTML);
+//   };
+
+//   const handleSendEmail = () => {
+//     console.log(`Sending email to ${currentReviewer.email} for application ${currentApp.app_ID}`);
+//     console.log(`Email body: ${emailBody}`);
+//     handleClose();
+//   };
+
+//   const handleView = (id, reportType) => {
+//     navigate(`/reviewerOne?app_ID=${id}&reportType=${reportType}`);
+//   };
+
+//   return (
+//     <div>
+//       <Navbar />
+//       <h1 className="page-title">Send Reviewers</h1>
+//       <Table striped bordered hover>
+//         <thead>
+//           <tr>
+//             <th className="title">Application ID</th>
+//             <th className="title">Project Title</th>
+//             <th className="title">Submitted Date</th>
+//             <th className="title" colSpan={2}>Reviewers</th>
+//           </tr>
+//           <tr>
+//             <th colSpan={3}></th>
+//             <th className="title">Reviewer One</th>
+//             <th className="title">Reviewer Two</th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {applications.map((app) => (
+//             <tr key={app.app_ID}>
+//               <td>{app.app_ID}</td>
+//               <td>{app.projectTitle}</td>
+//               <td>{app.submittedDate}</td>
+//               <td>
+//                 <div>
+//                   <label className="Reviewer">{app.reviewer1Name}</label>
+//                 </div>
+//                 <button className="Email-button" onClick={() => handleShow(app.app_ID, { 
+//                   name: app.reviewer1Name,
+//                   email: app.reviewer1Email,
+//                   affiliation: app.reviewer1Affiliation,
+//                 }, 'Reviewer One')}>Send Email</button>
+//                 <br />
+//                 <button className="btn-rejected" onClick={() => handleView(app.app_ID, 'mid')}>Final Mark</button>
+//                 <button className="view-button" onClick={() => handleView(app.app_ID, 'mid')}>View</button>
+//               </td>
+//               <td>
+//                 <div>
+//                   <label className="Reviewer">{app.reviewer2Name}</label>
+//                 </div>
+//                 <button className="Email-button" onClick={() => handleShow(app.app_ID, { 
+//                   name: app.reviewer2Name,
+//                   email: app.reviewer2Email,
+//                   affiliation: app.reviewer2Affiliation, 
+//                 }, 'Reviewer Two')}>Send Email</button>
+//                 <br />
+//                 <button className="btn-rejected" onClick={() => handleView(app.app_ID, 'end')}>Final Mark</button>
+//                 <button className="view-button" onClick={() => handleView(app.app_ID, 'end')}>View</button>
+//               </td>
+//             </tr>
+//           ))}
+//         </tbody>
+//       </Table>
+
+//       <Modal show={showModal} onHide={handleClose}>
+//         <Modal.Header closeButton>
+//           <Modal.Title>Send Email to {currentReviewer.name}</Modal.Title>
+//         </Modal.Header>
+//         <Modal.Body>
+//           <Form>
+//             <Form.Group controlId="formProjectTitle">
+//               <Form.Label>Project Title</Form.Label>
+//               <Form.Control
+//                 type="text"
+//                 value={currentApp ? currentApp.projectTitle : ''}
+//                 readOnly
+//               />
+//             </Form.Group>
+//             <Form.Group controlId="formReviewerName">
+//               <Form.Label>Reviewer Name</Form.Label>
+//               <Form.Control
+//                 type="text"
+//                 value={currentReviewer.name}
+//                 readOnly
+//               />
+//             </Form.Group>
+//             <Form.Group controlId="formReviewerEmail">
+//               <Form.Label>Reviewer Email</Form.Label>
+//               <Form.Control
+//                 type="email"
+//                 value={currentReviewer.email}
+//                 readOnly
+//               />
+//             </Form.Group>
+//             <Form.Group controlId="formReviewerAffiliation">
+//               <Form.Label>Reviewer Affiliation</Form.Label>
+//               <Form.Control
+//                 type="text"
+//                 value={currentReviewer.affiliation}
+//                 readOnly
+//               />
+//             </Form.Group>
+//             <Form.Group controlId="formEmailBody">
+//               <Form.Label>Email Body</Form.Label>
+//               <div
+//                 style={{
+//                   color: 'black',
+//                   padding: '8px',
+//                   backgroundColor: '#f8f9fa',
+//                   border: '1px solid #ced4da',
+//                   borderRadius: '4px',
+//                 }}
+//                 contentEditable
+//                 onInput={handleEmailBodyChange}
+//                 dangerouslySetInnerHTML={{ __html: emailBody }}
+//               />
+//             </Form.Group>
+//           </Form>
+//         </Modal.Body>
+//         <Modal.Footer>
+//           <Button variant="secondary" onClick={handleClose}>Cancel</Button>
+//           <Button variant="primary" onClick={handleSendEmail}>Send</Button>
+//         </Modal.Footer>
+//       </Modal>
+//     </div>
+//   );
+// }

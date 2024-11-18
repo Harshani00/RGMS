@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Table from 'react-bootstrap/Table';
 import Navbar4 from '../../Components/Navbar4';
 import './Reviewer.css';
-import { useNavigate } from 'react-router-dom';
 
 export default function Reviewer1() {
   const location = useLocation();
@@ -12,13 +11,13 @@ export default function Reviewer1() {
   const app_ID = query.get('app_ID'); // Get app_ID from query parameters
   const [application, setApplication] = useState(null);
   const [overallMarks, setOverallMarks] = useState('');
+  const [evaluationReport, setEvaluationReport] = useState(null);
   const navigate = useNavigate(); // Initialize useNavigate hook
 
   useEffect(() => {
     const fetchApplicationDetails = async () => {
-      if (app_ID) { // Ensure app_ID is defined
+      if (app_ID) {
         try {
-          // Update the URL to the correct path
           const response = await axios.get(`/Reviewer.php?app_ID=${app_ID}`);
           setApplication(response.data);
         } catch (error) {
@@ -32,16 +31,37 @@ export default function Reviewer1() {
 
     fetchApplicationDetails();
   }, [app_ID]);
+
   const handleFileUpload = (e) => {
-    console.log('File uploaded:', e.target.files[0]);
-    // File upload logic here
+    setEvaluationReport(e.target.files[0]);
   };
-  
 
+  const handleMarksSubmit = async () => {
+    if (!overallMarks || !evaluationReport) {
+      alert("Please enter the overall marks and upload the evaluation report.");
+      return;
+    }
 
-  const handleMarksSubmit = () => {
-    console.log('Overall Marks Submitted:', overallMarks);
-    // Additional logic for handling marks submission can be added here
+    const formData = new FormData();
+    formData.append('app_ID', app_ID);
+    formData.append('overallMarks', overallMarks);
+    formData.append('evaluationReport', evaluationReport);
+
+    try {
+      const response = await axios.post('/Reviewer1Evaluvation.php', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      if (response.data.status === "success") {
+        alert("Evaluation report and marks submitted successfully.");
+      } else {
+        alert("Error: " + response.data.message);
+      }
+    } catch (error) {
+      console.error('Error submitting marks and report:', error);
+      alert("There was an error submitting the data.");
+    }
   };
 
   if (!application) {
@@ -49,12 +69,8 @@ export default function Reviewer1() {
   }
 
   if (application.error) {
-    return <div>{application.error}</div>; // Display error message
+    return <div>{application.error}</div>;
   }
-  
-  const handleViewClick = (Id) => {
-    navigate(`/view-application/${Id}`); // Navigate to the detailed view page
-  };
 
   return (
     <div>
@@ -68,7 +84,6 @@ export default function Reviewer1() {
             <th>Project Title</th>
             <th>Applicant Name</th>
             <th>Application</th>
-            
           </tr>
         </thead>
         <tbody>
@@ -77,14 +92,10 @@ export default function Reviewer1() {
             <td>{application.projectTitle}</td>
             <td>{application.name}</td>
             <td>
-                <button 
-                  className="view-button" // Add your custom class name for styling
-                  onClick={() => handleViewClick(application.app_ID)} // Handle button click
-                >
-                  View
-                </button>
-              </td>
-            
+              <button className="view-button" onClick={() => navigate(`/view-application/${application.app_ID}`)}>
+                View
+              </button>
+            </td>
           </tr>
         </tbody>
       </Table>
@@ -99,9 +110,9 @@ export default function Reviewer1() {
         <div className="evaluation-section">
           <div className="upload-section">
             <label htmlFor="uploadReport">Upload Evaluation Report: </label>
-            <input 
-              type="file" 
-              id="uploadReport" 
+            <input
+              type="file"
+              id="uploadReport"
               onChange={handleFileUpload}
             />
           </div>
@@ -116,10 +127,7 @@ export default function Reviewer1() {
               placeholder="Enter marks"
               className="marks-input"
             />
-            <button 
-              className="submit-button" 
-              onClick={handleMarksSubmit}
-            >
+            <button className="submit-button" onClick={handleMarksSubmit}>
               Submit
             </button>
           </div>

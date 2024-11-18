@@ -435,6 +435,217 @@
 //     </div>
 //   );
 // }
+// import React, { useState, useEffect } from 'react';
+// import Table from 'react-bootstrap/Table';
+// import Navbar from '../../Components/Navbar';
+// import Modal from 'react-bootstrap/Modal';
+// import Button from 'react-bootstrap/Button';
+// import Form from 'react-bootstrap/Form';
+// import '../Secretary/Table.css';
+// import axios from 'axios';
+
+// export default function RequestApproval() {
+//   const [showEmailModal, setShowEmailModal] = useState(false);
+ 
+//   const [currentApp, setCurrentApp] = useState(null);
+//   const [reportType, setReportType] = useState('');
+//   const [emailBody, setEmailBody] = useState('');
+//   const [recipientRole, setRecipientRole] = useState('');
+//   const [recipientName, setrecipientName] = useState('');
+//   const [recipientEmail, setRecipientEmail] = useState('');
+//   const [applications, setApplications] = useState([]);
+  
+//   // State variables for Add Comment Modal
+
+//   const [name, setName] = useState('');
+
+//   useEffect(() => {
+//     const fetchApplications = async () => {
+//       try {
+//         const response = await axios.get('/RequestApproval.php');
+//         setApplications(response.data);
+//       } catch (error) {
+//         console.error('Error fetching applications:', error);
+//       }
+//     };
+
+//     fetchApplications();
+//   }, []);
+
+ 
+
+//   const handleCloseEmail = () => setShowEmailModal(false);
+
+ 
+
+  
+// //   const handleShowEmail = (appId, role, email) => {
+// //     const selectedApp = applications.find(app => app.app_ID === appId);
+// //     if (selectedApp) {
+// //         setCurrentApp(selectedApp);
+// //         setReportType(role);
+// //         setRecipientRole(role);
+// //         setrecipientName(name);
+// //         setRecipientEmail(email);
+        
+// //         // Construct the clickable link for the email body
+// //         const DeanHODLink = `${window.location.origin}/dean_hod?app_ID=${appId}&Role=${role}`;
+// //         setEmailBody(`<span style="color: black;">Please use the following link to access the details:</span> <a href="${DeanHODLink}" target="_blank">${DeanHODLink}</a>`);
+// //     } else {
+// //         console.error('Application not found for ID:', appId);
+// //     }
+// //     setShowEmailModal(true);
+// // };
+
+
+
+// const handleShowEmail = (appId, role, email) => {
+//   const selectedApp = applications.find(app => app.app_ID === appId);
+//   if (selectedApp) {
+//     setCurrentApp(selectedApp);
+//     setReportType(role);
+//     setRecipientRole(role);
+//     setrecipientName(name);
+//     setRecipientEmail(email);
+
+//     // Construct the clickable link for the email body
+//     const DeanHODLink = `${window.location.origin}/${role.toLowerCase()}?app_ID=${appId}&Role=${role}`;
+//     setEmailBody(`<span style="color: black;">Please use the following link to access the details:</span> <a href="${DeanHODLink}" target="_blank">${DeanHODLink}</a>`);
+//   } else {
+//     console.error('Application not found for ID:', appId);
+//   }
+//   setShowEmailModal(true);
+// };
+
+
+//   const handleSendEmail = () => {
+//     console.log(`Sending email to ${recipientRole} at ${recipientEmail} for application ${currentApp.app_ID}: ${emailBody}`);
+//     // Add your email sending logic here (e.g., using an API)
+//     handleCloseEmail();
+//   };
+
+//   const handleDecision = (appId, decision, role) => {
+//     console.log(`Decision for application ${appId} by ${role}: ${decision}`);
+//     // Add logic to handle decision (approve/reject)
+//   };
+  
+  
+//   return (
+//     <div>
+//       <Navbar />
+//       <h1 className="page-title">Request Approval</h1>
+//       <Table striped bordered hover>
+//         <thead>
+//           <th colSpan={6} className='title'>
+//             <label>All Shorted Applications</label>
+//           </th>
+//           <tr>
+//             <th>Application ID</th>
+//             <th>Project Title</th>
+//             <th>Submitted Date</th>
+//             <th>Status (HOD)</th>
+//             <th>Status (Dean)</th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {applications.map((app) => (
+//             <tr key={app.app_ID}>
+//               <td>{app.app_ID}</td>
+//               <td>{app.projectTitle}</td>
+//               <td>{app.submittedDate}</td>
+//               <td>
+//                 {app.statusHod}
+//                 <br />
+//                 <button className="btn-approved" onClick={() => handleDecision(app.app_ID, 'Approved', 'HOD')}>
+//                   Approve
+//                 </button>
+//                 <button className='btn-rejected' onClick={() => handleDecision(app.app_ID, 'Rejected', 'HOD')}>
+//                   Reject
+//                 </button>
+//                 {/* <button className='view-button' onClick={() => handleShowAdd(app.app_ID)}>
+//                   Add
+//                 </button> */}
+//                 <button className="Email-button" onClick={() => handleShowEmail(app.app_ID, 'HOD', app.hodEmail)}>Send Email</button>
+//               </td>
+//               <td>
+//                 {app.statusDean}
+//                 <br />
+//                 <button className='btn-approved' onClick={() => handleDecision(app.app_ID, 'Approved', 'Dean')}>
+//                   Approve
+//                 </button>
+//                 <button className='btn-rejected' onClick={() => handleDecision(app.app_ID, 'Rejected', 'Dean')}>
+//                   Reject
+//                 </button>
+//                 {/* <button className='view-button' onClick={() => handleShowAdd(app.app_ID)}>
+//                   Add
+//                 </button> */}
+//                 <button className='Email-button' onClick={() => handleShowEmail(app.app_ID, 'Dean', app.deanEmail)}>
+//                   Send Email
+//                 </button>
+//               </td>
+//             </tr>
+//           ))}
+//         </tbody>
+
+
+//       </Table>
+
+//      {/* Send Email Modal */}
+//      <Modal show={showEmailModal} onHide={handleCloseEmail}>
+//   <Modal.Header closeButton>
+//     <Modal.Title>Send Email to {recipientRole}</Modal.Title>
+//   </Modal.Header>
+//   <Modal.Body>
+//     <Form>
+//       <Form.Group controlId="formProjectTitle">
+//         <Form.Label>Project Title</Form.Label>
+//         <Form.Control type="text" value={currentApp ? currentApp.projectTitle : ''} readOnly />
+//       </Form.Group>
+
+//       <Form.Group controlId="formRecipientRole">
+//         <Form.Label>Recipient Role</Form.Label>
+//         <Form.Control type="text" value={recipientRole} readOnly />
+//       </Form.Group>
+
+//       {/* Editable Name Field */}
+//       <Form.Group controlId="formRecipientName">
+//         <Form.Label>Recipient Name</Form.Label>
+//         <Form.Control
+//           type="text"
+//           value={recipientName}
+//           onChange={(e) => setrecipientName(e.target.value)}  // Update the state when the user types
+//         />
+//       </Form.Group>
+
+//       {/* Editable Email Field */}
+//       <Form.Group controlId="formRecipientEmail">
+//         <Form.Label>Recipient Email</Form.Label>
+//         <Form.Control
+//           type="email"
+//           value={recipientEmail}
+//           onChange={(e) => setRecipientEmail(e.target.value)}  // Update the state when the user types
+//         />
+//       </Form.Group>
+
+//       <Form.Group controlId="formEmailBody">
+//         <Form.Label>Email Body</Form.Label>
+//         <div style={{ color: 'black', padding: '8px', backgroundColor: '#f8f9fa', border: '1px solid #ced4da', borderRadius: '4px' }}>
+//           <p dangerouslySetInnerHTML={{ __html: emailBody }} />
+//         </div>
+//       </Form.Group>
+//     </Form>
+//   </Modal.Body>
+
+//   <Modal.Footer>
+//     <Button variant="secondary" onClick={handleCloseEmail}>Cancel</Button>
+//     <Button variant="primary" onClick={handleSendEmail}>Send</Button>
+//   </Modal.Footer>
+// </Modal>
+
+   
+//     </div>
+//   );
+// }
 import React, { useState, useEffect } from 'react';
 import Table from 'react-bootstrap/Table';
 import Navbar from '../../Components/Navbar';
@@ -446,7 +657,6 @@ import axios from 'axios';
 
 export default function RequestApproval() {
   const [showEmailModal, setShowEmailModal] = useState(false);
-  const [showAddModal, setShowAddModal] = useState(false);
   const [currentApp, setCurrentApp] = useState(null);
   const [reportType, setReportType] = useState('');
   const [emailBody, setEmailBody] = useState('');
@@ -454,12 +664,8 @@ export default function RequestApproval() {
   const [recipientName, setrecipientName] = useState('');
   const [recipientEmail, setRecipientEmail] = useState('');
   const [applications, setApplications] = useState([]);
-  
-  // State variables for Add Comment Modal
-  const [faculty, setFaculty] = useState('');
-  const [department, setDepartment] = useState('');
-  const [email, setEmail] = useState('');
   const [name, setName] = useState('');
+
 
   useEffect(() => {
     const fetchApplications = async () => {
@@ -470,65 +676,28 @@ export default function RequestApproval() {
         console.error('Error fetching applications:', error);
       }
     };
-
     fetchApplications();
   }, []);
 
-  const handleShowAdd = (appId) => {
-    setCurrentApp(applications.find(app => app.app_ID === appId));
-    setShowAddModal(true);
-  };
-
   const handleCloseEmail = () => setShowEmailModal(false);
 
-  const handleCloseAdd = () => {
-    setShowAddModal(false);
-    // Reset fields
-    setFaculty('');
-    setDepartment('');
-    setEmail('');
-    setName('');
+  const handleShowEmail = (appId, role, email) => {
+    const selectedApp = applications.find(app => app.app_ID === appId);
+    if (selectedApp) {
+      setCurrentApp(selectedApp);
+      setReportType(role);
+      setRecipientRole(role);
+      setrecipientName(name);
+      setRecipientEmail(email);
+
+      // Construct the clickable link for the email body
+      const DeanHODLink = `${window.location.origin}/${role.toLowerCase()}?app_ID=${appId}&Role=${role}`;
+      setEmailBody(`<span style="color: black;">Please use the following link to access the details:</span> <a href="${DeanHODLink}" target="_blank">${DeanHODLink}</a>`);
+    } else {
+      console.error('Application not found for ID:', appId);
+    }
+    setShowEmailModal(true);
   };
-
-  
-//   const handleShowEmail = (appId, role, email) => {
-//     const selectedApp = applications.find(app => app.app_ID === appId);
-//     if (selectedApp) {
-//         setCurrentApp(selectedApp);
-//         setReportType(role);
-//         setRecipientRole(role);
-//         setrecipientName(name);
-//         setRecipientEmail(email);
-        
-//         // Construct the clickable link for the email body
-//         const DeanHODLink = `${window.location.origin}/dean_hod?app_ID=${appId}&Role=${role}`;
-//         setEmailBody(`<span style="color: black;">Please use the following link to access the details:</span> <a href="${DeanHODLink}" target="_blank">${DeanHODLink}</a>`);
-//     } else {
-//         console.error('Application not found for ID:', appId);
-//     }
-//     setShowEmailModal(true);
-// };
-
-
-
-const handleShowEmail = (appId, role, email) => {
-  const selectedApp = applications.find(app => app.app_ID === appId);
-  if (selectedApp) {
-    setCurrentApp(selectedApp);
-    setReportType(role);
-    setRecipientRole(role);
-    setrecipientName(name);
-    setRecipientEmail(email);
-
-    // Construct the clickable link for the email body
-    const DeanHODLink = `${window.location.origin}/${role.toLowerCase()}?app_ID=${appId}&Role=${role}`;
-    setEmailBody(`<span style="color: black;">Please use the following link to access the details:</span> <a href="${DeanHODLink}" target="_blank">${DeanHODLink}</a>`);
-  } else {
-    console.error('Application not found for ID:', appId);
-  }
-  setShowEmailModal(true);
-};
-
 
   const handleSendEmail = () => {
     console.log(`Sending email to ${recipientRole} at ${recipientEmail} for application ${currentApp.app_ID}: ${emailBody}`);
@@ -541,24 +710,6 @@ const handleShowEmail = (appId, role, email) => {
     // Add logic to handle decision (approve/reject)
   };
 
-  const handleAddComment = async () => {
-    const commentData = {
-      faculty,
-      department,
-      email,
-      name,
-      appId: currentApp.app_ID // Include the current application ID
-    };
-    
-    try {
-      const response = await axios.post('/AddComment.php', commentData);
-      console.log('Comment added:', response.data);
-      handleCloseAdd(); // Close the modal after adding the comment
-    } catch (error) {
-      console.error('Error adding comment:', error);
-    }
-  };
-
   return (
     <div>
       <Navbar />
@@ -566,7 +717,7 @@ const handleShowEmail = (appId, role, email) => {
       <Table striped bordered hover>
         <thead>
           <th colSpan={6} className='title'>
-            <label>All Shorted Applications</label>
+            <label>All Shortlisted Applications</label>
           </th>
           <tr>
             <th>Application ID</th>
@@ -583,93 +734,100 @@ const handleShowEmail = (appId, role, email) => {
               <td>{app.projectTitle}</td>
               <td>{app.submittedDate}</td>
               <td>
-                {app.statusHod}
-                <br />
-                <button className="btn-approved" onClick={() => handleDecision(app.app_ID, 'Approved', 'HOD')}>
-                  Approve
-                </button>
-                <button className='btn-rejected' onClick={() => handleDecision(app.app_ID, 'Rejected', 'HOD')}>
-                  Reject
-                </button>
-                {/* <button className='view-button' onClick={() => handleShowAdd(app.app_ID)}>
-                  Add
-                </button> */}
-                <button className="Email-button" onClick={() => handleShowEmail(app.app_ID, 'HOD', app.hodEmail)}>Send Email</button>
+                {app.hod_decision === '3.1' ? (
+                  <>
+                    <button className="btn-approved" onClick={() => handleDecision(app.app_ID, 'Approved', 'HOD')}>Approve</button>
+                    <button className="Email-button" onClick={() => handleShowEmail(app.app_ID, 'HOD', app.hodEmail)}>Send Email</button>
+                  </>
+                ) : app.hod_decision === '3.2' ? (
+                  <>
+                  <button className="btn-rejected" onClick={() => handleDecision(app.app_ID, 'Rejected', 'HOD')}>Reject</button>
+                  <button className="Email-button" onClick={() => handleShowEmail(app.app_ID, 'HOD', app.hodEmail)}>Send Email</button>
+                  </>
+                  
+                ) : app.Status === '2.1' ? (
+                  <>
+                    <button className="btn-approved" onClick={() => handleDecision(app.app_ID, 'Approved', 'HOD')}>Approve</button>
+                    <button className="btn-rejected" onClick={() => handleDecision(app.app_ID, 'Rejected', 'HOD')}>Reject</button>
+                    <button className="Email-button" onClick={() => handleShowEmail(app.app_ID, 'HOD', app.hodEmail)}>Send Email</button>
+                  </>
+                ) : null}
               </td>
               <td>
-                {app.statusDean}
-                <br />
-                <button className='btn-approved' onClick={() => handleDecision(app.app_ID, 'Approved', 'Dean')}>
-                  Approve
-                </button>
-                <button className='btn-rejected' onClick={() => handleDecision(app.app_ID, 'Rejected', 'Dean')}>
-                  Reject
-                </button>
-                {/* <button className='view-button' onClick={() => handleShowAdd(app.app_ID)}>
-                  Add
-                </button> */}
-                <button className='Email-button' onClick={() => handleShowEmail(app.app_ID, 'Dean', app.deanEmail)}>
-                  Send Email
-                </button>
+                {app.dean_decision === '3.1' ? (
+                  <>
+                    <button className="btn-approved" onClick={() => handleDecision(app.app_ID, 'Approved', 'Dean')}>Approve</button>
+                    <button className="Email-button" onClick={() => handleShowEmail(app.app_ID, 'Dean', app.deanEmail)}>Send Email</button>
+                  </>
+                ) : app.dean_decision === '3.2' ? (
+                  <>
+                  <button className="btn-rejected" onClick={() => handleDecision(app.app_ID, 'Rejected', 'Dean')}>Reject</button>
+                  <button className="Email-button" onClick={() => handleShowEmail(app.app_ID, 'Dean', app.deanEmail)}>Send Email</button>
+                  </>
+                ) : app.Status === '2.1' ? (
+                  <>
+                    <button className="btn-approved" onClick={() => handleDecision(app.app_ID, 'Approved', 'Dean')}>Approve</button>
+                    <button className="btn-rejected" onClick={() => handleDecision(app.app_ID, 'Rejected', 'Dean')}>Reject</button>
+                    <button className="Email-button" onClick={() => handleShowEmail(app.app_ID, 'Dean', app.deanEmail)}>Send Email</button>
+                  </>
+                ) : null}
               </td>
             </tr>
           ))}
         </tbody>
       </Table>
 
-     {/* Send Email Modal */}
-     <Modal show={showEmailModal} onHide={handleCloseEmail}>
-  <Modal.Header closeButton>
-    <Modal.Title>Send Email to {recipientRole}</Modal.Title>
-  </Modal.Header>
-  <Modal.Body>
-    <Form>
-      <Form.Group controlId="formProjectTitle">
-        <Form.Label>Project Title</Form.Label>
-        <Form.Control type="text" value={currentApp ? currentApp.projectTitle : ''} readOnly />
-      </Form.Group>
+      {/* Send Email Modal */}
+      <Modal show={showEmailModal} onHide={handleCloseEmail}>
+        <Modal.Header closeButton>
+          <Modal.Title>Send Email to {recipientRole}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group controlId="formProjectTitle">
+              <Form.Label>Project Title</Form.Label>
+              <Form.Control type="text" value={currentApp ? currentApp.projectTitle : ''} readOnly />
+            </Form.Group>
 
-      <Form.Group controlId="formRecipientRole">
-        <Form.Label>Recipient Role</Form.Label>
-        <Form.Control type="text" value={recipientRole} readOnly />
-      </Form.Group>
+            <Form.Group controlId="formRecipientRole">
+              <Form.Label>Recipient Role</Form.Label>
+              <Form.Control type="text" value={recipientRole} readOnly />
+            </Form.Group>
 
-      {/* Editable Name Field */}
-      <Form.Group controlId="formRecipientName">
-        <Form.Label>Recipient Name</Form.Label>
-        <Form.Control
-          type="text"
-          value={recipientName}
-          onChange={(e) => setrecipientName(e.target.value)}  // Update the state when the user types
-        />
-      </Form.Group>
+            {/* Editable Name Field */}
+            <Form.Group controlId="formRecipientName">
+              <Form.Label>Recipient Name</Form.Label>
+              <Form.Control
+                type="text"
+                value={recipientName}
+                onChange={(e) => setrecipientName(e.target.value)}  // Update the state when the user types
+              />
+            </Form.Group>
 
-      {/* Editable Email Field */}
-      <Form.Group controlId="formRecipientEmail">
-        <Form.Label>Recipient Email</Form.Label>
-        <Form.Control
-          type="email"
-          value={recipientEmail}
-          onChange={(e) => setRecipientEmail(e.target.value)}  // Update the state when the user types
-        />
-      </Form.Group>
+            {/* Editable Email Field */}
+            <Form.Group controlId="formRecipientEmail">
+              <Form.Label>Recipient Email</Form.Label>
+              <Form.Control
+                type="email"
+                value={recipientEmail}
+                onChange={(e) => setRecipientEmail(e.target.value)}  // Update the state when the user types
+              />
+            </Form.Group>
 
-      <Form.Group controlId="formEmailBody">
-        <Form.Label>Email Body</Form.Label>
-        <div style={{ color: 'black', padding: '8px', backgroundColor: '#f8f9fa', border: '1px solid #ced4da', borderRadius: '4px' }}>
-          <p dangerouslySetInnerHTML={{ __html: emailBody }} />
-        </div>
-      </Form.Group>
-    </Form>
-  </Modal.Body>
+            <Form.Group controlId="formEmailBody">
+              <Form.Label>Email Body</Form.Label>
+              <div style={{ color: 'black', padding: '8px', backgroundColor: '#f8f9fa', border: '1px solid #ced4da', borderRadius: '4px' }}>
+                <p dangerouslySetInnerHTML={{ __html: emailBody }} />
+              </div>
+            </Form.Group>
+          </Form>
+        </Modal.Body>
 
-  <Modal.Footer>
-    <Button variant="secondary" onClick={handleCloseEmail}>Cancel</Button>
-    <Button variant="primary" onClick={handleSendEmail}>Send</Button>
-  </Modal.Footer>
-</Modal>
-
-   
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseEmail}>Cancel</Button>
+          <Button variant="primary" onClick={handleSendEmail}>Send</Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }

@@ -14,7 +14,7 @@ include("dbConnection.php");
 $sql = "SELECT p.app_ID, p.projectTitle, p.submittedDate, a.Status ,a.reviewer1Name, a.reviewer2Name , a.reviewer1Email ,a.reviewer2Email ,a.reviewer1Affiliation ,a.reviewer2Affiliation 
         FROM project p
         JOIN application a ON p.app_ID = a.Id
-        WHERE ROUND(a.Status, 1) = 2.1";  // Rounding to one decimal point if necessary
+        WHERE ROUND(a.Status, 1) = 3.1";  // Rounding to one decimal point if necessary
 
 $result = $conn->query($sql);
 

@@ -22,7 +22,7 @@ if (!isset($_SESSION['user_id'])) {
 // Retrieve user_id from session
 $user_id = $conn->real_escape_string($_SESSION['user_id']);
 
-// Ensure app_ID is in the POST data
+// Validate and sanitize the app_ID
 $app_ID = isset($_POST['app_ID']) ? $conn->real_escape_string($_POST['app_ID']) : null;
 if (!$app_ID) {
     echo json_encode(["status" => "error", "message" => "Application ID is required."]);
@@ -31,40 +31,43 @@ if (!$app_ID) {
 
 // Define target directory and allowed file types
 $targetDir = "D:/GrantData/BudgetRevision/";
-$allowedTypes = array('pdf', 'doc', 'docx', 'xls', 'xlsx'); // Adjust as needed
+$allowedTypes = ['pdf', 'doc', 'docx', 'xls', 'xlsx'];
 
 // Ensure the uploads directory exists
-if (!file_exists($targetDir)) {
+if (!is_dir($targetDir)) {
     mkdir($targetDir, 0755, true);
 }
 
 // Function to handle file upload
 function uploadFile($file, $targetDir, $allowedTypes) {
     $fileName = basename($file["name"]);
-    $targetFilePath = $targetDir . $fileName;
-    $fileType = strtolower(pathinfo($targetFilePath, PATHINFO_EXTENSION));
+    $fileType = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
-    // Check file type
+    // Validate file type
     if (!in_array($fileType, $allowedTypes)) {
         return "Error: Only " . implode(", ", $allowedTypes) . " files are allowed.";
     }
 
-    // Check if file already exists
-    if (file_exists($targetFilePath)) {
-        return "Error: File already exists.";
-    }
+    // Rename file to avoid conflicts
+    $targetFilePath = $targetDir . uniqid() . "_" . $fileName;
 
     // Attempt to move the uploaded file
     if (move_uploaded_file($file["tmp_name"], $targetFilePath)) {
-        return $fileName; // Return the file name
+        chmod($targetFilePath, 0644); // Set permissions if necessary
+        return $targetFilePath;
     } else {
         return "Error: Unable to upload the file.";
     }
 }
 
-// Check if files are submitted
+// Initialize responses array
+$responses = [
+    'PreviousBudget' => 'No file uploaded.',
+    'CurrentBudget' => 'No file uploaded.'
+];
+
+// Check if files are submitted and upload
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $responses = [];
     if (isset($_FILES['PreviousBudget'])) {
         $responses['PreviousBudget'] = uploadFile($_FILES['PreviousBudget'], $targetDir, $allowedTypes);
     }
@@ -73,21 +76,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Ensure both files are uploaded successfully
-    $previousBudgetPath = isset($responses['PreviousBudget']) && strpos($responses['PreviousBudget'], 'Error') === false ? $targetDir . $responses['PreviousBudget'] : null;
-    $currentBudgetPath = isset($responses['CurrentBudget']) && strpos($responses['CurrentBudget'], 'Error') === false ? $targetDir . $responses['CurrentBudget'] : null;
-
-    // If both files are uploaded successfully
-    if ($previousBudgetPath && $currentBudgetPath) {
-        // Prepare and execute the insert query
+    if (!str_contains($responses['PreviousBudget'], 'Error') && !str_contains($responses['CurrentBudget'], 'Error')) {
+        // Insert into the database
         $stmt = $conn->prepare("INSERT INTO budget (app_ID, previous_budget, current_budget) VALUES (?, ?, ?)");
         if ($stmt) {
-            $stmt->bind_param("iss", $app_ID, $previousBudgetPath, $currentBudgetPath);
+            $stmt->bind_param("iss", $app_ID, $responses['PreviousBudget'], $responses['CurrentBudget']);
             if ($stmt->execute()) {
                 echo json_encode([
                     "status" => "success",
                     "message" => "Files uploaded successfully.",
-                    "previous_budget" => $previousBudgetPath,
-                    "current_budget" => $currentBudgetPath
+                    "previous_budget" => $responses['PreviousBudget'],
+                    "current_budget" => $responses['CurrentBudget']
                 ]);
             } else {
                 echo json_encode([
@@ -105,11 +104,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         echo json_encode([
             "status" => "error",
-            "message" => "Error uploading files."
+            "message" => "Error uploading files.",
+            "details" => $responses
         ]);
     }
 
-    // Close the connection
     $conn->close();
 }
 ?>

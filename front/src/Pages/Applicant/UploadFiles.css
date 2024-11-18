@@ -90,9 +90,9 @@
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-/* In your CSS file */
-.appid_dropdwon {
-  width: 100px; /* Adjust the width as needed */
+
+.appid_dropdown{
+  width: 210px; /* Adjust the width as needed */
   
   border-width: 5px;
   border-color: whitesmoke;
@@ -100,6 +100,17 @@
   color:whitesmoke;
   margin-left: 10px;
   border-radius: 10px;
+}
+.project_dropdown{
+  width: 210px; /* Adjust the width as needed */
+  
+  border-width: 5px;
+  border-color: whitesmoke;
+  background-color: #052659;
+  color:whitesmoke;
+  margin-left: 10px;
+  border-radius: 10px;
+
 }
 .uploadtitle
 {
@@ -111,4 +122,7 @@
   font-size: 18px;
   margin-left:10px;
   margin-top: 10px;
+}
+.selectreport{
+  
 }
