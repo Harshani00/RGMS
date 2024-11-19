@@ -51,15 +51,23 @@
 }
 
 .background-image {
+    /* width: 100%;
+    height: 100%;
+    background-size: cover; /* Ensures the image covers the container */
+    /* background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    left: 0; */ 
     width: 100%;
     height: 100%;
-    background-size: cover; /* Make sure image covers the card area */
-    background-position: center;
-    background-repeat: no-repeat;
-    border-radius: 1px;
+    background-size:100% 100%; /* Ensures the image covers the container */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Avoids tiling */
     position: absolute;
     top: 0;
     left: 0;
+
 }
 
 .content {

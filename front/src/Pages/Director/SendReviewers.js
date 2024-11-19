@@ -501,9 +501,9 @@ export default function SendReviewers() {
     event.preventDefault();
   
     try {
+      // Save reviewer details
       const endpoint = currentReviewer.type === 'Reviewer One' ? '/SaveReviewer1.php' : '/SaveReviewer2.php';
-  
-      const response = await axios.post(endpoint, {
+      const saveResponse = await axios.post(endpoint, {
         app_ID: currentApp.app_ID,
         reviewerEmail: currentReviewer.email,
         reviewerName: currentReviewer.name,
@@ -521,19 +521,31 @@ export default function SendReviewers() {
         }],
       });
   
-      if (response.data.status === "success") {
+      if (saveResponse.data.status === "success") {
         console.log("Reviewer details saved successfully");
-        alert("Reviewer details saved successfully");
+  
+        // Send email
+        const emailResponse = await axios.post('Email.php', {
+          email: currentReviewer.email,
+          subject: `Invitation to Review Project: ${currentApp.projectTitle}`,
+          message: emailBody, // Email body containing the dynamic link
+        });
+  
+        if (emailResponse.data.status === "success") {
+          alert("Email sent successfully!");
+          console.log("Email response:", emailResponse.data);
+        } else {
+          alert(`Failed to send email: ${emailResponse.data.message}`);
+          console.error("Email error:", emailResponse.data.message);
+        }
       } else {
-        console.log("Error:", response.data.message);
         alert('There was an error saving reviewer details. Please try again.');
       }
     } catch (error) {
-      console.error("Error saving reviewer details:", error);
-      alert('There was an error submitting the form. Please try again.');
+      console.error("Error during the process:", error);
+      alert('An error occurred. Please try again.');
     }
   };
-  
   
   
 

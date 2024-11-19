@@ -195,9 +195,9 @@ import Navbar3 from '../../Components/Navbar3';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 
 const imageSources = [
-  require('../../Assets/uni1.jpg'), // Replace with your actual image paths
-  require('../../Assets/background3.png'),
-  require('../../Assets/bb.jpg'),
+  require('../../Assets/backgroungimage.png'), // Replace with your actual image paths
+  // require('../../Assets/background3.png'),
+  // require('../../Assets/bb.jpg'),
 ];
 
 export default function HomePage() {
