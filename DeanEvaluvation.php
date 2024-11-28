@@ -48,7 +48,24 @@ if (isset($data->app_ID) && isset($data->decision) && isset($data->remarks)) {
             throw new Exception("Failed to update application table status.");
         }
 
-        // Commit the transaction if both queries are successful
+        // Update the 'app_status' table status column where the app_ID matches
+        $app_status_query = "UPDATE app_status SET status = ? WHERE app_ID = ?";
+        
+        // Determine the approval code for the app_status table
+        $approvalCode = $dean_approval === 'approved' ? '3.1' : '3.2';
+        
+        // Prepare the SQL query for app_status
+        $stmt = $conn->prepare($app_status_query);
+        
+        // Bind parameters to the query
+        $stmt->bind_param("si", $approvalCode, $app_ID);  // 'si' means: string, integer
+
+        // Execute the query for app_status and check for success
+        if (!$stmt->execute()) {
+            throw new Exception("Failed to update app_status table.");
+        }
+
+        // Commit the transaction if all queries are successful
         $conn->commit();
 
         // Return success response
@@ -69,4 +86,3 @@ if (isset($data->app_ID) && isset($data->decision) && isset($data->remarks)) {
     // Return error if input is invalid or missing
     echo json_encode(["success" => false, "error" => "Invalid input."]);
 }
-?>

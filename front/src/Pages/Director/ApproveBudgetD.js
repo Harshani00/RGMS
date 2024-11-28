@@ -1,42 +1,310 @@
-import React, { useState } from 'react';
+// import React, { useEffect, useState } from 'react';
+// import Table from 'react-bootstrap/Table';
+// import Navbar from '../../Components/Navbar';
+// import '../Secretary/Table.css';
+// import axios from 'axios';
+
+// export default function ApproveBudgetD() {
+//   const [applications, setApplications] = useState([]);
+
+//   useEffect(() => {
+//     // Fetch applications from the PHP script
+//     fetchApplications();
+//   }, []);
+
+//   const fetchApplications = async () => {
+//     try {
+//         // Use axios for a GET request
+//         const response = await axios.get('/ApproveBudget.php');
+
+//         // Set the fetched data to state variables
+//         setApplications(response.data);
+//     } catch (error) {
+//         console.error('Error fetching applications:', error);
+//     }
+//   };
+
+//   // Handle the decision change
+//   const handleDecisionChange = (id, newDecision) => {
+//     const updatedApplications = applications.map((app) =>
+//       app.id === id ? { ...app, decision: newDecision } : app
+//     );
+//     setApplications(updatedApplications);
+//   };
+
+//   // Save decision for the given application id
+//   const saveDecision = (id) => {
+//     const app = applications.find(app => app.id === id);
+//     console.log(`Saving decision "${app.decision}" for application ${id}`);
+//     // Add logic here to save the decision, e.g., API call
+//   };
+
+//   // Handle the view button action
+//   const handleView = (id, reportType) => {
+//     console.log(`Viewing ${reportType} budget for application ${id}`);
+//     // Add logic to view the specific report or show a placeholder PDF
+//   };
+
+//   return (
+//     <div>
+//       <Navbar />
+//       <h1 className="page-title">Approve Budget Revision</h1>
+//       <Table striped bordered hover>
+//         <thead>
+//           <tr>
+//             <th>Project Title</th>
+//             <th>Request Date</th>
+//             <th>Previous Budget</th>
+//             <th>New Budget</th>
+//             <th>Decision</th>
+//             <th>Action</th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {applications.map((app) => (
+//             <tr key={app.app_ID}> {/* Using app.app_ID as the key */}
+//               <td>{app.projectTitle}</td>
+//               <td>{app.uploaded_at}</td>
+//               <td>
+//                 <button
+//                   className="view-button"
+//                   onClick={() => handleView(app.app_ID, 'previous')}
+//                 >
+//                   View
+//                 </button>
+//               </td>
+//               <td>
+//                 <button
+//                   className="view-button"
+//                   onClick={() => handleView(app.app_ID, 'new')}
+//                 >
+//                   View
+//                 </button>
+//               </td>
+//               <td>
+//                 <select
+//                   value={app.decision}
+//                   onChange={(e) => handleDecisionChange(app.app_ID, e.target.value)} // Use app.app_ID here
+//                 >
+//                   <option value="Pending">Pending</option>
+//                   <option value="Approved">Approved</option>
+//                   <option value="Rejected">Rejected</option>
+//                 </select>
+//               </td>
+//               <td>
+//                 <button
+//                   className="view-button"
+//                   onClick={() => saveDecision(app.app_ID)} // Use app.app_ID here
+//                 >
+//                   Save
+//                 </button>
+//               </td>
+//             </tr>
+//           ))}
+//           {/* If no applications exist, this row will be displayed */}
+//           {applications.length === 0 && (
+//             <tr>
+//               <td colSpan={6}>No applications available</td>
+//             </tr>
+//           )}
+//         </tbody>
+//       </Table>
+//     </div>
+//   );
+// }
+// import React, { useEffect, useState } from 'react';
+// import Table from 'react-bootstrap/Table';
+// import Navbar from '../../Components/Navbar';
+// import '../Secretary/Table.css';
+// import axios from 'axios';
+
+// export default function ApproveBudgetD() {
+//   const [applications, setApplications] = useState([]);
+
+//   useEffect(() => {
+//     // Fetch applications from the PHP script
+//     fetchApplications();
+//   }, []);
+
+//   const fetchApplications = async () => {
+//     try {
+//       // Use axios for a GET request
+//       const response = await axios.get('/ApproveBudget.php');
+//       // Set the fetched data to state variables
+//       setApplications(response.data);
+//     } catch (error) {
+//       console.error('Error fetching applications:', error);
+//     }
+//   };
+
+//   // Handle the decision change
+//   const handleDecisionChange = (id, newDecision) => {
+//     const updatedApplications = applications.map((app) =>
+//       app.app_ID === id ? { ...app, decision: newDecision } : app
+//     );
+//     setApplications(updatedApplications);
+//   };
+
+//   // Save decision for the given application id
+//   const saveDecision = async (id) => {
+//     const app = applications.find(app => app.app_ID === id);
+//     try {
+//       // Send the decision to the backend to be saved in the database
+//       const response = await axios.post('/ApproveBudget.php', {
+//         app_ID: app.app_ID,
+//         decision: app.decision,
+//       });
+
+//       if (response.data.status === 'success') {
+//         console.log(`Decision "${app.decision}" saved for application ${id}`);
+//         fetchApplications(); // Refresh the application list after saving the decision
+//       } else {
+//         console.error('Failed to save decision');
+//       }
+//     } catch (error) {
+//       console.error('Error saving decision:', error);
+//     }
+//   };
+
+//   // Handle the view button action
+//   const handleView = (id, reportType) => {
+//     console.log(`Viewing ${reportType} budget for application ${id}`);
+//     // Add logic to view the specific report or show a placeholder PDF
+//   };
+
+//   return (
+//     <div>
+//       <Navbar />
+//       <h1 className="page-title">Approve Budget Revision</h1>
+//       <Table striped bordered hover>
+//         <thead>
+//           <tr>
+//             <th>Project Title</th>
+//             <th>Request Date</th>
+//             <th>Previous Budget</th>
+//             <th>New Budget</th>
+//             <th>Decision</th>
+//             <th>Action</th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {applications.map((app) => (
+//             <tr key={app.app_ID}>
+//               <td>{app.projectTitle}</td>
+//               <td>{app.uploaded_at}</td>
+//               <td>
+//                 <button
+//                   className="view-button"
+//                   onClick={() => handleView(app.app_ID, 'previous')}
+//                 >
+//                   View
+//                 </button>
+//               </td>
+//               <td>
+//                 <button
+//                   className="view-button"
+//                   onClick={() => handleView(app.app_ID, 'new')}
+//                 >
+//                   View
+//                 </button>
+//               </td>
+//               <td>
+//                 <select
+//                   value={app.decision}
+//                   onChange={(e) => handleDecisionChange(app.app_ID, e.target.value)}
+//                 >
+//                   <option value="Pending">Pending</option>
+//                   <option value="Approved">Approved</option>
+//                   <option value="Rejected">Rejected</option>
+//                 </select>
+//               </td>
+//               <td>
+//                 <button
+//                   className="view-button"
+//                   onClick={() => saveDecision(app.app_ID)}
+//                 >
+//                   Save
+//                 </button>
+//               </td>
+//             </tr>
+//           ))}
+//           {applications.length === 0 && (
+//             <tr>
+//               <td colSpan={6}>No applications available</td>
+//             </tr>
+//           )}
+//         </tbody>
+//       </Table>
+//     </div>
+//   );
+// }
+import React, { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import Navbar from '../../Components/Navbar';
 import '../Secretary/Table.css';
+import axios from 'axios';
+import { Modal, Button } from 'react-bootstrap';
 
 export default function ApproveBudgetD() {
-  // Applications data with default decision values
-  const [applications, setApplications] = useState([
-    {
-      id: 1,
-      projectTitle: 'Project Alpha',
-      requestDate: '2024-08-01',
-      previousBudget: '$5000',
-      newBudget: '$5500',
-      decision: 'Pending', // Default decision
-    },
-    {
-      id: 2,
-      projectTitle: 'Project Beta',
-      requestDate: '2024-07-15',
-      previousBudget: '$4000',
-      newBudget: '$4500',
-      decision: 'Pending', // Default decision
+  const [applications, setApplications] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+
+  useEffect(() => {
+    // Fetch applications from the PHP script
+    fetchApplications();
+  }, []);
+
+  const fetchApplications = async () => {
+    try {
+      // Use axios for a GET request
+      const response = await axios.get('/ApproveBudget.php');
+      // Set the fetched data to state variables
+      setApplications(response.data);
+    } catch (error) {
+      console.error('Error fetching applications:', error);
     }
-  ]);
+  };
 
   // Handle the decision change
   const handleDecisionChange = (id, newDecision) => {
     const updatedApplications = applications.map((app) =>
-      app.id === id ? { ...app, decision: newDecision } : app
+      app.app_ID === id ? { ...app, decision: newDecision } : app
     );
     setApplications(updatedApplications);
   };
 
   // Save decision for the given application id
-  const saveDecision = (id) => {
-    const app = applications.find(app => app.id === id);
-    console.log(`Saving decision "${app.decision}" for application ${id}`);
-    // Add logic here to save the decision, e.g., API call
+  const saveDecision = async (id) => {
+    const app = applications.find(app => app.app_ID === id);
+    try {
+      // Send the decision to the backend to be saved in the database
+      const response = await axios.post('/ApproveBudget.php', {
+        app_ID: app.app_ID,
+        decision: app.decision,
+      });
+
+      if (response.data.status === 'success') {
+        console.log(`Decision "${app.decision}" saved for application ${id}`);
+        fetchApplications(); // Refresh the application list after saving the decision
+        setModalMessage(`Decision "${app.decision}" was saved successfully!`);
+        setShowModal(true);  // Show the modal with the success message
+      } else {
+        console.error('Failed to save decision');
+        setModalMessage('Failed to save decision');
+        setShowModal(true);  // Show the modal with the error message
+      }
+    } catch (error) {
+      console.error('Error saving decision:', error);
+      setModalMessage('Error saving decision');
+      setShowModal(true);  // Show the modal with the error message
+    }
+  };
+
+  // Handle the view button action
+  const handleView = (id, reportType) => {
+    console.log(`Viewing ${reportType} budget for application ${id}`);
+    // Add logic to view the specific report or show a placeholder PDF
   };
 
   return (
@@ -55,60 +323,66 @@ export default function ApproveBudgetD() {
           </tr>
         </thead>
         <tbody>
-          {applications.length > 0 ? (
-            applications.map((app) => (
-              <tr key={app.id}>
-                <td>{app.projectTitle}</td>
-                <td>{app.requestDate}</td>
-                <td>
-                  <button className="view-button" onClick={() => handleView(app.id, 'previous')}>
-                    View
-                  </button>
-                </td>
-                <td>
-                  <button className="view-button" onClick={() => handleView(app.id, 'new')}>
-                    View
-                  </button>
-                </td>
-                <td>
-                  <select
-                    value={app.decision}
-                    onChange={(e) => handleDecisionChange(app.id, e.target.value)}
-                  >
-                    <option value="Pending">Pending</option>
-                    <option value="Approved">Approved</option>
-                    <option value="Rejected">Rejected</option>
-                  </select>
-                </td>
-                <td>
-                  <button 
-                    className="view-button" 
-                    onClick={() => saveDecision(app.id)}
-                  >
-                    Save
-                  </button>
-                </td>
-              </tr>
-            ))
-          ) : (
+          {applications.map((app) => (
+            <tr key={app.app_ID}>
+              <td>{app.projectTitle}</td>
+              <td>{app.uploaded_at}</td>
+              <td>
+                <button
+                  className="view-button"
+                  onClick={() => handleView(app.app_ID, 'previous')}
+                >
+                  View
+                </button>
+              </td>
+              <td>
+                <button
+                  className="view-button"
+                  onClick={() => handleView(app.app_ID, 'new')}
+                >
+                  View
+                </button>
+              </td>
+              <td>
+                <select
+                  value={app.decision}
+                  onChange={(e) => handleDecisionChange(app.app_ID, e.target.value)}
+                >
+                  <option value="Pending">Pending</option>
+                  <option value="Approved">Approved</option>
+                  <option value="Rejected">Rejected</option>
+                </select>
+              </td>
+              <td>
+                <button
+                  className="view-button"
+                  onClick={() => saveDecision(app.app_ID)}
+                >
+                  Save
+                </button>
+              </td>
+            </tr>
+          ))}
+          {applications.length === 0 && (
             <tr>
               <td colSpan={6}>No applications available</td>
             </tr>
           )}
         </tbody>
       </Table>
+
+      {/* Modal for showing the decision status */}
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Decision Saved</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{modalMessage}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }
-
-// Handle the view button action
-const handleView = (id, reportType) => {
-  console.log(`Viewing ${reportType} report for application ${id}`);
-  // Add logic to view the specific report or show a placeholder PDF
-};
-
-// Handle the send email button action
-const handleSendEmail = (id) => {
-  console.log(`Sending email for application ${id}`);
-  // Add logic to simulate sending an email or trigger an alert
-};

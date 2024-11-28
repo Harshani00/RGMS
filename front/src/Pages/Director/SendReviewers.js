@@ -462,14 +462,24 @@ export default function SendReviewers() {
     const fetchApplications = async () => {
       try {
         const response = await axios.get('/SendReviewers.php');
-        setApplications(response.data);
+        console.log('Fetched applications:', response.data); // Debug log
+    
+        // Ensure response is an array
+        if (Array.isArray(response.data)) {
+          setApplications(response.data);
+        } else {
+          console.error('Unexpected data format:', response.data);
+          setApplications([]); // Fallback to an empty array
+        }
       } catch (error) {
         console.error('Error fetching applications:', error);
+        setApplications([]); // Ensure applications is always an array
       }
     };
-  
+    
     fetchApplications();
   }, []);
+  
 
   const handleClose = () => setShowModal(false);
 
@@ -579,40 +589,69 @@ export default function SendReviewers() {
           </tr>
         </thead>
         <tbody>
-          {applications.map((app) => (
-            <tr key={app.app_ID}>
-              <td>{app.app_ID}</td>
-              <td>{app.projectTitle}</td>
-              <td>{app.submittedDate}</td>
-              <td>
-                <div>
-                  <label className="Reviewer">{app.reviewer1Name}</label>
-                </div>
-                <button className="Email-button" onClick={() => handleShow(app.app_ID, { 
-                  name: app.reviewer1Name,
-                  email: app.reviewer1Email,
-                  affiliation: app.reviewer1Affiliation,
-                }, 'Reviewer One')}>Send Email</button>
-                <br />
-                <button className="btn-rejected" onClick={() => handleView(app.app_ID, 'mid')}>Final Mark</button>
-                <button className="view-button" onClick={() => handleView(app.app_ID, 'mid')}>View</button>
-              </td>
-              <td>
-                <div>
-                  <label className="Reviewer">{app.reviewer2Name}</label>
-                </div>
-                <button className="Email-button" onClick={() => handleShow(app.app_ID, { 
-                  name: app.reviewer2Name,
-                  email: app.reviewer2Email,
-                  affiliation: app.reviewer2Affiliation, 
-                }, 'Reviewer Two')}>Send Email</button>
-                <br />
-                <button className="btn-rejected" onClick={() => handleView(app.app_ID, 'end')}>Final Mark</button>
-                <button className="view-button" onClick={() => handleView(app.app_ID, 'end')}>View</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
+  {Array.isArray(applications) && applications.length > 0 ? (
+    applications.map((app) => (
+      <tr key={app.app_ID}>
+        <td>{app.app_ID}</td>
+        <td>{app.projectTitle}</td>
+        <td>{app.submittedDate}</td>
+        <td>
+          <div>
+            <label className="Reviewer">{app.reviewer1Name}</label>
+          </div>
+          <button
+            className="Email-button"
+            onClick={() =>
+              handleShow(app.app_ID, {
+                name: app.reviewer1Name,
+                email: app.reviewer1Email,
+                affiliation: app.reviewer1Affiliation,
+              }, 'Reviewer One')
+            }
+          >
+            Send Email
+          </button>
+          <br />
+          <div className="marks-container">
+          <label className="marks-label">Mark: {app.reviewer1_mark || 'N/A'}</label>
+          <button className="view-button" onClick={() => handleView(app.app_ID, 'mid')}>View</button>
+          </div>
+          <br />
+         
+         
+        </td>
+        <td>
+          <div>
+            <label className="Reviewer">{app.reviewer2Name}</label>
+          </div>
+          <button
+            className="Email-button"
+            onClick={() =>
+              handleShow(app.app_ID, {
+                name: app.reviewer2Name,
+                email: app.reviewer2Email,
+                affiliation: app.reviewer2Affiliation,
+              }, 'Reviewer Two')
+            }
+          >
+            Send Email
+          </button>
+          <br />
+          <div className="marks-container">
+    <label className="marks-label">Mark: {app.reviewer2_mark || 'N/A'}</label>
+    <button className="view-button" onClick={() => handleView(app.app_ID, 'end')}>View</button>
+  </div>
+        </td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan="5">No applications found.</td>
+    </tr>
+  )}
+</tbody>
+
+
       </Table>
 
       <Modal show={showModal} onHide={handleClose}>

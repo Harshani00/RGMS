@@ -1,104 +1,73 @@
-.sidebar {
-  position: fixed;
-  left: 0; /* Always fixed on the left */
-  
-  padding-top: 20px;
-  width: 240px;
-  
-  margin-left: 2px;
-  background-color: #800000;
-  color: black;
-  border: 1px solid #ddd;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease; /* Smooth transition */
-  transform: translateX(0); /* Start visible */
-  border-radius: 20px;
-  overflow-y: auto;
-
-  
-  top: 100px; /* This accounts for the height of your two navbars */
-  left: 0;
-  
-  height: calc(100vh - 100px); /* Sidebar height fills the rest of the viewport minus the height of the navbar */
- 
- }
-
-
-.sidebar.closed {
-  transform: translateX(-100%); /* Hidden */
-}
-
-.sidebar-menu {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  margin-top: 150px; /* Adjust margin as needed */
-  display: flex; /* Use flexbox to align items */
-  flex-direction: column; /* Arrange menu items vertically */
-  width: 100%; /* Full width of the sidebar */
-}
-
-.sidebar-menu li {
-  padding: 15px;
+.progress-sidebar {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%; /* Full width of the sidebar */
-  border-bottom: 1px solid #ddd; /* Add a bottom border */
+  padding: 20px;
+  
 }
 
-.sidebar-menu li:last-child {
-  border-bottom: none; /* Remove border for the last item */
+.progress-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
+  justify-content: space-between;
 }
 
-.sidebar-item {
-  color: black;
-  text-decoration: none;
-  display: block;
-  text-align: center;
-  width: 100%; /* Full width to fill menu item */
-  background-color: #f9f9f9; /* Light background for items */
-  padding: 12px;
-  border-radius: 5px; /* Rounded corners */
-  transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transition */
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  flex: 1;
 }
 
-.sidebar-item:hover {
-  background-color: #555;
+.circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.circle.completed {
+  background-color: #800000;
+  border-color: #800000;
   color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
 }
 
-.toggle-button {
+.step-title {
+  margin-top: 8px;
+  font-size: 14px;
+  text-align: center;
+  max-width: 150px;
+  font-weight:700;
+
+}
+
+.line {
   position: absolute;
-  left: 20px; /* Adjust based on your layout */
-  top: 100px; /* Align with the sidebar's top */
-  background-color: #e5e5e5;
-  color: black;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  z-index: 1000; /* Ensure the button is above other content */
-  border-radius: 5px; /* Rounded corners for the button */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add shadow to the button */
+  top: 15px;
+  left: 50%;
+  width: 100%;
+  height: 8px;
+  background-color: whitesmoke;
+  z-index: -1;
+  transition: background-color 0.8s;
 }
 
-.toggle-button:hover {
-  background-color: #e5e5e5;
+.line.completed {
+  background-color: #800000;
 }
 
-/* Adjust for smaller screens */
-@media (max-width: 768px) {
-  .sidebar {
-    width: 200px;
-    transform: translateX(-200px); /* Adjust hidden position */
-  }
+.progress-step:first-child .line {
+  left: 50%;
+}
 
-  .sidebar.open {
-    transform: translateX(0); /* Show sidebar */
-  }
-
-  .toggle-button {
-    display: block; /* Ensure button is shown on smaller screens */
-  }
+.progress-step:last-child .line {
+  display: none;
 }

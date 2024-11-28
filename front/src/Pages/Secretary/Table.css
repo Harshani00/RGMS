@@ -27,6 +27,10 @@
     width:70px;
     border-radius:5px;
     margin-left: 15px;
+    padding: 3px; /* Adjust padding for the button */
+    margin-top: 10px;
+
+   
 
   }
   
@@ -184,7 +188,7 @@
   background-color: #052659;
   border-color: #052659;
   color: white;
-  width:90px;
+  width:100px;
   height: 30px;
   border-radius:5px;
   margin-left: 10px;
@@ -229,3 +233,94 @@
   font-size: 1.5em;
   margin-bottom: 20px;
 }
+
+/* Shortlisted Application (Approved Applications URC Directory and Secretory) */ 
+.granted-button {
+  background-color: rgb(3, 79, 3);
+  border-color: rgb(3, 79, 3);
+  color: white;
+  width:90px;
+  height: 30px;
+  border-radius:5px;
+  margin-left: 10px;
+}
+
+.not-granted-button {
+  background-color: red;
+  border-color: red;
+  color: white;
+  width:90px;
+  height: 30px;
+  border-radius:5px;
+  margin-left: 10px;
+}
+
+.select-unselect-button {
+  background-color: #052659;
+  border-color: #052659;
+  color: white;
+  width:90px;
+  height: 30px;
+  border-radius:5px;
+  margin-left: 10px;
+}
+
+.select-unselect-button:hover {
+  background-color: #005b96;
+  border-color: #005b96; 
+  color: white;
+}
+.granted_deny{
+  width: 20%;
+  margin-left: 25px;
+  
+}
+
+.granted_deny:last-child {
+  margin-right: 20; /* Removes margin from the last button */
+}
+.modaltitle{
+  font-weight: bold;
+}
+.Grant_Application{
+  background-color: #052659;
+  border-color: #052659;
+  color: white;
+  border-radius:5px;
+  margin-left: 10px;
+}
+.Grant_Application:hover {
+  background-color: #005b96;
+  border-color: #005b96; 
+  color: white;
+}
+.modal-body {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Adjust the gap between buttons */
+ 
+}
+.marks-container {
+  display: flex;
+  align-items: center; /* Align items vertically in the center */
+  gap: 10px; /* Add spacing between the label and the button */
+}
+
+.marks-label {
+  display: flex; /* Enable flexbox */
+  align-items: center; /* Center content vertically */
+  justify-content: center; /* Center content horizontally */
+  margin-top: 10px;
+  margin-left: 10px;
+  background-color: green;
+  border-color: Green;
+  color: white;
+  border-radius: 5px;
+  height: 35px;
+  padding: 0 10px; /* Optional: Add padding for spacing around text */
+  text-align: center; /* Ensure text alignment */
+  font-weight: bold; /* Make the text bold for better visibility */
+}
+
+
+

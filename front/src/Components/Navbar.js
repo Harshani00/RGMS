@@ -106,6 +106,7 @@ const Navbar = () => {
         localStorage.removeItem('userRole'); // Store user role in localStorage
         localStorage.removeItem('userID'); // Store user role in localStorage
         localStorage.removeItem('formData'); // Clear form data from localStorage (add this line)
+        localStorage.removeItem('completionStatus'); // Clear username from localStorage
 
         navigate('/login');
       } else {

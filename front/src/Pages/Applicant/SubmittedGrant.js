@@ -146,6 +146,7 @@ export default function SubmittedGrant() {
   return (
     <div>
       <Navbar />
+      <h1 className="page-title">Submitted Grants</h1>
       <Table
         striped
         bordered

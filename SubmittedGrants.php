@@ -20,7 +20,7 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 
 // Fetch grants submitted by the logged-in user along with application status
-$sql = "SELECT p.pID, p.projectTitle, a.Status ,a.Id,p.submittedDate
+$sql = "SELECT p.pID, p.projectTitle, a.Status, a.Id, p.submittedDate
         FROM project p
         JOIN application a ON p.app_ID = a.Id 
         WHERE p.uid = ?";
@@ -33,7 +33,24 @@ $result = $stmt->get_result();
 $submittedGrants = [];
 while ($row = $result->fetch_assoc()) {
     // Map numeric status to string representation
-    $row['Status'] = $row['Status'] == 1 ? 'Submitted' : 'Save'; // Adjust mapping as needed
+    switch ($row['Status']) {
+        case 1:
+            $row['Status'] = 'Submitted';
+            break;
+        case 5.1:
+        case 5.2:
+            $row['Status'] = 'Granted';
+            break;
+        case 3.1:
+            $row['Status'] = 'Approved';
+            break;
+        case 3.2:
+            $row['Status'] = 'Rejected';
+            break;
+        default:
+            $row['Status'] = 'Save'; // Default status
+            break;
+    }
     $submittedGrants[] = $row;
 }
 

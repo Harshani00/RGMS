@@ -73,7 +73,7 @@ export default function ViewApplication() {
                 <option value="Granted">Granted</option>
                 <option value="Pending Approvals">Pending Approvals</option>
                 <option value="Reviewers Comments">Reviewers Comments</option>
-                <option value="Reject">Reject</option>
+                <option value="Rejected">Rejected</option>
               </select>
             </th>
           </tr>

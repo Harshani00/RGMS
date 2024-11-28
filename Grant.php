@@ -16,6 +16,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 // Include the database connection
 include("dbConnection.php");
 
+// Include PHPMailer for email functionality
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+require 'vendor/autoload.php';
+
 // Ensure user_id is available in the session
 if (!isset($_SESSION['user_id'])) {
     echo json_encode([
@@ -28,7 +33,6 @@ if (!isset($_SESSION['user_id'])) {
 // Retrieve user_id from session
 $user_id = $conn->real_escape_string($_SESSION['user_id']);
 
-
 // Define required fields from both Grant and Project forms
 $requiredFields = [
     'title', 'name', 'faculty', 'department', 'email', 
@@ -39,7 +43,6 @@ $requiredFields = [
     'reviewer3Email', 'reviewer1Affiliation', 'reviewer2Affiliation', 
     'reviewer3Affiliation'
 ];
-
 
 // Initialize array to collect missing fields
 $missingFields = [];
@@ -112,128 +115,169 @@ VALUES (
     '$reviewer1Affiliation', '$reviewer2Affiliation', '$reviewer3Affiliation'
 )";
 
-// Execute the SQL query for application table
+
+
+// Your existing database operations here...
+// (Code for inserting data into `application`, `project`, and other tables remains unchanged.)
+
 if ($conn->query($sql) === TRUE) { 
     $app_ID = $conn->insert_id;
 
     $_SESSION['app_ID'] = $app_ID;
 
-    // Insert into Project table
-    $sql_project = "INSERT INTO project (
-    uid, projectTitle, projectInvolved, publication1, publication2, publication3, outsidegrants, researchFacilities, app_ID
-    ) VALUES (
-     '$user_id', '$projectTitle', '$projectInvolved', '$publication1', '$publication2', '$publication3', '$outsidegrants', '$researchFacilities', '$app_ID'
-    )";
- 
-    if (!$conn->query($sql_project)) {
+     // Insert into Project table
+     $sql_project = "INSERT INTO project (
+        uid, projectTitle, projectInvolved, publication1, publication2, publication3, outsidegrants, researchFacilities, app_ID
+        ) VALUES (
+         '$user_id', '$projectTitle', '$projectInvolved', '$publication1', '$publication2', '$publication3', '$outsidegrants', '$researchFacilities', '$app_ID'
+        )";
+     
+        if (!$conn->query($sql_project)) {
+            echo json_encode([
+                "status" => "error",
+                "message" => "Error inserting into Project: " . $conn->error
+            ]);
+            exit();
+        }
+    
+        //Insert into supervisors table
+      
+    
+       $sql_supervisors = "INSERT INTO supervisors (app_ID, foreign_collaborators, foreign_collaborator_departmentUniversity) VALUES ('$app_ID', '$foreign_collaborators', '$foreign_collaborator_departmentUniversity')";
+    
+       if (!$conn->query($sql_supervisors)) {
+           echo json_encode([
+               "status" => "error",
+               "message" => "Error inserting into supervisors: " . $conn->error
+           ]);
+           exit();
+       } 
+    
+    
+        
+    
+    
+    
+    // Prepare and execute the app_status insertion
+    $status = 1; // Status 1 for submitted
+    $sql_status = "INSERT INTO app_status (app_ID, status, date) VALUES (?, ?, NOW()) ON DUPLICATE KEY UPDATE status = ?, date = NOW()";
+    
+    if ($stmt = $conn->prepare($sql_status)) {
+        $stmt->bind_param("iii", $app_ID, $status, $status);
+        
+        if (!$stmt->execute()) {
+            echo json_encode([
+                "status" => "error",
+                "message" => "Error updating status"
+            ]);
+            exit();
+        }
+        $stmt->close();
+    } else {
         echo json_encode([
             "status" => "error",
-            "message" => "Error inserting into Project: " . $conn->error
+            "message" => "Error preparing status statement"
         ]);
         exit();
     }
-
-    //Insert into supervisors table
-  
-
-   $sql_supervisors = "INSERT INTO supervisors (app_ID, foreign_collaborators, foreign_collaborator_departmentUniversity) VALUES ('$app_ID', '$foreign_collaborators', '$foreign_collaborator_departmentUniversity')";
-
-   if (!$conn->query($sql_supervisors)) {
-       echo json_encode([
-           "status" => "error",
-           "message" => "Error inserting into supervisors: " . $conn->error
-       ]);
-       exit();
-   } 
-
-
     
-
-
-
-// Prepare and execute the app_status insertion
-$status = 1; // Status 1 for submitted
-$sql_status = "INSERT INTO app_status (app_ID, status, date) VALUES (?, ?, NOW()) ON DUPLICATE KEY UPDATE status = ?, date = NOW()";
-
-if ($stmt = $conn->prepare($sql_status)) {
-    $stmt->bind_param("iii", $app_ID, $status, $status);
-    
-    if (!$stmt->execute()) {
+    // Now retrieve the status and update the application table
+    $sql_update_application = "UPDATE application SET Status = ? WHERE Id = ?";
+    if ($stmt = $conn->prepare($sql_update_application)) {
+        $stmt->bind_param("ii", $status, $app_ID); // Bind the correct variables
+        
+        if (!$stmt->execute()) {
+            echo json_encode([
+                "status" => "error",
+                "message" => "Error updating application status"
+            ]);
+            exit();
+        }
+        $stmt->close();
+    } else {
         echo json_encode([
             "status" => "error",
-            "message" => "Error updating status"
+            "message" => "Error preparing application update statement"
         ]);
         exit();
     }
-    $stmt->close();
-} else {
-    echo json_encode([
-        "status" => "error",
-        "message" => "Error preparing status statement"
-    ]);
-    exit();
-}
-
-// Now retrieve the status and update the application table
-$sql_update_application = "UPDATE application SET Status = ? WHERE Id = ?";
-if ($stmt = $conn->prepare($sql_update_application)) {
-    $stmt->bind_param("ii", $status, $app_ID); // Bind the correct variables
     
-    if (!$stmt->execute()) {
-        echo json_encode([
-            "status" => "error",
-            "message" => "Error updating application status"
-        ]);
+    // Insert or update 'sent' column to 0 (No) in 'dean_approval' table
+    $stmt_dean = $conn->prepare("
+        INSERT INTO dean_approval (app_ID, sent)
+        VALUES (?, 0)
+        ON DUPLICATE KEY UPDATE sent = 0
+    ");
+    if (!$stmt_dean) {
+        echo json_encode(['status' => 'error', 'message' => 'Failed to prepare dean approval statement: ' . $conn->error]);
         exit();
     }
-    $stmt->close();
-} else {
-    echo json_encode([
-        "status" => "error",
-        "message" => "Error preparing application update statement"
-    ]);
-    exit();
-}
+    $stmt_dean->bind_param("s", $app_ID);
+    
+    if (!$stmt_dean->execute()) {
+        echo json_encode(['status' => 'error', 'message' => 'Error updating dean_approval: ' . $conn->error]);
+        exit();
+    }
+    
+    // Insert or update 'sent' column to 0 (No) in 'hod_approval' table
+    $stmt_hod = $conn->prepare("INSERT INTO hod_approval (app_ID, sent)VALUES (?, 0) ON DUPLICATE KEY UPDATE sent = 0
+    ");
+    if (!$stmt_hod) {
+        echo json_encode(['status' => 'error', 'message' => 'Failed to prepare HOD approval statement: ' . $conn->error]);
+        exit();
+    }
+    $stmt_hod->bind_param("s", $app_ID);
+    
+    if (!$stmt_hod->execute()) {
+        echo json_encode(['status' => 'error', 'message' => 'Error updating hod_approval: ' . $conn->error]);
+        exit();
+    }
+    
+    
 
-// Insert or update 'sent' column to 0 (No) in 'dean_approval' table
-$stmt_dean = $conn->prepare("
-    INSERT INTO dean_approval (app_ID, sent)
-    VALUES (?, 0)
-    ON DUPLICATE KEY UPDATE sent = 0
-");
-if (!$stmt_dean) {
-    echo json_encode(['status' => 'error', 'message' => 'Failed to prepare dean approval statement: ' . $conn->error]);
-    exit();
-}
-$stmt_dean->bind_param("s", $app_ID);
+    // Additional operations here...
 
-if (!$stmt_dean->execute()) {
-    echo json_encode(['status' => 'error', 'message' => 'Error updating dean_approval: ' . $conn->error]);
-    exit();
-}
+    // Email sending block
+    $mail = new PHPMailer(true);
+    try {
+        // Server settings
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'rgms@gs.pdn.ac.lk'; // Your email
+        $mail->Password = 'dgac ahtx lkla bjxs'; // Your email password
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
 
-// Insert or update 'sent' column to 0 (No) in 'hod_approval' table
-$stmt_hod = $conn->prepare("INSERT INTO hod_approval (app_ID, sent)VALUES (?, 0) ON DUPLICATE KEY UPDATE sent = 0
-");
-if (!$stmt_hod) {
-    echo json_encode(['status' => 'error', 'message' => 'Failed to prepare HOD approval statement: ' . $conn->error]);
-    exit();
-}
-$stmt_hod->bind_param("s", $app_ID);
+        // Recipients
+        $mail->setFrom('rgms@gs.pdn.ac.lk', 'URC-University of Peradeniya');
+        $mail->addAddress($email); // Applicant's email
 
-if (!$stmt_hod->execute()) {
-    echo json_encode(['status' => 'error', 'message' => 'Error updating hod_approval: ' . $conn->error]);
-    exit();
-}
+        // Content
+        $mail->isHTML(true);
+        $mail->Subject = 'Application Submitted Successfully';
+        $mail->Body = "
+            Dear $name,<br><br>
+            Your application has been successfully submitted for review.<br>
+            Application ID: $app_ID<br><br>
+            Thank you for your submission.<br><br>
+            Best regards,<br>
+            URC - University of Peradeniya
+        ";
 
-
-// Final response after all operations
-echo json_encode([
-    "status" => "success",
-    "message" => "Form submitted successfully",
-    "app_ID" => $app_ID
-]);
-
+        $mail->send();
+        echo json_encode([
+            "status" => "success",
+            "message" => "Form submitted successfully",
+            "app_ID" => $app_ID
+        ]);
+    } catch (Exception $e) {
+        echo json_encode([
+            "status" => "success",
+            "message" => "Form submitted successfully but email could not be sent: " . $mail->ErrorInfo,
+            "app_ID" => $app_ID
+        ]);
+    }
 } else {
     echo json_encode([
         "status" => "error",
@@ -243,11 +287,4 @@ echo json_encode([
 
 // Close the database connection
 $conn->close();
-//echo $_POST['grantRows']."<br>";
-//$grantRows = json_decode($_POST['grantRows'], true); 
-//$grantRowsText = json_encode($grantRows);
-//echo $grantRows;
-//print_r($grantRows);
-//var_dump($grantRows);
-//echo $grantRowsText;
 ?>

@@ -699,12 +699,28 @@ export default function RequestApproval() {
     setShowEmailModal(true);
   };
 
-  const handleSendEmail = () => {
-    console.log(`Sending email to ${recipientRole} at ${recipientEmail} for application ${currentApp.app_ID}: ${emailBody}`);
-    // Add your email sending logic here (e.g., using an API)
-    handleCloseEmail();
-  };
+  const handleSendEmail = async () => {
+    try {
+      const emailResponse = await axios.post('/Email.php', {
+        email: recipientEmail,
+        subject: `Invitation to Review Project: ${currentApp.projectTitle}`,
+        message: emailBody,
+      });
 
+      if (emailResponse.data.status === 'success') {
+        alert('Email sent successfully!');
+        console.log('Email response:', emailResponse.data);
+      } else {
+        alert('Failed to send email: ${emailResponse.data.message}');
+        console.error('Email error:', emailResponse.data.message);
+      }
+    } catch (error) {
+      alert('Error sending email. Please try again.');
+      console.error('Email error:', error);
+    } finally {
+      handleCloseEmail();
+    }
+  };
   const handleDecision = (appId, decision, role) => {
     console.log(`Decision for application ${appId} by ${role}: ${decision}`);
     // Add logic to handle decision (approve/reject)
