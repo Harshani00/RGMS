@@ -1,114 +1,18 @@
-// import React, { useState } from 'react';
-// import axios from 'axios';
-// import { useNavigate } from 'react-router-dom';
-
-// const SignupForm = () => {
-//     const [firstName, setFirstName] = useState('');
-//     const [lastName, setLastName] = useState('');
-//     const [userName, setUserName] = useState('');
-//     const [email, setEmail] = useState('');
-//     const [role, setRole] = useState('');
-//     const [password, setPassword] = useState('');
-//     const [submitted, setSubmitted] = useState(false);
-//     const navigate = useNavigate();
-
-//     // Handle form submission
-//     const handleSubmit = async (e) => {
-//         alert(firstName);
-//         e.preventDefault();
-//         try {
-//             const response = await axios.post('http://localhost:8080/test/Signup.php', {
-//                 firstName
-                
-//             });
-//             alert(response.data);
-            
-//             // Optionally navigate to another page
-//             //navigate('/login'); // Replace '/login' with the path to your login page
-//         } catch (error) {
-//             alert('There was an error submitting the form. Please try again.');
-//         }
-//     };
-
-//     // Handle navigation to the login page
-//     const handleLoginClick = () => {
-//         //navigate('/login'); // Replace '/login' with the path to your login page
-//     };
-
-//     return (
-//         <div className="signup">
-//             <h1>Sign Up</h1>
-//             <h4>Welcome! Create Your Account.</h4>
-//             <form onSubmit={handleSubmit}>
-//                 <label>First Name</label>
-//                 <input
-//                     type="text"
-//                     value={firstName}
-                    
-//                     onChange={(e) => setFirstName(e.target.value)}
-//                     required
-//                 />
-//                 <label>Last Name</label>
-//                 <input
-//                     type="text"
-//                     value={lastName}
-//                     onChange={(e) => setLastName(e.target.value)}
-//                     required
-//                 />
-//                 <label>User Name</label>
-//                 <input
-//                     type="text"
-//                     value={userName}
-//                     onChange={(e) => setUserName(e.target.value)}
-//                     required
-//                 />
-//                 <label>Role</label>
-//                 <input
-//                     type="text"
-//                     value={role}
-//                     onChange={(e) => setRole(e.target.value)}
-//                     required
-//                 />
-//                 <label>Email</label>
-//                 <input
-//                     type="email"
-//                     value={email}
-//                     onChange={(e) => setEmail(e.target.value)}
-//                     required
-//                 />
-//                 <label>Password</label>
-//                 <input
-//                     type="password"
-//                     value={password}
-//                     onChange={(e) => setPassword(e.target.value)}
-//                     required
-//                 />
-//                 <input type="submit" value="Submit" />
-//             </form>
-            
-//             <p>Already have an account? <button onClick={handleLoginClick}>Login Here</button></p>
-//         </div>
-//     );
-// };
-
-// export default SignupForm;
-
-
 
 // import React, { useState } from 'react';
 // import axios from 'axios';
 // import Button from 'react-bootstrap/Button';
 // import Form from 'react-bootstrap/Form';
-// import './Signup.css'; // Import the CSS file if needed
+// //import './Signup.css'; // Import the CSS file if needed
+// import '../Applicant/Signup.css';
 // import { useNavigate } from 'react-router-dom';
 // import backgroundImage from '../../Assets/10.jpg';
 
 
-// const SignupForm = () => {
+// const NewAccount = () => {
 //     const [formData, setFormData] = useState({
 //         firstName: '',
 //         lastName: '',
-//         userName: '',
 //         email: '',
 //         role: '',
 //         password: ''
@@ -127,7 +31,6 @@
 //         const newErrors = {};
 //         if (!formData.firstName) newErrors.firstName = 'First Name is required';
 //         if (!formData.lastName) newErrors.lastName = 'Last Name is required';
-//         if (!formData.userName) newErrors.userName = 'User Name is required';
 //         if (!formData.email) newErrors.email = 'Email is required';
 //         if (!formData.role) newErrors.role = 'Role is required';
 //         if (!formData.password) newErrors.password = 'Password is required';
@@ -141,9 +44,9 @@
 //             setErrors(validationErrors);
 //             return;
 //         }
-
+    
 //         try {
-//             const response = await axios.post('/Signup.php', formData, {
+//             const response = await axios.post('/NewAccount.php', formData, {
 //                 headers: {
 //                     'Content-Type': 'application/x-www-form-urlencoded',
 //                 },
@@ -155,34 +58,34 @@
 //                     return params;
 //                 }],
 //             });
-//             alert(response.data);
-//             setSubmitted(true);
-//             setFormData({
-//                 firstName: '',
-//                 lastName: '',
-//                 userName: '',
-//                 email: '',
-//                 role: '',
-//                 password: ''
-//             });
-//             navigate('/login'); // Navigate to the login page after successful signup
-//              } 
-             
-//              catch (error) {
+    
+//             // Check the response to determine if signup was successful
+//             if (response.data.includes('Welcome to Research Grant Management System')) {
+//                 alert(response.data);
+//                 setSubmitted(true);
+//                 setFormData({
+//                     firstName: '',
+//                     lastName: '',
+//                     email: '',
+//                     role: '',
+//                     password: ''
+//                 });
+//                alert('New Account Has been created successfully');
+//             } else {
+//                 // Handle server-side error messages
+//                 alert(response.data);
+//             }
+//         } catch (error) {
 //             alert('There was an error submitting the form. Please try again.');
 //         }
-        
-
-        
 //     };
-//     const handleLoginRedirect = () => {
-//         navigate('/login'); // Navigate to the login page
-//     };
+    
+   
 //     return (
 //         <div className="access-container" style={{ backgroundImage: `url(${backgroundImage})` }}>
            
 //             <div className="access-container1">
-//             <h2 className="access-title">Sign Up</h2>
+//             <h2 className="access-title">Create An Account</h2>
 //                 {submitted && (
 //                     <div className="alert alert-success" role="alert">
 //                         Form submitted successfully!
@@ -215,19 +118,6 @@
 //                         <Form.Control.Feedback type="invalid">{errors.lastName}</Form.Control.Feedback>
 //                     </Form.Group>
 
-//                     <Form.Group controlId="formUserName">
-//                         <Form.Label>User Name</Form.Label>
-//                         <Form.Control
-//                             type="text"
-//                             name="userName"
-//                             value={formData.userName}
-//                             onChange={handleChange}
-//                             placeholder="Enter your user name"
-//                             isInvalid={!!errors.userName}
-//                         />
-//                         <Form.Control.Feedback type="invalid">{errors.userName}</Form.Control.Feedback>
-//                     </Form.Group>
-
 //                     <Form.Group controlId="formRole">
 //                     <Form.Label>Role</Form.Label>
 //                      <Form.Select
@@ -236,13 +126,9 @@
 //                         onChange={handleChange}
 //                         isInvalid={!!errors.role}
 //                     >
-//                         <option value="">Select your role</option>
-//                         <option value="urc">Director - URC </option>
-//                         <option value="Dean">Dean</option>
-//                         <option value="HOD">Head of the Department</option>
-//                         <option value="reviewer">Reviewer</option>
-//                         <option value="Applicant">Applicant</option>
-//                         <option value="Admin">Admin</option>
+//                         <option value="">Select Role</option>
+                       
+//                         <option value="Admin">Secretary (Admin) </option>
                         
 //                     </Form.Select>
 //                     <Form.Control.Feedback type="invalid">{errors.role}</Form.Control.Feedback>
@@ -280,31 +166,34 @@
 //                     </Button>
 //                 </Form>
 
-//                 <p className="account">Already have an account? <Button variant="link" className="signuphyperlink" onClick={handleLoginRedirect} >Login Here</Button></p>
+              
 //             </div>
 //         </div>
 //     );
 // };
 
-// export default SignupForm;
+// export default NewAccount;
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import './Signup.css'; // Import the CSS file
+import Modal from 'react-bootstrap/Modal';
+import '../Applicant/Signup.css';
 import { useNavigate } from 'react-router-dom';
 import backgroundImage from '../../Assets/10.jpg';
 
-const SignupForm = () => {
+const NewAccount = () => {
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
         email: '',
-        password: '',
-        confirmPassword: ''
+        role: '',
+        password: ''
     });
 
     const [errors, setErrors] = useState({});
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -317,12 +206,8 @@ const SignupForm = () => {
         if (!formData.firstName) newErrors.firstName = 'First Name is required';
         if (!formData.lastName) newErrors.lastName = 'Last Name is required';
         if (!formData.email) newErrors.email = 'Email is required';
+        if (!formData.role) newErrors.role = 'Role is required';
         if (!formData.password) newErrors.password = 'Password is required';
-        if (!formData.confirmPassword) {
-            newErrors.confirmPassword = 'Confirm Password is required';
-        } else if (formData.password !== formData.confirmPassword) {
-            newErrors.confirmPassword = 'Passwords do not match';
-        }
         return newErrors;
     };
 
@@ -333,9 +218,9 @@ const SignupForm = () => {
             setErrors(validationErrors);
             return;
         }
-
+    
         try {
-            const response = await axios.post('/Signup.php', formData, {
+            const response = await axios.post('/NewAccount.php', formData, {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
@@ -347,33 +232,45 @@ const SignupForm = () => {
                     return params;
                 }],
             });
-
-            if (response.data.status) {
-                alert(response.data.message); // Success message
+    
+            const result = response.data;
+            if (result.success) {
+                setShowSuccessModal(true);
                 setFormData({
                     firstName: '',
                     lastName: '',
                     email: '',
-                    password: '',
-                    confirmPassword: '',
+                    role: '',
+                    password: ''
                 });
-                navigate('/login'); // Redirect to login page
             } else {
-                alert(response.data.message); // Error message
+                alert(result.message);
             }
         } catch (error) {
             alert('There was an error submitting the form. Please try again.');
         }
     };
+    
 
-    const handleLoginRedirect = () => {
-        navigate('/login');
+    const handleModalClose = () => {
+        setShowSuccessModal(false);
+        navigate('/login'); // Navigate to login page
+    };
+
+    const handleNavigateToLogin = () => {
+        setShowSuccessModal(false);
+        navigate('/login'); // Navigate to login page
+    };
+    
+    const handleNavigateToDashboard = () => {
+        setShowSuccessModal(false);
+        navigate('/dashboard'); // Navigate to dashboard page
     };
 
     return (
         <div className="access-container" style={{ backgroundImage: `url(${backgroundImage})` }}>
             <div className="access-container1">
-                <h2 className="access-title">Sign Up</h2>
+                <h2 className="access-title">Create An Account</h2>
                 <Form onSubmit={handleSubmit}>
                     <Form.Group controlId="formFirstName">
                         <Form.Label>First Name</Form.Label>
@@ -399,6 +296,21 @@ const SignupForm = () => {
                             isInvalid={!!errors.lastName}
                         />
                         <Form.Control.Feedback type="invalid">{errors.lastName}</Form.Control.Feedback>
+                    </Form.Group>
+
+                    <Form.Group controlId="formRole">
+                        <Form.Label>Role</Form.Label>
+                        <Form.Select
+                            name="role"
+                            value={formData.role}
+                            onChange={handleChange}
+                            isInvalid={!!errors.role}
+                        >
+                            <option value="">Select Role</option>
+                            <option value="Admin">Secretary (Admin)</option>
+                            <option value="urc">Director - URC </option>
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">{errors.role}</Form.Control.Feedback>
                     </Form.Group>
 
                     <Form.Group controlId="formEmail">
@@ -427,33 +339,31 @@ const SignupForm = () => {
                         <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
                     </Form.Group>
 
-                    <Form.Group controlId="formConfirmPassword">
-                        <Form.Label>Confirm Password</Form.Label>
-                        <Form.Control
-                            type="password"
-                            name="confirmPassword"
-                            value={formData.confirmPassword}
-                            onChange={handleChange}
-                            placeholder="Re-Enter your password"
-                            isInvalid={!!errors.confirmPassword}
-                        />
-                        <Form.Control.Feedback type="invalid">{errors.confirmPassword}</Form.Control.Feedback>
-                    </Form.Group>
-
                     <Button variant="primary" type="submit" className="button1">
                         Sign Up
                     </Button>
                 </Form>
-
-                <p className="account">
-                    Already have an account?{' '}
-                    <Button variant="link" className="signuphyperlink" onClick={handleLoginRedirect}>
-                        Login Here
-                    </Button>
-                </p>
             </div>
+
+           
+<Modal show={showSuccessModal} centered>
+    <Modal.Header >
+        <Modal.Title>Account Created</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>
+        New Account has been created successfully !
+    </Modal.Body>
+    <Modal.Footer>
+        {/* <Button variant="primary" className='button1' onClick={handleNavigateToLogin}>
+          Login
+        </Button> */}
+        <Button variant="primary" className='button1' onClick={handleNavigateToDashboard}>
+            Dashboard
+        </Button>
+    </Modal.Footer>
+</Modal>
         </div>
     );
 };
 
-export default SignupForm;
+export default NewAccount;

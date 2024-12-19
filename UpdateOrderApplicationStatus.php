@@ -25,8 +25,8 @@ if (!isset($data['app_ID']) || !isset($data['status'])) {
 $app_ID = $data['app_ID'];
 $status = $data['status'];
 
-// Validate that the status is either 2.1 or 2.2
-if (!in_array($status, ['2.1', '2.2'])) {
+// Validate that the status is either 2.1, 2.2, or 1 (blue for Select)
+if (!in_array($status, ['2.1', '2.2', '1'])) {
     echo json_encode([
         "status" => "error",
         "message" => "Invalid status value"
@@ -34,7 +34,7 @@ if (!in_array($status, ['2.1', '2.2'])) {
     exit();
 }
 
-// Convert status to float
+// Convert status to float if necessary
 $status = floatval($status);
 
 // Check if app_ID already exists in app_status
@@ -111,5 +111,4 @@ echo json_encode([
 
 // Close the connection
 $conn->close();
-
 ?>

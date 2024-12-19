@@ -7,7 +7,7 @@ session_start();
 include('dbconnection.php');
 
 // SQL query to fetch the required data
-$sql = "SELECT a.Id, p.projectTitle, p.submittedDate,a.Status,
+$sql = "SELECT a.Id, p.projectTitle, p.submittedDate,a.Status,a.name,a.email,
                r1.final_mark AS reviewer1_mark, r2.final_mark AS reviewer2_mark,
                h.decision AS hod_decision, d.decision AS dean_decision
         FROM application a

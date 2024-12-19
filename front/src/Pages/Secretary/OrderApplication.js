@@ -315,57 +315,633 @@
 //     </div>
 //   );
 // }
+// import React, { useEffect, useState } from 'react';
+// import Table from 'react-bootstrap/Table';
+// import Navbar from '../../Components/Navbar';
+// import axios from 'axios';
+// import { useNavigate } from 'react-router-dom';
+// import './Table.css';
+
+// export default function OrderApplication() {
+//   const [applications, setApplications] = useState([]);
+//   const [selectedStatus, setSelectedStatus] = useState({});
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     const fetchApplications = async () => {
+//       try {
+//         const response = await axios.get('/ViewApplication_DS.php');
+//         const applications = response.data;
+
+//         // Set applications data
+//         setApplications(applications);
+
+//         // Initialize the selected status based on the fetched applications
+//         const initialStatus = {};
+//         applications.forEach(app => {
+//           initialStatus[app.app_ID] = app.Status === 2.1 ? 'selected' : 'unselected';
+//         });
+//         setSelectedStatus(initialStatus);
+//       } catch (error) {
+//         console.error('Error fetching applications:', error);
+//       }
+//     };
+  
+//     fetchApplications();
+//   }, []);
+
+//   const handleToggleSelect = (app_ID) => {
+//     const newStatus = selectedStatus[app_ID] === 'selected' ? 2.2 : 2.1;
+
+//     axios.post('/UpdateOrderApplicationStatus.php', { app_ID, status: newStatus })
+//       .then(response => {
+//         if (response.data.status === 'success') {
+//           setSelectedStatus(prevStatus => ({
+//             ...prevStatus,
+//             [app_ID]: prevStatus[app_ID] === 'selected' ? 'unselected' : 'selected',
+//           }));
+//         } else {
+//           console.error('Error updating status:', response.data.message);
+//         }
+//       })
+//       .catch(error => {
+//         console.error('Error updating status:', error);
+//       });
+//   };
+
+//   return (
+//     <div>
+//       <Navbar />
+//       <h1 className="page-title">Order Applications and View</h1>
+//       <Table striped bordered hover>
+//         <thead>
+//           <tr>
+//             <th>Application Id</th>
+//             <th>Project Title</th>
+//             <th>Submitted Date</th>
+//             <th>View Grant (PDF)</th>
+//             <th>Action</th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {applications.map((app) => (
+//             <tr key={app.app_ID}>
+//               <td>{app.app_ID}</td>
+//               <td>{app.projectTitle}</td>
+//               <td>{app.submittedDate}</td>
+//               <td>
+//                 <button 
+//                   className="view-button" 
+//                   onClick={() => navigate(`/view-application/${app.app_ID}`)}
+//                 >
+//                   View
+//                 </button>
+//               </td>
+//               <td>
+//                 <button
+//                   className="select-button"
+//                   onClick={() => handleToggleSelect(app.app_ID)}
+//                 >
+//                   {selectedStatus[app.app_ID] === 'selected' ? 'Unselect' : 'Select'}
+//                 </button>
+//               </td>
+//             </tr>
+//           ))}
+//         </tbody>
+//       </Table>
+//     </div>
+//   );
+// }
+
+// import React, { useEffect, useState } from 'react';
+// import Table from 'react-bootstrap/Table';
+// import Navbar from '../../Components/Navbar';
+// import Modal from 'react-bootstrap/Modal';
+// import Button from 'react-bootstrap/Button';
+// import axios from 'axios';
+// import { useNavigate } from 'react-router-dom';
+// import './Table.css';
+
+// export default function OrderApplication() {
+//   const [applications, setApplications] = useState([]);
+//   const [selectedStatus, setSelectedStatus] = useState({});
+//   const [showModal, setShowModal] = useState(false);
+//   const [currentAppID, setCurrentAppID] = useState(null);
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     const fetchApplications = async () => {
+//       try {
+//         const response = await axios.get('/ViewApplication_DS.php');
+//         const applications = response.data;
+
+//         // Set applications data
+//         setApplications(applications);
+
+//         // Initialize the selected status based on the fetched applications
+//         const initialStatus = {};
+//         applications.forEach((app) => {
+//           // Set status for each application based on the status from backend
+//           initialStatus[app.app_ID] = app.Status === 2.1
+//             ? 'selected' // Shortlisted
+//             : app.Status === 2.2
+//             ? 'unselected' // Rejected
+//             : 'blue'; // Select (status 1)
+//         });
+//         setSelectedStatus(initialStatus);
+//       } catch (error) {
+//         console.error('Error fetching applications:', error);
+//       }
+//     };
+
+//     fetchApplications();
+//   }, []);
+
+//   const handleOpenModal = (app_ID) => {
+//     setCurrentAppID(app_ID);
+//     setShowModal(true);
+//   };
+
+//   const handleCloseModal = () => {
+//     setShowModal(false);
+//     setCurrentAppID(null);
+//   };
+
+//   const handleStatusUpdate = (status) => {
+//     axios
+//       .post('/UpdateOrderApplicationStatus.php', { app_ID: currentAppID, status })
+//       .then((response) => {
+//         if (response.data.status === 'success') {
+//           setSelectedStatus((prevStatus) => ({
+//             ...prevStatus,
+//             [currentAppID]:
+//               status === 2.1
+//                 ? 'selected'
+//                 : status === 2.2
+//                 ? 'unselected'
+//                 : 'blue', // Update status based on the new selection
+//           }));
+//         } else {
+//           console.error('Error updating status:', response.data.message);
+//         }
+//       })
+//       .catch((error) => {
+//         console.error('Error updating status:', error);
+//       })
+//       .finally(() => {
+//         handleCloseModal();
+//       });
+//   };
+
+//   return (
+//     <div>
+//       <Navbar />
+//       <h1 className="page-title">Order Applications and View</h1>
+//       <Table striped bordered hover>
+//         <thead>
+//           <tr>
+//             <th>Application Id</th>
+//             <th>Project Title</th>
+//             <th>Submitted Date</th>
+//             <th>View Grant (PDF)</th>
+//             <th>Action</th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {applications.map((app) => (
+//             <tr key={app.app_ID}>
+//               <td>{app.app_ID}</td>
+//               <td>{app.projectTitle}</td>
+//               <td>{app.submittedDate}</td>
+//               <td>
+//                 <button
+//                   className="view-button"
+//                   onClick={() => navigate(`/view-application/${app.app_ID}`)}
+//                 >
+//                   View
+//                 </button>
+//               </td>
+//               <td>
+//                 <button
+//                   className={`action-button ${
+//                     selectedStatus[app.app_ID] === 'selected'
+//                       ? 'btn-success'
+//                       : selectedStatus[app.app_ID] === 'unselected'
+//                       ? 'btn-danger'
+//                       : selectedStatus[app.app_ID] === 'blue'
+//                       ? 'btn-primary'
+//                       : ''
+//                   }`}
+//                   onClick={() => handleOpenModal(app.app_ID)}
+//                 >
+//                   {selectedStatus[app.app_ID] === 'selected'
+//                     ? 'Shortlisted'
+//                     : selectedStatus[app.app_ID] === 'unselected'
+//                     ? 'Rejected'
+//                     : 'Select'}
+//                 </button>
+//               </td>
+//             </tr>
+//           ))}
+//         </tbody>
+//       </Table>
+
+//       {/* Modal */}
+//       <Modal show={showModal} onHide={handleCloseModal}>
+//         <Modal.Header closeButton>
+//           <Modal.Title>Change Application Status</Modal.Title>
+//         </Modal.Header>
+//         <Modal.Body>
+//           <p>What would you like to do with this application?</p>
+//         </Modal.Body>
+//         <Modal.Footer>
+//           <Button variant="success" onClick={() => handleStatusUpdate(2.1)}>
+//             Shortlist
+//           </Button>
+//           <Button variant="danger" onClick={() => handleStatusUpdate(2.2)}>
+//             Reject
+//           </Button>
+//         </Modal.Footer>
+//       </Modal>
+//     </div>
+//   );
+// }
+
+// import React, { useEffect, useState } from 'react';
+// import Table from 'react-bootstrap/Table';
+// import Navbar from '../../Components/Navbar';
+// import Modal from 'react-bootstrap/Modal';
+// import Button from 'react-bootstrap/Button';
+// import axios from 'axios';
+// import { useNavigate } from 'react-router-dom';
+// import './Table.css';
+
+// export default function OrderApplication() {
+//   const [applications, setApplications] = useState([]);
+//   const [selectedStatus, setSelectedStatus] = useState({});
+//   const [showModal, setShowModal] = useState(false);
+//   const [currentAppID, setCurrentAppID] = useState(null);
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     const fetchApplications = async () => {
+//       try {
+//         const response = await axios.get('/ViewApplication_DS.php');
+//         const applications = response.data;
+
+//         // Set applications data
+//         setApplications(applications);
+
+//         // Initialize the selected status based on the fetched applications
+//         const initialStatus = {};
+//         applications.forEach((app) => {
+//           // Set status for each application based on the status from backend
+//           initialStatus[app.app_ID] = app.Status === 2.1
+//             ? 'selected' // Shortlisted
+//             : app.Status === 2.2
+//             ? 'unselected' // Rejected
+//             : 'blue'; // Select (status 1)
+//         });
+//         setSelectedStatus(initialStatus);
+//       } catch (error) {
+//         console.error('Error fetching applications:', error);
+//       }
+//     };
+
+//     fetchApplications();
+//   }, []);
+
+//   const handleOpenModal = (app_ID) => {
+//     setCurrentAppID(app_ID);
+//     setShowModal(true);
+//   };
+
+//   const handleCloseModal = () => {
+//     setShowModal(false);
+//     setCurrentAppID(null);
+//   };
+
+//   const handleStatusUpdate = (status) => {
+//     axios
+//       .post('/UpdateOrderApplicationStatus.php', { app_ID: currentAppID, status })
+//       .then((response) => {
+//         if (response.data.status === 'success') {
+//           setSelectedStatus((prevStatus) => ({
+//             ...prevStatus,
+//             [currentAppID]:
+//               status === 2.1
+//                 ? 'selected'
+//                 : status === 2.2
+//                 ? 'unselected'
+//                 : 'blue', // Update status based on the new selection
+//           }));
+//         } else {
+//           console.error('Error updating status:', response.data.message);
+//         }
+//       })
+//       .catch((error) => {
+//         console.error('Error updating status:', error);
+//       })
+//       .finally(() => {
+//         handleCloseModal();
+//       });
+//   };
+
+//   return (
+//     <div>
+//       <Navbar />
+//       <h1 className="page-title">Order Applications and View</h1>
+//       <Table striped bordered hover>
+//         <thead>
+//           <tr>
+//             <th>Application Id</th>
+//             <th>Project Title</th>
+//             <th>Submitted Date</th>
+//             <th>View Grant (PDF)</th>
+//             <th>Action</th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {applications.map((app) => (
+//             <tr key={app.app_ID}>
+//               <td>{app.app_ID}</td>
+//               <td>{app.projectTitle}</td>
+//               <td>{app.submittedDate}</td>
+//               <td>
+//                 <button
+//                   className="view-button"
+//                   onClick={() => navigate(`/view-application/${app.app_ID}`)}
+//                 >
+//                   View
+//                 </button>
+//               </td>
+//               <td>
+//                 {app.Status === '1' && (
+//                   <button
+//                     className="select-unselect-button"
+//                     onClick={() => handleOpenModal(app.app_ID)}
+//                   >
+//                     Select
+//                   </button>
+//                 )}
+//                 {app.Status === '2.1' && (
+//                   <button
+//                     className="Shortlisted-button"
+//                     onClick={() => handleOpenModal(app.app_ID)}
+//                   >
+//                     Shortlisted
+//                   </button>
+//                 )}
+//                 {app.Status === '2.2' && (
+//                   <button
+//                     className="Reject-button"
+//                     onClick={() => handleOpenModal(app.app_ID)}
+//                   >
+//                     Reject
+//                   </button>
+//                 )}
+//               </td>
+//             </tr>
+//           ))}
+//         </tbody>
+//       </Table>
+
+//       {/* Modal */}
+//       <Modal show={showModal} onHide={handleCloseModal}>
+//         <Modal.Header closeButton>
+//           <Modal.Title className='modaltitle'>Select Application Status</Modal.Title>
+//         </Modal.Header>
+        
+//         <Modal.Footer>
+//           <Button variant="success" onClick={() => handleStatusUpdate(2.1)}>
+//             Shortlist
+//           </Button>
+//           <Button variant="danger" onClick={() => handleStatusUpdate(2.2)}>
+//             Reject
+//           </Button>
+//         </Modal.Footer>
+//       </Modal>
+//     </div>
+//   );
+// }
+// import React, { useEffect, useState } from 'react';
+// import Table from 'react-bootstrap/Table';
+// import Navbar from '../../Components/Navbar';
+// import Modal from 'react-bootstrap/Modal';
+// import Button from 'react-bootstrap/Button';
+// import axios from 'axios';
+// import { useNavigate } from 'react-router-dom';
+// import './Table.css';
+
+// export default function OrderApplication() {
+//   const [applications, setApplications] = useState([]);
+//   const [selectedStatus, setSelectedStatus] = useState({});
+//   const [showModal, setShowModal] = useState(false);
+//   const [currentAppID, setCurrentAppID] = useState(null);
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     const fetchApplications = async () => {
+//       try {
+//         const response = await axios.get('/ViewApplication_DS.php');
+//         const applications = response.data;
+
+//         // Set applications data
+//         setApplications(applications);
+
+//         // Initialize the selected status based on the fetched applications
+//         const initialStatus = {};
+//         applications.forEach((app) => {
+//           // Set status for each application based on the status from backend
+//           initialStatus[app.app_ID] = app.Status === 2.1
+//             ? 'selected' // Shortlisted
+//             : app.Status === 2.2
+//             ? 'unselected' // Rejected
+//             : 'blue'; // Select (status 1)
+//         });
+//         setSelectedStatus(initialStatus);
+//       } catch (error) {
+//         console.error('Error fetching applications:', error);
+//       }
+//     };
+
+//     fetchApplications();
+//   }, []);
+
+//   const handleOpenModal = (app_ID) => {
+//     setCurrentAppID(app_ID);
+//     setShowModal(true);
+//   };
+
+//   const handleCloseModal = () => {
+//     setShowModal(false);
+//     setCurrentAppID(null);
+//   };
+
+//   const handleStatusUpdate = (status) => {
+//     axios
+//       .post('/UpdateOrderApplicationStatus.php', { app_ID: currentAppID, status })
+//       .then((response) => {
+//         if (response.data.status === 'success') {
+//           setSelectedStatus((prevStatus) => ({
+//             ...prevStatus,
+//             [currentAppID]:
+//               status === 2.1
+//                 ? 'selected'
+//                 : status === 2.2
+//                 ? 'unselected'
+//                 : 'blue', // Update status based on the new selection
+//           }));
+//         } else {
+//           console.error('Error updating status:', response.data.message);
+//         }
+//       })
+//       .catch((error) => {
+//         console.error('Error updating status:', error);
+//       })
+//       .finally(() => {
+//         handleCloseModal();
+//       });
+//   };
+
+//   return (
+//     <div>
+//       <Navbar />
+//       <h1 className="page-title">Order Applications and View</h1>
+//       <Table striped bordered hover>
+//         <thead>
+//           <tr>
+//             <th>Application Id</th>
+//             <th>Project Title</th>
+//             <th>Submitted Date</th>
+//             <th>View Grant (PDF)</th>
+//             <th>Action</th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {applications.map((app) => (
+//             <tr key={app.app_ID}>
+//               <td>{app.app_ID}</td>
+//               <td>{app.projectTitle}</td>
+//               <td>{app.submittedDate}</td>
+//               <td>
+//                 <button
+//                   className="view-button"
+//                   onClick={() => navigate(`/view-application/${app.app_ID}`)}
+//                 >
+//                   View
+//                 </button>
+//               </td>
+//               <td>
+//                 {app.Status === '1' && (
+//                   <button
+//                     className="select-unselect-button"
+//                     onClick={() => handleOpenModal(app.app_ID)}
+//                   >
+//                     {selectedStatus[app.app_ID] === 'blue' ? 'Select' : 'Selected'}
+//                   </button>
+//                 )}
+//                 {app.Status === '2.1' && (
+//                   <button
+//                     className="Shortlisted-button"
+//                     onClick={() => handleOpenModal(app.app_ID)}
+//                   >
+//                     Shortlisted
+//                   </button>
+//                 )}
+//                 {app.Status === '2.2' && (
+//                   <button
+//                     className="Reject-button"
+//                     onClick={() => handleOpenModal(app.app_ID)}
+//                   >
+//                     Reject
+//                   </button>
+//                 )}
+//               </td>
+//             </tr>
+//           ))}
+//         </tbody>
+//       </Table>
+
+//       {/* Modal */}
+//       <Modal show={showModal} onHide={handleCloseModal}>
+//         <Modal.Header closeButton>
+//           <Modal.Title className='modaltitle'>Select Application Status</Modal.Title>
+//         </Modal.Header>
+        
+//         <Modal.Footer>
+//           <Button variant="success" onClick={() => handleStatusUpdate(2.1)}>
+//             Shortlist
+//           </Button>
+//           <Button variant="danger" onClick={() => handleStatusUpdate(2.2)}>
+//             Reject
+//           </Button>
+//         </Modal.Footer>
+//       </Modal>
+//     </div>
+//   );
+// }
+
 import React, { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import Navbar from '../../Components/Navbar';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Table.css';
 
 export default function OrderApplication() {
   const [applications, setApplications] = useState([]);
-  const [selectedStatus, setSelectedStatus] = useState({});
+  const [showModal, setShowModal] = useState(false);
+  const [currentAppID, setCurrentAppID] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchApplications = async () => {
       try {
         const response = await axios.get('/ViewApplication_DS.php');
-        const applications = response.data;
-
-        // Set applications data
-        setApplications(applications);
-
-        // Initialize the selected status based on the fetched applications
-        const initialStatus = {};
-        applications.forEach(app => {
-          initialStatus[app.app_ID] = app.Status === 2.1 ? 'selected' : 'unselected';
-        });
-        setSelectedStatus(initialStatus);
+        setApplications(response.data);
       } catch (error) {
         console.error('Error fetching applications:', error);
       }
     };
-  
+
     fetchApplications();
   }, []);
 
-  const handleToggleSelect = (app_ID) => {
-    const newStatus = selectedStatus[app_ID] === 'selected' ? 2.2 : 2.1;
+  const handleOpenModal = (app_ID) => {
+    setCurrentAppID(app_ID);
+    setShowModal(true);
+  };
 
-    axios.post('/UpdateOrderApplicationStatus.php', { app_ID, status: newStatus })
-      .then(response => {
-        if (response.data.status === 'success') {
-          setSelectedStatus(prevStatus => ({
-            ...prevStatus,
-            [app_ID]: prevStatus[app_ID] === 'selected' ? 'unselected' : 'selected',
-          }));
-        } else {
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setCurrentAppID(null);
+  };
+
+  const handleClick = (app_ID, status) => {
+    // Update the status immediately in the local state
+    setApplications((prevApplications) =>
+      prevApplications.map((app) =>
+        app.app_ID === app_ID ? { ...app, Status: status } : app
+      )
+    );
+
+    // Send the update to the backend
+    axios
+      .post('/UpdateOrderApplicationStatus.php', { app_ID, status })
+      .then((response) => {
+        if (response.data.status !== 'success') {
           console.error('Error updating status:', response.data.message);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error updating status:', error);
+      })
+      .finally(() => {
+        // Close the modal after status update
+        handleCloseModal();
       });
   };
 
@@ -376,7 +952,7 @@ export default function OrderApplication() {
       <Table striped bordered hover>
         <thead>
           <tr>
-            <th>ID</th>
+            <th>Application Id</th>
             <th>Project Title</th>
             <th>Submitted Date</th>
             <th>View Grant (PDF)</th>
@@ -390,28 +966,63 @@ export default function OrderApplication() {
               <td>{app.projectTitle}</td>
               <td>{app.submittedDate}</td>
               <td>
-                <button 
-                  className="view-button" 
+                <button
+                  className="view-button"
                   onClick={() => navigate(`/view-application/${app.app_ID}`)}
                 >
                   View
                 </button>
               </td>
               <td>
-                <button
-                  className="select-button"
-                  onClick={() => handleToggleSelect(app.app_ID)}
-                >
-                  {selectedStatus[app.app_ID] === 'selected' ? 'Unselect' : 'Select'}
-                </button>
+                {app.Status === '1' && (
+                  <button
+                    className="select-unselect-button"
+                    onClick={() => handleOpenModal(app.app_ID)}
+                  >
+                    Select
+                  </button>
+                )}
+                {app.Status === '2.1' && (
+                  <button
+                    className="Shortlisted-button"
+                    onClick={() => handleClick(app.app_ID, '2.1')}
+                  >
+                    Shortlisted
+                  </button>
+                )}
+                {app.Status === '2.2' && (
+                  <button
+                    className="Reject-button"
+                    onClick={() => handleClick(app.app_ID, '2.2')}
+                  >
+                    Rejected
+                  </button>
+                )}
               </td>
             </tr>
           ))}
         </tbody>
       </Table>
+
+      {/* Modal */}
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title className="modaltitle">Select Application Status</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <Button variant="success" className='granted_deny'  onClick={() => handleClick(currentAppID, '2.1')}>
+            Shortlist
+          </Button>
+          <Button variant="danger" className='granted_deny' onClick={() => handleClick(currentAppID, '2.2')}>
+            Reject
+          </Button>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }
+
 // import React, { useEffect, useState } from 'react';
 // import Table from 'react-bootstrap/Table';
 // import Navbar from '../../Components/Navbar';

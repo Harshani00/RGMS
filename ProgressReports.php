@@ -28,22 +28,32 @@ if (!file_exists($targetDir)) {
     mkdir($targetDir, 0755, true);
 }
 
-// Function to handle file upload
-function uploadFile($file, $targetDir, $allowedTypes) {
-    $fileName = basename($file["name"]);
-    $targetFilePath = $targetDir . $fileName;
-    $fileType = strtolower(pathinfo($targetFilePath, PATHINFO_EXTENSION));
+// Function to handle file upload and renaming
+function uploadFile($file, $targetDir, $allowedTypes, $app_ID, $reportType) {
+    $fileType = strtolower(pathinfo($file["name"], PATHINFO_EXTENSION));
 
+    // Validate file type
     if (!in_array($fileType, $allowedTypes)) {
         return "Error: Only " . implode(", ", $allowedTypes) . " files are allowed.";
     }
-     // Rename file to avoid conflicts
-     $targetFilePath = $targetDir . uniqid() . "_" . $fileName;
 
- 
+    // Rename the file to app_ID_ProgressReport(Mid,End or Final Report).ext
+    $reportTypeFormatted = ucfirst($reportType); // Capitalize the first letter (Mid, End, Final)
+    $newFileName = $app_ID . "_ProgressReport(" . $reportTypeFormatted . ")." . $fileType;
+    $targetFilePath = $targetDir . $newFileName;
 
+    // Check if file already exists and add a unique ID if necessary
+    if (file_exists($targetFilePath)) {
+        $newFileName = $app_ID . "_ProgressReport(" . $reportTypeFormatted . ")_" . uniqid() . "." . $fileType;
+        $targetFilePath = $targetDir . $newFileName;
+    }
+
+    // Attempt to move the uploaded file
     if (move_uploaded_file($file["tmp_name"], $targetFilePath)) {
-        return $fileName;
+        return [
+            "fileName" => $newFileName,
+            "filePath" => $targetFilePath
+        ];
     } else {
         return "Error: Unable to upload the file.";
     }
@@ -52,7 +62,7 @@ function uploadFile($file, $targetDir, $allowedTypes) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $responses = [];
 
-    // Validate and sanitize the app_ID from POST data
+    // Validate and sanitize the app_ID and reportType from POST data
     $app_ID = isset($_POST['app_ID']) ? $conn->real_escape_string($_POST['app_ID']) : null;
     $reportType = isset($_POST['reportType']) ? $conn->real_escape_string($_POST['reportType']) : null;
     if (!$app_ID || !$reportType) {
@@ -72,16 +82,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ];
 
             // Call the uploadFile function
-            $response = uploadFile($file, $targetDir, $allowedTypes);
-            if (strpos($response, 'Error') === false) {
+            $uploadResponse = uploadFile($file, $targetDir, $allowedTypes, $app_ID, $reportType);
+
+            if (is_array($uploadResponse)) {
                 // Prepare and execute SQL to insert the uploaded file info
                 $stmt = $conn->prepare("INSERT INTO progress_reports (app_ID, report_type, file_name, file_path, uploaded_at) VALUES (?, ?, ?, ?, NOW())");
                 if ($stmt) {
-                    // Get user_id from session
-                    $user_id = $_SESSION['user_id'];
-                    $filePathFull = $targetDir . $response;
                     // Bind parameters correctly
-                    $stmt->bind_param("ssss", $app_ID, $reportType, $response, $filePathFull);
+                    $stmt->bind_param("ssss", $app_ID, $reportType, $uploadResponse['fileName'], $uploadResponse['filePath']);
                     if ($stmt->execute()) {
                         $responses[$name] = "File uploaded and database updated successfully.";
                     } else {
@@ -92,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $responses[$name] = "Error: Unable to prepare SQL statement.";
                 }
             } else {
-                $responses[$name] = $response;
+                $responses[$name] = $uploadResponse; // Return error from uploadFile
             }
         }
     } else {
@@ -102,6 +110,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo json_encode($responses);
     $conn->close();
 }
-
-
 ?>

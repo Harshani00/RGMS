@@ -103,6 +103,8 @@ $reviewer3Affiliation = isset($_POST['reviewer3Affiliation']) ? $conn->real_esca
 // Convert 'yes' to true (1) and 'no' to false (0)
 $Leave_Get = ($Leave_Get === 'yes') ? 1 : 0;
 
+$projectInvolved = ($projectInvolved === 'yes') ? 1 : 0;
+
 // Construct SQL query to insert into the 'application' table
 $sql = "INSERT INTO application (
     uid, title, name, faculty, department, email, phone, position, degree, university, year, field, Leave_Get, Leave_Date, Leave_Duration,
@@ -258,7 +260,7 @@ if ($conn->query($sql) === TRUE) {
         $mail->Subject = 'Application Submitted Successfully';
         $mail->Body = "
             Dear $name,<br><br>
-            Your application has been successfully submitted for review.<br>
+            Thank you for your interest in the Multidisciplinary Research Grants and for submitting your application. We appreciate you taking the time to share your innovative research proposal with us..<br>
             Application ID: $app_ID<br><br>
             Thank you for your submission.<br><br>
             Best regards,<br>

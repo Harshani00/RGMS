@@ -33,17 +33,16 @@ if (!is_dir($targetDir)) {
 }
 
 // Function to handle file upload
-function uploadFile($file, $targetDir, $allowedTypes) {
-    $fileName = basename($file["name"]);
-    $fileType = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+function uploadFile($file, $targetDir, $allowedTypes, $app_ID) {
+    $fileType = strtolower(pathinfo($file["name"], PATHINFO_EXTENSION)); // Get file extension
 
     // Validate file type
     if (!in_array($fileType, $allowedTypes)) {
         return "Error: Only " . implode(", ", $allowedTypes) . " files are allowed.";
     }
 
-    // Rename the file to avoid conflicts
-    $targetFilePath = $targetDir . uniqid() . "_" . $fileName;
+    // Rename the file to `app_ID_Agreement.ext`
+    $targetFilePath = $targetDir . $app_ID . "_Agreement." . $fileType;
 
     // Attempt to move the uploaded file
     if (move_uploaded_file($file["tmp_name"], $targetFilePath)) {
@@ -54,6 +53,7 @@ function uploadFile($file, $targetDir, $allowedTypes) {
     }
 }
 
+
 // Initialize response array
 $response = [
     'status' => 'error',
@@ -62,7 +62,6 @@ $response = [
 
 // Check the request method
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Ensure app_ID is received
     if (isset($_POST['app_ID']) && isset($_FILES['uploadedFile'])) {
         $app_ID = $conn->real_escape_string($_POST['app_ID']);
         
@@ -74,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($checkAppIDResult->num_rows > 0) {
             // app_ID exists, proceed with file upload
-            $fileUploadResult = uploadFile($_FILES['uploadedFile'], $targetDir, $allowedTypes);
+            $fileUploadResult = uploadFile($_FILES['uploadedFile'], $targetDir, $allowedTypes, $app_ID);
 
             if (!str_contains($fileUploadResult, 'Error')) {
                 // File uploaded successfully, now insert the app_ID and file path into the agreement table
@@ -124,8 +123,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     echo json_encode($response);
-
-} elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
+}
+ elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Fetching application data (already implemented)
     $sql = "
         SELECT a.Id, a.email, p.projectTitle, p.submittedDate, a.Status ,p.app_ID

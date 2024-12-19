@@ -486,6 +486,7 @@ export default function ShortlistedApplicationD() {
   const [selectedGrant, setSelectedGrant] = useState(null);
   const [startDate, setStartDate] = useState('');
   const [period, setPeriod] = useState('');
+  const [amount, setAmount] = useState('');
   const [decision, setDecision] = useState(null); // "Granted" or "Deny"
 
   // Fetch data on component mount
@@ -527,13 +528,45 @@ export default function ShortlistedApplicationD() {
     await updateStatus('5.2');  // Denied status
   };
 
-  // Handle submitting granted application
   const handleGrant = async () => {
     if (!selectedGrant) return;
-
-    // Send request to update the application status to "Granted"
-    await updateStatus('5.1');
+  
+    try {
+      // Update the application status to "Granted"
+      await updateStatus('5.1');
+  
+      // Prepare email details
+      const emailData = {
+        email: selectedGrant.email, // Ensure `selectedGrant` contains the applicant's email
+        subject: 'Application Granted for Funding',
+        message: `
+          Dear ${selectedGrant.name},<br><br>
+          We are pleased to inform you that your application titled <b>${selectedGrant.projectTitle}</b>
+          has been approved for funding.<br>
+          <b>Start Date:</b> ${startDate}<br>
+          <b>Period:</b> ${period}<br>
+          <b>Approved Amount:</b> LKR ${amount}<br><br>
+          Best regards,<br>
+          University of Peradeniya.
+        `,
+      };
+  
+      // Send email
+      const emailResponse = await axios.post('Email.php', emailData);
+  
+      if (emailResponse.data.status === 'success') {
+        alert('Email notification sent to the applicant.');
+      } else {
+        alert(`Error sending email: ${emailResponse.data.message}`);
+      }
+  
+      // Close modal
+      handleCloseGrantModal();
+    } catch (error) {
+      console.error('Error granting application or sending email:', error);
+    }
   };
+  
 
   // Update the status of the application (Granted or Denied)
   const updateStatus = async (status) => {
@@ -544,6 +577,7 @@ export default function ShortlistedApplicationD() {
         status,
         startDate,
         period,
+        amount,
       });
 
       // Update state to reflect changes
@@ -563,6 +597,7 @@ export default function ShortlistedApplicationD() {
     setShowGrantModal(false);
     setStartDate('');
     setPeriod('');
+    setAmount('');
     setSelectedGrant(null);
   };
 
@@ -643,7 +678,7 @@ export default function ShortlistedApplicationD() {
         <Modal.Header closeButton>
           <Modal.Title className='modaltitle'>Enter Grant Details</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className='modal'>
           <Form>
             <Form.Group>
               <Form.Label>Start Date</Form.Label>
@@ -659,6 +694,15 @@ export default function ShortlistedApplicationD() {
                 type="text"
                 value={period}
                 onChange={(e) => setPeriod(e.target.value)}
+                placeholder='Ex: 2 Months / 2 Years'
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Approved Amount (LKR) </Form.Label>
+              <Form.Control
+                type="text"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
               />
             </Form.Group>
           </Form>

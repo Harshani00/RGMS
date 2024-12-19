@@ -42,7 +42,7 @@ export default function Navbar2() {
                 className={`nav-link ${activeLink === '/supervisors' ? 'active' : ''}`}
                 onClick={() => handleLinkClick('/supervisors')}
               >
-                Supervisors
+                Investigator
               </Link>
             </li>
             <li className="nav-item">

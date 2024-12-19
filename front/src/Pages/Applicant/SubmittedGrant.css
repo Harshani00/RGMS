@@ -31,3 +31,19 @@
   border-color: #005b96; 
   color: white;
 }
+.DownloadUpload_Button
+{
+  background-color: #052659;
+    border-color: #052659;
+    color: white;
+    border-radius: 5px;
+    height: 30px;
+    width: 80px;
+    margin-left: 50px;
+}
+.DownloadUpload_Buttonfocus,
+.DownloadUpload_Button:hover {
+  background-color: #005b96;
+  border-color: #005b96; 
+  color: white;
+}

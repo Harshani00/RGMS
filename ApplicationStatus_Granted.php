@@ -12,6 +12,7 @@ $appId = $data['appId'];
 $status = $data['status']; // '5.1' for granted, '5.2' for denied
 $startDate = isset($data['startDate']) ? $data['startDate'] : null;
 $period = isset($data['period']) ? $data['period'] : null;
+$amount = isset($data['amount']) ? $data['amount'] : null;
 
 // Begin transaction
 $conn->begin_transaction();
@@ -30,9 +31,9 @@ try {
 
     // If the status is granted, save the start date and period in the project table
     if ($status === '5.1') {
-        $sqlUpdateProjectDetails = "UPDATE project SET startDate = ?, period = ? WHERE app_ID = ?";
+        $sqlUpdateProjectDetails = "UPDATE project SET startDate = ?, period = ?, amount = ? WHERE app_ID = ?";
         $stmt2 = $conn->prepare($sqlUpdateProjectDetails);
-        $stmt2->bind_param("ssi", $startDate, $period, $appId);
+        $stmt2->bind_param("sssi", $startDate, $period, $amount, $appId);
         $stmt2->execute();
 
         if ($stmt2->affected_rows <= 0) {

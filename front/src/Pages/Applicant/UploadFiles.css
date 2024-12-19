@@ -95,9 +95,9 @@
   width: 210px; /* Adjust the width as needed */
   
   border-width: 5px;
-  border-color: whitesmoke;
-  background-color: #052659;
-  color:whitesmoke;
+  border-color: #052659;
+  
+  color:black;
   margin-left: 10px;
   border-radius: 10px;
 }
@@ -105,9 +105,9 @@
   width: 210px; /* Adjust the width as needed */
   
   border-width: 5px;
-  border-color: whitesmoke;
-  background-color: #052659;
-  color:whitesmoke;
+  border-color: #800000;
+ 
+  color:black;
   margin-left: 10px;
   border-radius: 10px;
 

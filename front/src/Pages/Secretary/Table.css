@@ -24,13 +24,11 @@
     background-color: #052659;
     border-color: #052659;
     color: white;
-    width:70px;
+    width:100px;
     border-radius:5px;
     margin-left: 15px;
     padding: 3px; /* Adjust padding for the button */
     margin-top: 10px;
-
-   
 
   }
   
@@ -40,7 +38,24 @@
     border-color: #005b96; 
     color: white;
   }
-  
+  .moreDetails-button {
+    background-color: rgb(0, 80, 0);
+    border-color: rgb(0, 80, 0);
+    color: white;
+    width: 100px;
+    border-radius: 5px;
+    margin-left: 15px;
+    padding: 3px; /* Adjust padding for the button */
+    margin-top: 10px;
+    cursor: pointer; /* Add pointer cursor for better UX */
+}
+
+.moreDetails-button:hover {
+    background-color:rgb(27, 134, 27); /* Darker green on hover */
+    border-color: rgb(27, 134, 27);
+    color: white; /* Change text color if needed */
+}
+
    /* Css for Review Criteria */
 
    .Submitcriteria {
@@ -109,7 +124,7 @@
   border-radius: 5px; /* Rounded corners */
   background-color: #c1ceda; /* Light background color */
   transition: background-color 0.3s; /* Smooth transition */
-  width: 40%;
+  width: 100%;
 }
 
 .file-card:hover {
@@ -294,7 +309,7 @@
   border-color: #005b96; 
   color: white;
 }
-.modal-body {
+.modal {
   display: flex;
   justify-content: center;
   gap: 20px; /* Adjust the gap between buttons */
@@ -324,3 +339,28 @@
 
 
 
+.action-button {
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.Shortlisted-button
+{
+  background-color: rgb(3, 79, 3);
+  border-color: rgb(3, 79, 3);
+  color: white;
+  width:90px;
+  height: 30px;
+  border-radius:5px;
+  margin-left: 10px;
+}
+.Reject-button{
+  background-color: red;
+  border-color: red;
+  color: white;
+  width:90px;
+  height: 30px;
+  border-radius:5px;
+  margin-left: 10px;
+}

@@ -719,8 +719,8 @@ console.log("Selected App:", selectedApp);
       <Card className="dropzone-container">
         <div {...getRootProps1({ className: 'dropzone' })}>
           <input {...getInputProps1()} />
-          <p>Drag & drop some files here, or click to select files</p>
-          <p>Rename Your File Name to ProjectTitle_PreviousBudget</p>
+          <p>Drag & drop file here, or click to select file</p>
+         
           <Button variant="primary" className='browsefiles'>Browse Files</Button>
         </div>
         <aside>
@@ -740,8 +740,8 @@ console.log("Selected App:", selectedApp);
       <Card className="dropzone-container">
         <div {...getRootProps2({ className: 'dropzone' })}>
           <input {...getInputProps2()} />
-          <p>Drag & drop some files here, or click to select files</p>
-          <p>Rename Your File Name to ProjectTitle_CurrentBudget</p>
+          <p>Drag & drop file here, or click to select file</p>
+         
           <Button variant="primary">Browse Files</Button>
         </div>
         <aside>

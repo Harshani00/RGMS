@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../Secretary/Table.css';
 
-export default function ViewApplication() {
+export default function ViewApplicationD() {
   const [selectedStatus, setSelectedStatus] = useState('');
   const [selectedYear, setSelectedYear] = useState('');
   const [applications, setApplications] = useState([]);
@@ -50,6 +50,10 @@ export default function ViewApplication() {
     navigate(`/view-application/${Id}`); // Navigate to the detailed view page
   };
 
+  const handleClick = (app_ID) => {
+    navigate(`/moredetails/${app_ID}`); // Correctly use template literal
+  };
+  
   return (
     <div>
       <Navbar />
@@ -84,6 +88,7 @@ export default function ViewApplication() {
             <th>Submitted Date</th>
             <th>Status</th>
             <th>View Grant (PDF)</th>
+            <th>Application Details</th>
           </tr>
         </thead>
         <tbody>
@@ -99,7 +104,15 @@ export default function ViewApplication() {
                   className="view-button" // Add your custom class name for styling
                   onClick={() => handleViewClick(app.app_ID)} // Handle button click
                 >
-                  View
+                 Application
+                </button>
+              </td>
+              <td>
+                <button 
+                  className="moreDetails-button" // Add your custom class name for styling
+                  onClick={() => handleClick(app.app_ID)} // Navigate to More Details
+                >
+                 More Details
                 </button>
               </td>
             </tr>

@@ -1,0 +1,27 @@
+/* Styling for the form box */
+.form-box {
+    max-width: 70%; /* Restricts the maximum width */
+    width: 100%; /* Makes it responsive */
+    margin-left: 15%; /* Adds spacing from the left */
+    padding: 20px; /* Adds padding inside the box */
+    background-color: #fff; /* Sets the background color to white */
+    border-radius: 8px; /* Adds rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow effect */
+  }
+.moredetailstitle
+{
+    font-size: 24px;
+    padding-bottom: 30px;
+} 
+.dowloadbutton{
+  background-color: #052659;
+  border-color: #052659;
+  color: white;
+  border-radius:5px;
+  margin-left: 10px;
+} 
+.dowloadbutton:hover {
+  background-color: #005b96;
+  border-color: #005b96; 
+  color: white;
+}

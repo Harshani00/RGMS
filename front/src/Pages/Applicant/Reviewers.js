@@ -230,100 +230,101 @@ export default function Grant() {
       window.alert('Missing required fields.');
     }
   };
-  // const handleFinish = async (e) => {
-  //   e.preventDefault(); // Prevent default form submission behavior
-  
-  //   const isValid = validate(); // Validate the form
-  
-  //   if (isValid) {
-  //     try {
-  //       // Step 1: Submit the grant form data to Grant.php
-  //       const grantResponse = await axios.post('/Grant.php', formData, {
-  //         headers: {
-  //           'Content-Type': 'application/x-www-form-urlencoded',
-  //         },
-  //         transformRequest: [(data) => {
-  //           const params = new URLSearchParams();
-  //           for (const key in data) {
-  //             params.append(key, data[key]);
-  //           }
-  //           return params;
-  //         }],
-  //       });
-  
-  //       console.log(grantResponse.data);
-  
-  //       if (grantResponse.data.status === 'success') {
-  //         updateCompletionStatus('reviewers', true);
-  
-  //         // Step 2: Proceed to submit the files to FileUploads.php
-  //         const fileUploadResponse = await axios.post('/FileUploads.php', formData, {
-  //           headers: {
-  //             'Content-Type': 'multipart/form-data',
-  //           },
-  //         });
-  
-  //         console.log(fileUploadResponse.data);
-  
-  //         if (fileUploadResponse.data.status === 'success') {
-  //           const relevantData = {
-  //             grantRows: formData.grantRows,
-  //             fundingRows: formData.fundingRows,
-  //             co_investigators: formData.co_investigators,
-  //           };
-  
-  //           // Step 3: Submit the filtered data to MultipleRows.php
-  //           const multipleRowsResponse = await axios.post('/MultipleRows.php', relevantData, {
-  //             headers: {
-  //               'Content-Type': 'application/json',
-  //             },
-  //           });
-  
-  //           console.log(multipleRowsResponse.data);
-  
-  //           if (multipleRowsResponse.data.status === 'success') {
-  //             // Step 4: Send email to the applicant
-  //             const emailData = {
-  //               email: grantResponse.data.applicantEmail, // Email fetched from the Grant.php response
-  //               subject: 'Application Submission Confirmation',
-  //               message: 'Your application has been successfully submitted for review.',
-  //             };
-  
-  //             const emailResponse = await axios.post('/Email2.php', emailData, {
-  //               headers: {
-  //                 'Content-Type': 'application/json',
-  //               },
-  //             });
-  
-  //             console.log(emailResponse.data);
-  
-  //             if (emailResponse.data.status === 'success') {
-  //               window.alert('All forms, files submitted, and email sent successfully!');
-  //               localStorage.removeItem('formData');
-  //               resetFormData(); // Reset formData to initial state
-  //               setSubmitted(true);
-  //             } else {
-  //               window.alert('Submission successful, but email sending failed: ' + emailResponse.data.message);
-  //             }
-  //           } else {
-  //             console.error('Error from server:', multipleRowsResponse.data.message);
-  //             window.alert('Submission to MultipleRows.php failed: ' + multipleRowsResponse.data.message);
-  //           }
-  //         } else {
-  //           window.alert('File upload failed. Please try again.');
-  //         }
-  //       } else {
-  //         window.alert('Grant form submission failed. Please fill all the required fields.');
-  //       }
-  //     } catch (error) {
-  //       console.error('There was an error submitting the form:', error);
-  //       window.alert('There was an error submitting the form. Please try again.');
-  //     }
-  //   } else {
-  //     window.alert('Missing required fields.');
-  //   }
-  // };
-  
+//   const handleFinish = async (e) => {
+//     e.preventDefault(); // Prevent default form submission behavior
+
+//     const isValid = validate(); // Validate the form
+
+//     if (isValid) {
+//         try {
+//             // Step 1: Submit the grant form data to Grant.php
+//             const grantResponse = await axios.post('/Grant.php', formData, {
+//                 headers: {
+//                     'Content-Type': 'application/x-www-form-urlencoded',
+//                 },
+//                 transformRequest: [(data) => {
+//                     const params = new URLSearchParams();
+//                     for (const key in data) {
+//                         params.append(key, data[key]);
+//                     }
+//                     return params;
+//                 }],
+//             });
+
+//             console.log(grantResponse.data);
+
+//             if (grantResponse.data.status === 'success') {
+//                 updateCompletionStatus('reviewers', true);
+
+//                 // Step 2: Proceed to submit the files to FileUploads.php
+//                 const fileUploadResponse = await axios.post('/FileUploads.php', formData, {
+//                     headers: {
+//                         'Content-Type': 'multipart/form-data',
+//                     },
+//                 });
+
+//                 console.log(fileUploadResponse.data);
+
+//                 if (fileUploadResponse.data.status === 'success') {
+//                     const relevantData = {
+//                         grantRows: formData.grantRows,
+//                         fundingRows: formData.fundingRows,
+//                         co_investigators: formData.co_investigators,
+//                     };
+
+//                     // Step 3: Submit the filtered data to MultipleRows.php
+//                     const multipleRowsResponse = await axios.post('/MultipleRows.php', relevantData, {
+//                         headers: {
+//                             'Content-Type': 'application/json',
+//                         },
+//                     });
+
+//                     console.log(multipleRowsResponse.data);
+
+//                     if (multipleRowsResponse.data.status === 'success') {
+//                         // Step 4: Send email to the applicant
+//                         const emailData = {
+//                             email: grantResponse.data.applicantEmail, // Email fetched from the Grant.php response
+//                             subject: 'Application Submission Confirmation',
+//                             message: 'Your application has been successfully submitted for review.',
+//                         };
+
+//                         console.log('Email Data:', emailData);  // Log emailData to ensure it's correct
+//                         const emailResponse = await axios.post('/Email1.php', emailData, {
+//                             headers: {
+//                                 'Content-Type': 'application/json',
+//                             },
+//                         });
+
+//                         console.log(emailResponse.data);
+
+//                         if (emailResponse.data.status === 'success') {
+//                             window.alert('All forms, files submitted, and email sent successfully!');
+//                             localStorage.removeItem('formData');
+//                             resetFormData(); // Reset formData to initial state
+//                             setSubmitted(true);
+//                         } else {
+//                             window.alert('Submission successful, but email sending failed: ' + emailResponse.data.message);
+//                         }
+//                     } else {
+//                         console.error('Error from server:', multipleRowsResponse.data.message);
+//                         window.alert('Submission to MultipleRows.php failed: ' + multipleRowsResponse.data.message);
+//                     }
+//                 } else {
+//                     window.alert('File upload failed. Please try again.');
+//                 }
+//             } else {
+//                 window.alert('Grant form submission failed. Please fill all the required fields.');
+//             }
+//         } catch (error) {
+//             console.error('There was an error submitting the form:', error);
+//             window.alert('There was an error submitting the form. Please try again.');
+//         }
+//     } else {
+//         window.alert('Missing required fields.');
+//     }
+// };
+
   
   return (
     <div>

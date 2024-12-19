@@ -1,40 +1,60 @@
 <?php
 // Enable CORS
+
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
-// Start the session if you want to automatically log in the user
 session_start();
-
-// Database connection
 include("dbConnection.php");
 
-// Get POST data with checks
-$firstName = isset($_POST['firstName']) ? $_POST['firstName'] : '';
-$lastName = isset($_POST['lastName']) ? $_POST['lastName'] : '';
-$userName = isset($_POST['userName']) ? $_POST['userName'] : '';
-$email = isset($_POST['email']) ? $_POST['email'] : '';
-$role = isset($_POST['role']) ? $_POST['role'] : '';
-$password = isset($_POST['password']) ? $_POST['password'] : '';
+$firstName = isset($_POST['firstName']) ? trim($_POST['firstName']) : '';
+$lastName = isset($_POST['lastName']) ? trim($_POST['lastName']) : '';
+$email = isset($_POST['email']) ? trim($_POST['email']) : '';
+$password = isset($_POST['password']) ? trim($_POST['password']) : '';
+$confirmPassword = isset($_POST['confirmPassword']) ? trim($_POST['confirmPassword']) : '';
 
-// Prepare and bind
-$stmt = $conn->prepare("INSERT INTO sign_in (firstName, lastName, userName, email, role, password) VALUES (?, ?, ?, ?, ?, ?)");
-$stmt->bind_param("ssssss", $firstName, $lastName, $userName, $email, $role, $password);
-
-// Execute the statement
-if ($stmt->execute()) {
-    // Optionally, log the user in immediately after signup
-    $_SESSION['user_id'] = $conn->insert_id; // Get the ID of the newly inserted record
-    $_SESSION['user_email'] = $email;
-    $_SESSION['user_role'] = $role;
-    $_SESSION['is_logged_in'] = true;
-    echo "Welcome to Research Grant Management System";
-} else {
-    echo "Error: " . $stmt->error;
+if (empty($firstName) || empty($lastName) || empty($email) || empty($password) || empty($confirmPassword)) {
+    echo json_encode(["status" => false, "message" => "All fields are required."]);
+    exit;
 }
 
-// Close the connection
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    echo json_encode(["status" => false, "message" => "Invalid email format."]);
+    exit;
+}
+
+if ($password !== $confirmPassword) {
+    echo json_encode(["status" => false, "message" => "Passwords do not match."]);
+    exit;
+}
+
+$query = "SELECT email FROM sign_in WHERE email = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$stmt->store_result();
+
+if ($stmt->num_rows > 0) {
+    echo json_encode(["status" => false, "message" => "Email is already registered."]);
+    $stmt->close();
+    $conn->close();
+    exit;
+}
+$stmt->close();
+
+$role = "Applicant";
+
+$stmt = $conn->prepare("INSERT INTO sign_in (firstName, lastName, email, password,confirmPassword, role) VALUES (?, ?, ?, ?, ?, ?)");
+$stmt->bind_param("ssssss", $firstName, $lastName, $email, $password, $confirmPassword, $role);
+
+if ($stmt->execute()) {
+    $_SESSION['user_id'] = $conn->insert_id;
+    echo json_encode(["status" => true, "message" => "Welcome to the Research Grant Management System!"]);
+} else {
+    echo json_encode(["status" => false, "message" => "Error: " . $stmt->error]);
+}
+
 $stmt->close();
 $conn->close();
 ?>

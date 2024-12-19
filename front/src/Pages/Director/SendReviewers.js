@@ -599,48 +599,49 @@ export default function SendReviewers() {
           <div>
             <label className="Reviewer">{app.reviewer1Name}</label>
           </div>
-          <button
-            className="Email-button"
-            onClick={() =>
-              handleShow(app.app_ID, {
-                name: app.reviewer1Name,
-                email: app.reviewer1Email,
-                affiliation: app.reviewer1Affiliation,
-              }, 'Reviewer One')
-            }
-          >
-            Send Email
-          </button>
+          {app.reviewer1_mark ? null : (
+            <button
+              className="Email-button"
+              onClick={() =>
+                handleShow(app.app_ID, {
+                  name: app.reviewer1Name,
+                  email: app.reviewer1Email,
+                  affiliation: app.reviewer1Affiliation,
+                }, 'Reviewer One')
+              }
+            >
+              Send Email
+            </button>
+          )}
           <br />
           <div className="marks-container">
-          <label className="marks-label">Mark: {app.reviewer1_mark || 'N/A'}</label>
-          <button className="view-button" onClick={() => handleView(app.app_ID, 'mid')}>View</button>
+            <label className="marks-label">Mark: {app.reviewer1_mark || 'N/A'}</label>
+            <button className="view-button" onClick={() => handleView(app.app_ID, 'mid')}>View</button>
           </div>
-          <br />
-         
-         
         </td>
         <td>
           <div>
             <label className="Reviewer">{app.reviewer2Name}</label>
           </div>
-          <button
-            className="Email-button"
-            onClick={() =>
-              handleShow(app.app_ID, {
-                name: app.reviewer2Name,
-                email: app.reviewer2Email,
-                affiliation: app.reviewer2Affiliation,
-              }, 'Reviewer Two')
-            }
-          >
-            Send Email
-          </button>
+          {app.reviewer2_mark ? null : (
+            <button
+              className="Email-button"
+              onClick={() =>
+                handleShow(app.app_ID, {
+                  name: app.reviewer2Name,
+                  email: app.reviewer2Email,
+                  affiliation: app.reviewer2Affiliation,
+                }, 'Reviewer Two')
+              }
+            >
+              Send Email
+            </button>
+          )}
           <br />
           <div className="marks-container">
-    <label className="marks-label">Mark: {app.reviewer2_mark || 'N/A'}</label>
-    <button className="view-button" onClick={() => handleView(app.app_ID, 'end')}>View</button>
-  </div>
+            <label className="marks-label">Mark: {app.reviewer2_mark || 'N/A'}</label>
+            <button className="view-button" onClick={() => handleView(app.app_ID, 'end')}>View</button>
+          </div>
         </td>
       </tr>
     ))
@@ -650,6 +651,7 @@ export default function SendReviewers() {
     </tr>
   )}
 </tbody>
+
 
 
       </Table>

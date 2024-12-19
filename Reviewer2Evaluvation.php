@@ -6,7 +6,7 @@ header('Access-Control-Allow-Headers: Content-Type, Authorization');
 // Database connection
 include("dbConnection.php");
 
-$targetDir = "D:/GrantData/EvaluationReports/"; // Path to save uploaded files
+$targetDir = "D:/GrantData/EvaluationReports(Reviewer_Two)/"; // Path to save uploaded files
 $allowedTypes = ['pdf', 'doc', 'docx']; // Allowed file types
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -29,8 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Create a unique name for the file and set the target path
-    $targetFilePath = $targetDir . uniqid() . "_" . $fileName;
+   // Rename the file and set target path
+   $newFileName = $app_ID . "_EvaluationReport." . $fileType;
+   $targetFilePath = $targetDir . $newFileName;
 
     // Move the uploaded file to the target directory
     if (move_uploaded_file($evaluationReport["tmp_name"], $targetFilePath)) {

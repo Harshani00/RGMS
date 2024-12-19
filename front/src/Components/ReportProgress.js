@@ -399,7 +399,7 @@ function ReportProgress({ reportType, appId }) {
       <Card className="dropzone-container">
         <div {...getRootProps({ className: 'dropzone' })}>
           <input {...getInputProps()} />
-          <p>Drag & drop some files here, or click to select files</p>
+          <p>Drag & drop file here, or click to select file</p>
           <Button variant="primary">Browse Files</Button>
         </div>
         <aside>

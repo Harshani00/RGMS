@@ -486,6 +486,10 @@ export default function ViewApplication() {
     navigate(`/view-application/${Id}`); // Navigate to the detailed view page
   };
 
+  const handleClick = (app_ID) => {
+    navigate(`/moredetails/${app_ID}`); // Correctly use template literal
+  };
+  
   return (
     <div>
       <Navbar />
@@ -514,18 +518,18 @@ export default function ViewApplication() {
             </th>
           </tr>
           <tr>
-            <th>Applicant Name</th>
+            <th>Appliant Name</th> 
             <th>Application Id</th>
             <th>Project Title</th>
             <th>Submitted Date</th>
             <th>Status</th>
             <th>View Grant (PDF)</th>
+            <th>Application Details</th>
           </tr>
         </thead>
         <tbody>
           {filteredApplications.map((app) => (
             <tr key={app.app_ID}>
-
               <td>{app.name}</td>
               <td>{app.app_ID}</td>
               <td>{app.projectTitle}</td>
@@ -536,7 +540,15 @@ export default function ViewApplication() {
                   className="view-button" // Add your custom class name for styling
                   onClick={() => handleViewClick(app.app_ID)} // Handle button click
                 >
-                  View
+                 Application
+                </button>
+              </td>
+              <td>
+                <button 
+                  className="moreDetails-button" // Add your custom class name for styling
+                  onClick={() => handleClick(app.app_ID)} // Navigate to More Details
+                >
+                 More Details
                 </button>
               </td>
             </tr>
@@ -546,3 +558,4 @@ export default function ViewApplication() {
     </div>
   );
 }
+

@@ -412,9 +412,41 @@ export default function ViewApplication() {
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]); // Store the selected file
   };
-  const handleRequestClick = (id) => {
-    console.log(`Request clicked for application ${id}`);
+  const handleRequestClick = async (id) => {
+    const selectedApp = applications.find((app) => app.Id === id);
+    if (!selectedApp) {
+      alert("Application not found.");
+      return;
+    }
+  
+    const email = selectedApp.email;
+    const subject = "Regarding the Agreement";
+    const message = `
+      Dear Applicant,<br><br>
+      Congratulations! Your application has been approved. We have uploaded the agreement related to your application.<br>
+      Please read the agreement carefully and upload the signed copy within one week.<br><br>
+      Best regards,<br>
+      URC-University of Peradeniya
+    `;
+  
+    try {
+      const response = await axios.post('/Email.php', {
+        email,
+        subject,
+        message,
+      });
+  
+      if (response.data.status === 'success') {
+        alert('Email sent successfully.');
+      } else {
+        alert(`Failed to send email: ${response.data.message}`);
+      }
+    } catch (error) {
+      console.error('Error sending email:', error);
+      alert('An error occurred while sending the email.');
+    }
   };
+  
 
   const handleFileUpload = async () => {
     if (selectedFile) {

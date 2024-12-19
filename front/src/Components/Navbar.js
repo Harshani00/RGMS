@@ -86,10 +86,73 @@
 // };
 
 // export default Navbar;
+// import React from 'react';
+// import { Link, useNavigate } from 'react-router-dom';
+// import './Navbar.css';
+// import Logo from '../Assets/logo2.png';
+
+// const Navbar = () => {
+//   const navigate = useNavigate();
+//   const userName = localStorage.getItem('userName') || 'Profile'; // Get username from localStorage
+
+//   const handleLogout = async () => {
+//     try {
+
+//       const response = await fetch('/Logout.php', { method: 'GET' });
+//       const result = await response.json();
+      
+//       if (result.message === 'Logged out successfully') {
+//         localStorage.removeItem('userName'); // Clear username from localStorage
+//         localStorage.removeItem('userRole'); // Store user role in localStorage
+//         localStorage.removeItem('userID'); // Store user role in localStorage
+//         localStorage.removeItem('formData'); // Clear form data from localStorage (add this line)
+//         localStorage.removeItem('completionStatus'); // Clear username from localStorage
+
+//         navigate('/login');
+//       } else {
+//         console.error('Logout failed:', result.message);
+//       }
+//     } catch (error) {
+//       console.error('Error during logout:', error);
+//     }
+//   };
+
+//   return (
+//     <div>
+//       <div className="nav-bar-container">
+//         <div className="nav-left">
+//           <img src={Logo} alt="Logo" className="Logo" />
+//         </div>
+
+//         <div className="nav-center">
+//           <h1 className="main-title">RESEARCH GRANT MANAGEMENT SYSTEM</h1>
+//         </div>
+//         <div className="nav-right">
+//         <Link to="/home" className="nav-link">
+//     Home
+//   </Link>
+//   <Link to="/dashboard" className="nav-link">
+//     Dashboard
+//   </Link>
+//   <Link to="/profile" className="nav-link">
+//     {userName}
+//   </Link> {/* Show username or "Profile" */}
+//   <span className="nav-link logout-link" onClick={handleLogout}>
+//     Log Out
+//   </span>
+// </div>
+
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Navbar;
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 import Logo from '../Assets/logo2.png';
+import axios from 'axios'; // Import axios
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -97,18 +160,21 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-
-      const response = await fetch('/Logout.php', { method: 'GET' });
-      const result = await response.json();
+      // Use axios to send a GET request to /Logout.php
+      const response = await axios.get('/Logout.php');
       
-      if (result.message === 'Logged out successfully') {
-        localStorage.removeItem('userName'); // Clear username from localStorage
-        localStorage.removeItem('userRole'); // Store user role in localStorage
-        localStorage.removeItem('userID'); // Store user role in localStorage
-        localStorage.removeItem('formData'); // Clear form data from localStorage (add this line)
-        localStorage.removeItem('completionStatus'); // Clear username from localStorage
+      // Assuming the server responds with a JSON object containing a 'message' property
+      const result = response.data;
 
-        navigate('/login');
+      if (result.message === 'Logged out successfully') {
+        // Clear localStorage items upon successful logout
+        localStorage.removeItem('userName');
+        localStorage.removeItem('userRole');
+        localStorage.removeItem('userID');
+        localStorage.removeItem('formData');
+        localStorage.removeItem('completionStatus');
+
+        navigate('/home');
       } else {
         console.error('Logout failed:', result.message);
       }
@@ -128,20 +194,19 @@ const Navbar = () => {
           <h1 className="main-title">RESEARCH GRANT MANAGEMENT SYSTEM</h1>
         </div>
         <div className="nav-right">
-        <Link to="/home" className="nav-link">
-    Home
-  </Link>
-  <Link to="/dashboard" className="nav-link">
-    Dashboard
-  </Link>
-  <Link to="/profile" className="nav-link">
-    {userName}
-  </Link> {/* Show username or "Profile" */}
-  <span className="nav-link logout-link" onClick={handleLogout}>
-    Log Out
-  </span>
-</div>
-
+          <Link to="/home" className="nav-link">
+            Home
+          </Link>
+          <Link to="/dashboard" className="nav-link">
+            Dashboard
+          </Link>
+          <Link to="/profile" className="nav-link">
+            {userName}
+          </Link> {/* Show username or "Profile" */}
+          <span className="nav-link logout-link" onClick={handleLogout}>
+            Log Out
+          </span>
+        </div>
       </div>
     </div>
   );

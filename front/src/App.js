@@ -217,6 +217,8 @@ import SendReviewers from './Pages/Director/SendReviewers';
 import RequestApproval from './Pages/Director/RequestApproval';
 import ReviewCriteriaD from './Pages/Director/ReviewCriteriaD';
 import ShortlistedApplicationD from './Pages/Director/ShortlistedApplicationD';
+import MoreDetails from './Pages/AllUsers/MoreDetails';
+import NewAccount from './Pages/Director/NewAccount';
 
 // Reviewer Pages
 
@@ -225,7 +227,6 @@ import HOD from './Pages/Dean/HOD/HOD';
 import Reviewer1 from './Pages/Reviewer/Reviewer1';
 import Reviewer2 from './Pages/Reviewer/Reviewer2';
 
-import Email from './Pages/Dean/HOD/Email';
 
 
 
@@ -268,14 +269,17 @@ class App extends React.Component {
             <Route path="/requestapproval" element={<RequestApproval />} />
             <Route path="/reviewcriteriad" element={<ReviewCriteriaD />} />
             <Route path="/shortlistedapplicationd" element={<ShortlistedApplicationD />} />
+           
 
             <Route path="/reviewer1" element={<Reviewer1 />} />
             <Route path="/reviewer2" element={<Reviewer2/>}/>
            
-            <Route path="dean" element={<Dean/>} />
-            <Route path="hod" element={<HOD/>} />
+            <Route path="/dean" element={<Dean/>} />
+            <Route path="/hod" element={<HOD/>} />
 
-            <Route path="email" element={<Email/>} />
+            <Route path="/moredetails/:app_ID" element={<MoreDetails />} />
+            <Route path="/newaccount" element={<NewAccount />} />
+           
            
           </Routes>
 

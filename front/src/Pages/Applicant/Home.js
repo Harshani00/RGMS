@@ -187,60 +187,309 @@
 //     </div>
 //   );
 // }
-import React, { useEffect, useState } from 'react';
-import './Home.css'; // Import the CSS file
-import Navbar from '../../Components/Navbar';
-import Navbar3 from '../../Components/Navbar3';
+// import React, { useEffect, useState } from 'react';
+// import './Home.css'; // Import the CSS file
+// import Navbar from '../../Components/Navbar';
+// import Navbar3 from '../../Components/Navbar3';
 
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+// import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 
-const imageSources = [
-  require('../../Assets/16.jpg'), // Replace with your actual image paths
-  // require('../../Assets/background3.png'),
-  // require('../../Assets/bb.jpg'),
-];
+// const imageSources = [
+//   require('../../Assets/16.jpg'), // Replace with your actual image paths
+//   require('../../Assets/background3.png'),
+//   require('../../Assets/bb.jpg'),
+// ];
 
-export default function HomePage() {
-  const navigate = useNavigate(); // Initialize navigate for routing
-  const [currentImage, setCurrentImage] = useState(imageSources[0]); // Set initial image
-  const [imageIndex, setImageIndex] = useState(0); // Index for the current image
+// export default function HomePage() {
+//   const navigate = useNavigate(); // Initialize navigate for routing
+//   const [currentImage, setCurrentImage] = useState(imageSources[0]); // Set initial image
+//   const [imageIndex, setImageIndex] = useState(0); // Index for the current image
 
-  // Function to change images
-  const changeImage = () => {
-    const nextIndex = (imageIndex + 1) % imageSources.length;
-    setCurrentImage(imageSources[nextIndex]);
-    setImageIndex(nextIndex);
-  };
+//   // Function to change images
+//   const changeImage = () => {
+//     const nextIndex = (imageIndex + 1) % imageSources.length;
+//     setCurrentImage(imageSources[nextIndex]);
+//     setImageIndex(nextIndex);
+//   };
 
-   useEffect(() => {
-    const intervalId = setInterval(changeImage, 5000); // Change image every 5 seconds
-    return () => clearInterval(intervalId); // Cleanup on unmount
-  }, [imageIndex]);
+//    useEffect(() => {
+//     const intervalId = setInterval(changeImage, 5000); // Change image every 5 seconds
+//     return () => clearInterval(intervalId); // Cleanup on unmount
+//   }, [imageIndex]);
 
   
-  return (
-    <div className="home-page">
+//   return (
+//     <div className="home-page">
+//     <div className="navbar-container">
+//       <Navbar />
+//       <Navbar3 />
+//     </div>
+//     <div className="img-card">
+//       <div
+//         className="background-image"
+//         style={{ backgroundImage: `url(${currentImage})` }}
+//       ></div>
+//     </div>
+//     <div className="content"></div>
+//     <div className="info-card">
+//       <p className="card-text">Please download the necessary documents here.</p>
+//     </div>
+//   </div>
+  
+//   );
+// }
+// import React from "react";
+// import "./Home.css";
+// import Navbar from '../../Components/Navbar';
+// import Navbar3 from '../../Components/Navbar3';
+// import backgroundImage from '../../Assets/16.jpg';
+
+// const Home = () => {
+//   return (
+//     <div>
+//       <Navbar />
+//       <Navbar3 />
+//       <div className="home-container">
+//         <header
+//           className="hero-section"
+//           style={{
+//             backgroundImage: `url(${backgroundImage})`, // Dynamically set the background image
+//           }}
+//         >
+//           <div className="hero-overlay">
+//           <h2 className="hero-title">
+//   Simplifying the Path to Research Funding and Collaboration
+// </h2>
+// <p className="hero-subtitle">
+//   Streamline your grant process, collaborate effectively, and achieve research excellence with ease!
+// </p>
+
+//             {/* <button className="hero-button">Get Started</button> */}
+//           </div>
+//         </header>
+
+//         <main className="content-section">
+//           <section className="features">
+//             <h2 className="section-title">Download Necessary Documents Here</h2>
+//             <div className="feature-cards">
+//               <div className="feature-card">
+//                 <i className="fas fa-laptop-code feature-icon"></i>
+//                 <h3>Document One</h3>
+//                 <p style={{ color: 'black' }}>
+//                 Track your progress and make informed decisions with real-time data.
+//                 </p>
+
+//               </div>
+//               <div className="feature-card">
+//                 <i className="fas fa-users feature-icon"></i>
+//                 <h3>Document Two</h3>
+//                 <p style={{ color: 'black' }}>
+//                 Track your progress and make informed decisions with real-time data.
+//                 </p>
+
+//               </div>
+//               <div className="feature-card">
+//                 <i className="fas fa-chart-line feature-icon"></i>
+//                 <h3>Document Three</h3>
+//                 <p style={{ color: 'black' }}>
+//                  Track your progress and make informed decisions with real-time data.
+//                 </p>
+
+//               </div>
+//             </div>
+//           </section>
+//           {/* <section className="cta-section">
+//           <h2 className="cta-title">Ready to Dive In?</h2>
+//           <p>Sign up now and start your journey with us today.</p>
+//           <button className="cta-button">Join Now</button>
+//         </section> */}
       
+//         </main>
+//       </div>
+//     </div>
+//   );
+// };
+
+
+// export default Home;
+
+// import React, { useState, useEffect } from "react";
+// import "./Home.css";
+// import Navbar from "../../Components/Navbar";
+// import Navbar3 from "../../Components/Navbar3";
+// import backgroundImage1 from "../../Assets/16.jpg";
+// import backgroundImage2 from "../../Assets/slide-4.jpg";
+// import backgroundImage3 from "../../Assets/bb.jpg";
+
+// const Home = () => {
+//   const images = [backgroundImage1, backgroundImage2, backgroundImage3]; // Array of images
+//   const [currentImage, setCurrentImage] = useState(0);
+
+//   useEffect(() => {
+//     const interval = setInterval(() => {
+//       setCurrentImage((prevImage) => (prevImage + 1) % images.length);
+//     }, 5000); // Change image every 5 seconds
+//     return () => clearInterval(interval); // Cleanup on component unmount
+//   }, [images.length]);
+
+//   return (
+//     <div>
+//       <Navbar />
+//       <Navbar3 />
+//       <div className="home-container">
+//         <header
+//           className="hero-section"
+//           style={{
+//             backgroundImage: `url(${images[currentImage]})`, // Set dynamic background
+//           }}
+//         >
+//           <div className="hero-overlay">
+//             <h2 className="hero-title">
+//               Simplifying the Path to Research Funding and Collaboration
+//             </h2>
+//             <p className="hero-subtitle">
+//               Streamline your grant process, collaborate effectively, and
+//               achieve research excellence with ease!
+//             </p>
+//           </div>
+//         </header>
+
+//         <main className="content-section">
+//   <section className="features">
+//     <h2 className="section-title">Application Guidelines</h2>
+//     <div className="feature-cards">
+      
+//       <div className="feature-card">
+//         <i className="fas fa-laptop-code feature-icon" style={{ fontSize: "2.5rem", color: "#007bff" }}></i>
+//         <h3 className="feature-title" style={{ margin: "1rem 0", color: "#333" }}>Procedure</h3>
+//         <p style={{ color: "#555", lineHeight: "1.8" }}>
+//           Grant applications should be submitted online on or before the deadline specified by the URC. Access the submission portal at 
+//           <a href="https://rgms.pdn.ac.lk/" style={{ color: "#007bff", textDecoration: "none", fontWeight: "bold" }}> https://rgms.pdn.ac.lk/</a>. 
+//           Prepare the following documents before entering the portal:
+//         </p>
+//         <ul style={{ color: "#555", margin: "1rem 0 0 1.5rem", lineHeight: "1.8" }}>
+//           <li>Project proposal (as per the template) converted into a PDF</li>
+//           <li>Project budget (as per the template) converted into a PDF</li>
+//           <li>Full CV of the Principal Investigator as a PDF</li>
+//           <li>Two-page CVs of all Co-Investigators compiled into a single PDF</li>
+//           <li>DOI of three journal papers or links to conference papers. For papers without DOI, upload them to Google Drive and provide the link.</li>
+//         </ul>
+//       </div>
+      
+//       <div className="feature-card">
+//         <i className="fas fa-users feature-icon" style={{ fontSize: "2.5rem", color: "#28a745" }}></i>
+//         <h3 className="feature-title" style={{ margin: "1rem 0", color: "#333" }}>Document Two</h3>
+//         <p style={{ color: "#555", lineHeight: "1.8" }}>
+//           Easily track your progress and make informed decisions with real-time data visualization and insights.
+//         </p>
+//       </div>
+      
+//       <div className="feature-card">
+//         <i className="fas fa-chart-line feature-icon" style={{ fontSize: "2.5rem", color: "#17a2b8" }}></i>
+//         <h3 className="feature-title" style={{ margin: "1rem 0", color: "#333" }}>Document Three</h3>
+//         <p style={{ color: "#555", lineHeight: "1.8" }}>
+//           Utilize comprehensive tools to monitor your progress, identify bottlenecks, and achieve your objectives effectively.
+//         </p>
+//       </div>
+      
+//     </div>
+//   </section>
+// </main>
+
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Home;
+import React, { useState, useEffect } from "react";
+import "./Home.css";
+import Navbar from "../../Components/Navbar";
+import Navbar3 from "../../Components/Navbar3";
+import backgroundImage1 from "../../Assets/16.jpg";
+import backgroundImage2 from "../../Assets/slide-4.jpg";
+import backgroundImage3 from "../../Assets/bb.jpg";
+
+const Home = () => {
+  const images = [backgroundImage1, backgroundImage2, backgroundImage3];
+  const [currentImage, setCurrentImage] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prevImage) => (prevImage + 1) % images.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [images.length]);
+
+  return (
+    <div>
       <Navbar />
       <Navbar3 />
-      <div className="img-card">
-      <div
-        className="background-image"
-        style={{ backgroundImage: `url(${currentImage})` }}
-      ></div>
-      </div>
-      <div className="content">
-        
-        {/* <div className="buttons">
-          <button className="accessbuttons" onClick={handleLoginClick}>Login</button>
-          <button className="accessbuttons" onClick={handleSignupClick}>Sign Up</button>
-        </div> */}
-      </div>
-      <div className="info-card">
-       
-        <p className="card-text">Please download the necessary documents here.</p>
-       
+      <div className="home-container">
+        <header
+          className="hero-section"
+          style={{
+            backgroundImage: `url(${images[currentImage]})`,
+          }}
+        >
+          <div className="hero-overlay">
+            <h2 className="hero-title">
+              Simplifying the Path to Research Funding and Collaboration
+            </h2>
+            <p className="hero-subtitle">
+              Streamline your grant process, collaborate effectively, and
+              achieve research excellence with ease!
+            </p>
+          </div>
+        </header>
+
+        <main className="content-section">
+          <section className="features">
+            <h2 className="section-title">Application Guidelines</h2>
+            <div className="feature-cards">
+              <div className="feature-card feature-card-large">
+                <i className="fas fa-laptop-code feature-icon"></i>
+                <h3 className="feature-title">Procedure</h3>
+                <p>
+                  Grant applications should be submitted online on or before the
+                  deadline specified by the URC. Access the submission portal at{" "}
+                  <a href="https://rgms.pdn.ac.lk/">https://rgms.pdn.ac.lk/</a>.
+                  Prepare the following documents:
+                </p>
+                <ul>
+                  <li>Project proposal as per the template (PDF)</li>
+                  <li>Project budget as per the template (PDF)</li>
+                  <li>Full CV of the Principal Investigator (PDF)</li>
+                  <li>Two-page CVs of all Co-Investigators compiled (PDF)</li>
+                  <li>
+                    DOI of three journal papers or links to conference papers.
+                  </li>
+                </ul>
+              </div>
+
+              <div className="feature-card">
+                <i className="fas fa-users feature-icon"></i>
+                <h3 className="feature-title">Document Two</h3>
+                <p>
+                  Easily track your progress and make informed decisions with
+                  real-time data visualization.
+                </p>
+              </div>
+
+              <div className="feature-card">
+                <i className="fas fa-chart-line feature-icon"></i>
+                <h3 className="feature-title">Document Three</h3>
+                <p>
+                  Utilize tools to monitor progress, identify bottlenecks, and
+                  achieve objectives.
+                </p>
+              </div>
+            </div>
+          </section>
+        </main>
       </div>
     </div>
   );
-}
+};
+
+export default Home;

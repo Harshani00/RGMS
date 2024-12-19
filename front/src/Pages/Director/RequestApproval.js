@@ -753,12 +753,12 @@ export default function RequestApproval() {
                 {app.hod_decision === '3.1' ? (
                   <>
                     <button className="btn-approved" onClick={() => handleDecision(app.app_ID, 'Approved', 'HOD')}>Approve</button>
-                    <button className="Email-button" onClick={() => handleShowEmail(app.app_ID, 'HOD', app.hodEmail)}>Send Email</button>
+                   
                   </>
                 ) : app.hod_decision === '3.2' ? (
                   <>
                   <button className="btn-rejected" onClick={() => handleDecision(app.app_ID, 'Rejected', 'HOD')}>Reject</button>
-                  <button className="Email-button" onClick={() => handleShowEmail(app.app_ID, 'HOD', app.hodEmail)}>Send Email</button>
+                 
                   </>
                   
                 ) : app.Status === '2.1' ? (
@@ -773,12 +773,12 @@ export default function RequestApproval() {
                 {app.dean_decision === '3.1' ? (
                   <>
                     <button className="btn-approved" onClick={() => handleDecision(app.app_ID, 'Approved', 'Dean')}>Approve</button>
-                    <button className="Email-button" onClick={() => handleShowEmail(app.app_ID, 'Dean', app.deanEmail)}>Send Email</button>
+                   
                   </>
                 ) : app.dean_decision === '3.2' ? (
                   <>
                   <button className="btn-rejected" onClick={() => handleDecision(app.app_ID, 'Rejected', 'Dean')}>Reject</button>
-                  <button className="Email-button" onClick={() => handleShowEmail(app.app_ID, 'Dean', app.deanEmail)}>Send Email</button>
+                  
                   </>
                 ) : app.Status === '2.1' ? (
                   <>

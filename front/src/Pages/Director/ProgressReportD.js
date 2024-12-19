@@ -184,7 +184,7 @@ export default function ProgressReportD() {
       const emailData = {
         email: currentApp.userEmail,   // Assuming currentApp has userEmail
         subject: `Progress Report: ${reportType} for "${currentApp.projectTitle}"`,
-        message: emailBody,
+        message:emailBody,
       };
   
       // Send the email via POST request to Email.php

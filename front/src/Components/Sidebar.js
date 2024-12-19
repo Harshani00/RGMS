@@ -105,7 +105,7 @@ const Sidebar = () => {
   const steps = [
     { title: 'Profile Details', completed: completionStatus.profile },
     { title: 'Project Details', completed: completionStatus.project },
-    { title: 'Supervisor Details', completed: completionStatus.supervisors },
+    { title: 'Investigator Details', completed: completionStatus.supervisors },
     { title: 'Uploads Details', completed: completionStatus.uploads },
     { title: 'Reviewers Details', completed: completionStatus.reviewers },
   ];

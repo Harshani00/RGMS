@@ -34,7 +34,7 @@ $sql = "
     LEFT JOIN 
         reviewer_2 r2 ON p.app_ID = r2.app_ID 
     WHERE 
-        ROUND(a.Status, 1) = 3.1";
+        ROUND(a.Status, 1) IN (3.1,5.1)";
 
 $result = $conn->query($sql);
 

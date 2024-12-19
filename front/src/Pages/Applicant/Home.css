@@ -1,121 +1,100 @@
-/* .home-page-container {
-   
-    background-size: cover;
-    background-position: center;
-    height: 100vh;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-  }
-  
-  .content-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-left: 20px;
-  }
-  
-  .home-title {
-    color: white;
-    margin-bottom: 20px;
-    font-size: 3em;
-  }
-  
-  .home-button {
-    margin-bottom: 10px;
-    width: 150px;
-    background-color: #1B2D48; 
-    border: none;
-  }
-   */
-
- 
-   .home-page {
-    position: relative;
-    overflow: hidden;
-    height: 100vh; /* Full height of the viewport */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-.img-card {
-    
-        width: 100%; /* Adjust width as needed */
-        height: 50%; /* Height for the image card */
-        overflow: hidden;
-        border-radius: 1px; /* Rounded corners for the card */
-        
-        margin: 1px 0 5px 0; /* Move up by adjusting the top margin */
-        position: relative;
-        border: 2px solid rgba(0, 0, 0, 0.848); /* Change the thickness by adjusting the number */
-   
-    
+.hero-section {
+  background: no-repeat center center/cover;
+  height: 60vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-image 1s ease-in-out;
 }
 
-.background-image {
-    /* width: 100%;
-    height: 100%;
-    background-size: cover; /* Ensures the image covers the container */
-    /* background-position: center;
-    background-repeat: no-repeat;
-    position: absolute;
-    top: 0;
-    left: 0; */ 
-    width: 100%;
-    height: 100%;
-    background-size:100% 100%; /* Ensures the image covers the container */
-    background-position: center; /* Centers the image */
-    background-repeat: no-repeat; /* Avoids tiling */
-    position: absolute;
-    top: 0;
-    left: 0;
-
+.hero-overlay {
+  text-align: center;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 2rem;
+  border-radius: 8px;
 }
 
-.content {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    color: black;
+.hero-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
 }
 
-.buttons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
+.hero-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  font-weight: 300;
 }
 
-.accessbuttons {
-    background-color: #052659;
-    color: white;
-    padding: 10px 20px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 5px;
-    font-weight: bold;
+.content-section {
+  flex: 1;
+  padding: 2rem;
 }
 
-.accessbuttons:hover {
-    background-color: #005b96;
+.features {
+  text-align: center;
+  margin-bottom: 3rem;
 }
 
-.info-card {
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-    padding: 20px;
-    width: 100%;
-    text-align: center;
-    margin-bottom: 20px;
-    height: 27%;
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
 }
 
-.card-text {
-    font-size: 20px; /* Font size for card text */
-    color: white; /* Text color red */
-    margin-right: 60%;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    font-weight: bold;
-    background-color: #800000;
-    border-radius: 10px;
-   width: 35%;
+.feature-cards {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.feature-card {
+  background: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  width: 300px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card-large {
+  width: 400px; /* Larger width for the first card */
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #007bff;
+}
+
+.feature-title {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.feature-card p {
+  color: #555;
+  line-height: 1.8;
+}
+
+.feature-card ul {
+  margin: 1rem 0 0 1.5rem;
+  color: #555;
+  line-height: 1.8;
 }

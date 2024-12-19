@@ -657,6 +657,7 @@ import AttachEmailRoundedIcon from '@mui/icons-material/AttachEmailRounded';
 import DescriptionIcon from '@mui/icons-material/Description';
 import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
 import ReorderRoundedIcon from '@mui/icons-material/ReorderRounded';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 
 export default function Dashboard() {
   
@@ -718,6 +719,13 @@ export default function Dashboard() {
               //imageSrc={FinalReport} 
               //className="transparent-image" 
             />     
+              <CustomCard 
+              title="Create An Account"    
+              linkTo="/newaccount" 
+              icon={<ManageAccountsIcon/>}
+              //imageSrc={FinalReport} 
+              //className="transparent-image" 
+            />     
           </>
         );
       case 'Applicant':
@@ -749,7 +757,7 @@ export default function Dashboard() {
             />
           </>
         );
-      case 'Admin':
+      case 'Admin': // Secretary
         return (
           <>
             <CustomCard 

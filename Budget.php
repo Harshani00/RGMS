@@ -39,17 +39,17 @@ if (!is_dir($targetDir)) {
 }
 
 // Function to handle file upload
-function uploadFile($file, $targetDir, $allowedTypes) {
-    $fileName = basename($file["name"]);
-    $fileType = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+function uploadFile($file, $targetDir, $allowedTypes, $app_ID, $fileTypeName) {
+    $fileType = strtolower(pathinfo($file["name"], PATHINFO_EXTENSION));
 
     // Validate file type
     if (!in_array($fileType, $allowedTypes)) {
         return "Error: Only " . implode(", ", $allowedTypes) . " files are allowed.";
     }
 
-    // Rename file to avoid conflicts
-    $targetFilePath = $targetDir . uniqid() . "_" . $fileName;
+    // Rename file to format: app_ID_Budget(FileType).ext
+    $newFileName = $app_ID . "_Budget(" . $fileTypeName . ")." . $fileType;
+    $targetFilePath = $targetDir . $newFileName;
 
     // Attempt to move the uploaded file
     if (move_uploaded_file($file["tmp_name"], $targetFilePath)) {
@@ -69,10 +69,10 @@ $responses = [
 // Check if files are submitted and upload
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_FILES['PreviousBudget'])) {
-        $responses['PreviousBudget'] = uploadFile($_FILES['PreviousBudget'], $targetDir, $allowedTypes);
+        $responses['PreviousBudget'] = uploadFile($_FILES['PreviousBudget'], $targetDir, $allowedTypes, $app_ID, "PreviousBudget");
     }
     if (isset($_FILES['CurrentBudget'])) {
-        $responses['CurrentBudget'] = uploadFile($_FILES['CurrentBudget'], $targetDir, $allowedTypes);
+        $responses['CurrentBudget'] = uploadFile($_FILES['CurrentBudget'], $targetDir, $allowedTypes, $app_ID, "CurrentBudget");
     }
 
     // Ensure both files are uploaded successfully

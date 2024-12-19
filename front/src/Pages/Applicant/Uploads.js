@@ -389,7 +389,7 @@ export default function Grant() {
         <Form onSubmit={handleSubmit}>
           <Row className="mb-3">
             <Form.Group controlId="formProjectProposal">
-              <Form.Label>1. Upload Project Proposal <span className="text-danger">*</span></Form.Label>
+              <Form.Label>1. Upload Project Proposal (Please Upload PDF a File) <span className="text-danger">*</span></Form.Label>
               <Form.Control
                 type="file"
                 name="projectProposal"
@@ -407,7 +407,7 @@ export default function Grant() {
             </Form.Group>
 
             <Form.Group controlId="formProjectBudget">
-              <Form.Label>2. Upload Project Budget <span className="text-danger">*</span></Form.Label>
+              <Form.Label>2. Upload Project Budget (Please Upload PDF a File) <span className="text-danger">*</span></Form.Label>
               <Form.Control
                 type="file"
                 name="projectBudget"
@@ -425,7 +425,7 @@ export default function Grant() {
             </Form.Group>
 
             <Form.Group controlId="formProjectCV">
-              <Form.Label>3. Upload Project Full CV of the Principal Investigator <span className="text-danger">*</span></Form.Label>
+              <Form.Label>3. Upload Project Full CV of the Principal Investigator (Please Upload PDF a File) <span className="text-danger">*</span></Form.Label>
               <Form.Control
                 type="file"
                 name="projectCV"

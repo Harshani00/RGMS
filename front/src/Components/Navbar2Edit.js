@@ -38,27 +38,27 @@ export default function Navbar2Edit() {
             </li>
             <li className="nav-item">
               <Link 
-                to="/editsupervisors" 
-                className={`nav-link ${activeLink === '/editsupervisors' ? 'active' : ''}`}
-                onClick={() => handleLinkClick('/editsupervisors')}
+                to="/supervisors" 
+                className={`nav-link ${activeLink === '/supervisors' ? 'active' : ''}`}
+                onClick={() => handleLinkClick('/supervisors')}
               >
                 Supervisors
               </Link>
             </li>
             <li className="nav-item">
               <Link 
-                to="/edituploads" 
-                className={`nav-link ${activeLink === '/edituploads' ? 'active' : ''}`}
-                onClick={() => handleLinkClick('/edituploads')}
+                to="/uploads" 
+                className={`nav-link ${activeLink === '/uploads' ? 'active' : ''}`}
+                onClick={() => handleLinkClick('/uploads')}
               >
                 Uploads
               </Link>
             </li>
             <li className="nav-item">
               <Link 
-                to="/editreviewers" 
-                className={`nav-link ${activeLink === '/editreviewers' ? 'active' : ''}`}
-                onClick={() => handleLinkClick('/editreviewers')}
+                to="/reviewers" 
+                className={`nav-link ${activeLink === '/reviewers' ? 'active' : ''}`}
+                onClick={() => handleLinkClick('/reviewers')}
               >
                 Reviewers
               </Link>
