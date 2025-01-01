@@ -111,7 +111,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import './Login.css'; // Assuming the CSS is in this file
-import backgroundImage from '../../Assets/10.jpg'; // Left side image
+import backgroundImage from '../../Assets/Loginbackground.png'; // Left side image
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -202,13 +202,7 @@ export default function LoginForm() {
           </Form>
 
           <div className="bottom mt-3">
-            <Form.Check
-              type="checkbox"
-              label="Remember me"
-              defaultChecked
-              name="remember"
-              className="cbox"
-            />
+            
             <p className="account">
               Don't have an Account?{' '}
               <Button

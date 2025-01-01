@@ -272,42 +272,7 @@ export default function Grant() {
     }
   };
 
-  // Function to handle save form  
-  // const handleSave = async () => {
-  //   if (validate()) {
-  //     if (isSubmitted) {
-  //       alert('Form data has already been submitted.');
-  //       return; // Prevent further submissions
-  //     }
   
-  //     try {
-  //       const response = await axios.post('/FileUploads.php', formData, {
-  //         headers: {
-  //           'Content-Type': 'multipart/form-data',
-  //         },
-  //         transformRequest: [(data) => {
-  //           const params = new URLSearchParams();
-  //           for (const key in data) {
-  //             params.append(key, data[key]);
-  //           }
-  //           return params;
-  //         }],
-  //       });
-  
-  //       if (response.data.status === "success") {
-  //         setIsSubmitted(true); // Mark as submitted
-  //         alert('Form saved successfully.');
-  //       } else {
-  //         alert(response.data.message);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error details:", error);
-  //       alert('There was an error saving the data. Please try again.');
-  //     }
-  //   } else {
-  //     alert('Missing Fields Required.');
-  //   }
-  // };
   const handleSave = async () => {
     if (isSubmitted) {
       alert('Form data has already been saved.');
@@ -407,22 +372,34 @@ export default function Grant() {
             </Form.Group>
 
             <Form.Group controlId="formProjectBudget">
-              <Form.Label>2. Upload Project Budget (Please Upload PDF a File) <span className="text-danger">*</span></Form.Label>
-              <Form.Control
-                type="file"
-                name="projectBudget"
-                onChange={handleFileChange}
-                isInvalid={!!formErrors.projectBudget}
-              />
-              <Form.Control.Feedback type="invalid">
-                {formErrors.projectBudget}
-              </Form.Control.Feedback>
-              {formData.projectBudget && (
-                <div className="file-name">
-                  {formData.projectBudget.name}
-                </div>
-              )}
-            </Form.Group>
+  <Form.Label>
+    2. Upload Project Budget (Please Upload PDF a File) <span className="text-danger">*</span>
+  </Form.Label>
+  <div>
+    <a 
+      href="/Templates/Project Budget.docx" 
+      download="Project Budget.docx"
+      className="template-download-link"
+    >
+      Download the template here
+    </a>
+  </div>
+  <Form.Control
+    type="file"
+    name="projectBudget"
+    onChange={handleFileChange}
+    isInvalid={!!formErrors.projectBudget}
+  />
+  <Form.Control.Feedback type="invalid">
+    {formErrors.projectBudget}
+  </Form.Control.Feedback>
+  {formData.projectBudget && (
+    <div className="file-name">
+      {formData.projectBudget.name}
+    </div>
+  )}
+</Form.Group>
+
 
             <Form.Group controlId="formProjectCV">
               <Form.Label>3. Upload Project Full CV of the Principal Investigator (Please Upload PDF a File) <span className="text-danger">*</span></Form.Label>

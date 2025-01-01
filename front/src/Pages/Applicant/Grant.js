@@ -353,6 +353,7 @@ export default function Grant()  {
                 onChange={handleChange}
                 placeholder="Ex: abc@gmail.com"
                 isInvalid={!!errors.email}
+                
              
               />
               <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>

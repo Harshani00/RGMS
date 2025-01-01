@@ -123,6 +123,34 @@
   margin-left:10px;
   margin-top: 10px;
 }
-.selectreport{
-  
+.dwnloadtitle
+{
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 40%; /* Adjust this value as needed */
+  margin-bottom: 80px;
+}
+.template-download-section {
+  margin: 20px 0;
+  text-align: center;
+  background-color:#d5cfcf;
+  width: 50%;
+  margin-left: 25%;
+
+}
+
+.template-link {
+  color: #052659;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 17px;
+
+}
+
+.template-link:hover {
+  text-decoration: none;
+}
+.downloadtitle{
+  color: black;
+ font-size: 17px;
 }

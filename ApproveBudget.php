@@ -20,9 +20,8 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// Check if it's a POST or GET request
+// Handle the POST request (update decision)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Handle the POST request (update decision)
     $data = json_decode(file_get_contents("php://input"), true);
 
     $app_ID = $data['app_ID'];
@@ -53,25 +52,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             "message" => "Database query preparation failed."
         ]);
     }
-} elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    // Handle the GET request (fetch applications)
-    $sql = "
-        SELECT p.projectTitle, b.uploaded_at , a.Id , p.app_ID , b.app_ID, b.decision
-        FROM project p
-        JOIN budget b ON p.app_ID = b.app_ID
-        JOIN application a ON p.app_ID = a.Id
-        WHERE ROUND(a.Status, 1) = 5.1";  // Correctly referencing status from application table
+}
 
-    $result = $conn->query($sql);
+// Handle the GET request (fetch applications or serve file)
+elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    if (isset($_GET['app_ID']) && isset($_GET['reportType'])) {
+        // Serve the requested file
+        $app_ID = $_GET['app_ID'];
+        $reportType = $_GET['reportType'];
 
-    if ($result->num_rows > 0) {
-        $applications = [];
-        while ($row = $result->fetch_assoc()) {
-            $applications[] = $row;
+        // Define the base directory for budget files
+        $targetDir = 'D:/GrantData/BudgetRevision/';
+
+        // Determine the file name based on reportType
+        $fileName = $app_ID . '_Budget(' . ($reportType === 'previous' ? 'PreviousBudget' : 'CurrentBudget') . ').pdf';
+        $filePath = $targetDir . $fileName;
+
+        // Security and existence check
+        if (file_exists($filePath)) {
+            // Set headers for file download
+            header('Content-Type: application/pdf');
+            header('Content-Disposition: attachment; filename="' . $fileName . '"');
+            header('Content-Length: ' . filesize($filePath));
+
+            // Output the file contents
+            readfile($filePath);
+            exit();
+        } else {
+            echo json_encode([
+                "status" => "error",
+                "message" => "File not found."
+            ]);
         }
-        echo json_encode($applications);
     } else {
-        echo json_encode([]);
+        // Fetch applications
+        $sql = "
+            SELECT p.projectTitle, b.uploaded_at, a.Id, p.app_ID, b.app_ID, b.decision
+            FROM project p
+            JOIN budget b ON p.app_ID = b.app_ID
+            JOIN application a ON p.app_ID = a.Id
+            WHERE ROUND(a.Status, 1) = 5.1";
+
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $applications = [];
+            while ($row = $result->fetch_assoc()) {
+                $applications[] = $row;
+            }
+            echo json_encode($applications);
+        } else {
+            echo json_encode([]);
+        }
     }
 }
 

@@ -76,6 +76,18 @@
     margin-bottom: 10px; /* Adds space between each Form.Control element */
     padding-left: 10px; /* Adds space between the placeholder text and the left edge of the input field */
 }
+.template-download-link {
+  display: inline-block;
+  margin-top: 5px;
+  color: darkblue;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.template-download-link:hover {
+  color: #0056b3;
+  text-decoration: none;
+}
 
 
   

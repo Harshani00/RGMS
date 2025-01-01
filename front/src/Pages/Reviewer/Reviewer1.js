@@ -41,12 +41,12 @@ export default function Reviewer1() {
       alert("Please enter the overall marks and upload the evaluation report.");
       return;
     }
-
+  
     const formData = new FormData();
     formData.append('app_ID', app_ID);
     formData.append('overallMarks', overallMarks);
     formData.append('evaluationReport', evaluationReport);
-
+  
     try {
       const response = await axios.post('/Reviewer1Evaluvation.php', formData, {
         headers: {
@@ -55,12 +55,43 @@ export default function Reviewer1() {
       });
       if (response.data.status === "success") {
         alert("Evaluation report and marks submitted successfully.");
+        // Clear the fields after successful submission
+        setOverallMarks('');
+        setEvaluationReport(null);
+        document.getElementById('uploadReport').value = ''; // Clear the file input field
       } else {
         alert("Error: " + response.data.message);
       }
     } catch (error) {
       console.error('Error submitting marks and report:', error);
       alert("There was an error submitting the data.");
+    }
+  };
+  
+
+  const handleDownload = async () => {
+    try {
+      const response = await axios.get("Reviewer1Evaluvation.php", {
+        responseType: "blob", // Ensure the response is treated as a file
+      });
+
+      // Extract the file name from Content-Disposition header
+      const contentDisposition = response.headers["content-disposition"];
+      const fileName = contentDisposition
+        ? contentDisposition.split("filename=")[1].replace(/"/g, "")
+        : "EvaluationCriteria.pdf";
+
+      // Create a temporary URL for the file blob
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", fileName);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading the file:", error);
+      alert("Failed to download the file. Please try again later.");
     }
   };
 
@@ -76,7 +107,7 @@ export default function Reviewer1() {
     <div>
       <Navbar4 />
       <h1 className="reviewer_title">Reviewer 1</h1>
-      <h1 className="dpage-title">Reviewer for Application ID: {application.app_ID}</h1>
+      <h1 className="dpage-title">Application ID: {application.app_ID}</h1>
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -103,7 +134,9 @@ export default function Reviewer1() {
       <div className="download-section">
         <div className="criteria-section">
           <label htmlFor="downloadCriteria">Download Evaluation Criteria: </label>
-          <button className="download-button">Download</button>
+          <button className="download-button" onClick={handleDownload}>
+            Download
+          </button>
           <p>(First, download the Evaluation Criteria and upload the Evaluation Report.)</p>
         </div>
 

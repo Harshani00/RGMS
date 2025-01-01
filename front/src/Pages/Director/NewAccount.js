@@ -181,7 +181,7 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import '../Applicant/Signup.css';
 import { useNavigate } from 'react-router-dom';
-import backgroundImage from '../../Assets/10.jpg';
+import backgroundImage from '../../Assets/Loginbackground.png';
 
 const NewAccount = () => {
     const [formData, setFormData] = useState({

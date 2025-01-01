@@ -41,7 +41,8 @@ function uploadFile($file, $targetDir, $allowedTypes) {
 
     // Generate new file name with incremented number
     $newFileNumber = $maxNumber + 1;
-    $fileName = "Evaluation Criteria_URC Grants_" . $newFileNumber . ".docx"; // Use docx or other file types as needed
+   // $fileName = "Evaluation Criteria_URC Grants_" . $newFileNumber . ".docx"; // Use docx or other file types as needed
+   $fileName = "Evaluation Criteria_URC Grants_" . $newFileNumber . ".docx";
     $targetFilePath = $targetDir . $fileName;
     $fileType = strtolower(pathinfo($file["name"], PATHINFO_EXTENSION));
 

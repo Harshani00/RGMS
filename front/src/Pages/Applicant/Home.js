@@ -401,14 +401,107 @@
 //   );
 // };
 
-// export default Home;
+// // export default Home;
+// import React, { useState, useEffect } from "react";
+// import "./Home.css";
+// import Navbar from "../../Components/Navbar";
+// import Navbar3 from "../../Components/Navbar3";
+// import backgroundImage1 from "../../Assets/16.jpg";
+// import backgroundImage2 from "../../Assets/slide-4.jpg";
+// import backgroundImage3 from "../../Assets/bb.jpg";
+// import DownloadIcon from '@mui/icons-material/Download';
+
+// const Home = () => {
+//   const images = [backgroundImage1, backgroundImage2, backgroundImage3];
+//   const [currentImage, setCurrentImage] = useState(0);
+
+//   useEffect(() => {
+//     const interval = setInterval(() => {
+//       setCurrentImage((prevImage) => (prevImage + 1) % images.length);
+//     }, 5000);
+//     return () => clearInterval(interval);
+//   }, [images.length]);
+
+//   return (
+//     <div>
+//       <Navbar />
+//       <Navbar3 />
+//       <div className="home-container">
+//         <header
+//           className="hero-section"
+//           style={{
+//             backgroundImage: `url(${images[currentImage]})`,
+//           }}
+//         >
+//           <div className="hero-overlay">
+//             <h2 className="hero-title">
+//               Simplifying the Path to Research Funding and Collaboration
+//             </h2>
+//             <p className="hero-subtitle">
+//               Streamline your grant process, collaborate effectively, and
+//               achieve research excellence with ease!
+//             </p>
+//           </div>
+//         </header>
+
+//         <main className="content-section">
+//         <section className="features">
+//   <h2 className="section-title">Application Guidelines</h2>
+//   <div className="feature-cards">
+//     <div className="feature-card">
+//       <i className="fas fa-laptop-code feature-icon"></i>
+//       <h3 className="feature-title" style={{ margin: "1rem 0", color: "#333" }}>Procedure</h3>
+//       <p >
+//         Grant applications should be submitted online on or before the deadline specified by the URC. Access the submission portal at 
+//         <a href="https://rgms.pdn.ac.lk/" style={{ color: "#007bff", textDecoration: "none", fontWeight: "bold" }}> https://rgms.pdn.ac.lk/</a>. 
+//         Prepare the following documents before entering the portal:
+//       </p>
+//       <ul>
+//         <li>Project proposal (as per the template) converted into a PDF</li>
+//         <li>Project budget (as per the template) converted into a PDF</li>
+//         <li>Full CV of the Principal Investigator as a PDF</li>
+//         <li>Two-page CVs of all Co-Investigators compiled into a single PDF</li>
+//         <li>DOI of three journal papers or links to conference papers. For papers without DOI, upload them to Google Drive and provide the link.</li>
+//       </ul>
+//     </div>
+
+//     <div className="feature-card">
+//   <i className="fas fa-users feature-icon"></i>
+//   <h3 className="feature-title" style={{ margin: "1rem 0", color: "#333" }}>
+//     Detailed Application Instructions Available for Download
+//   </h3>
+//   <div style={{ display: "flex", justifyContent: "center", alignItems: "center", margin: "1rem 0" }}>
+//     <DownloadIcon style={{ fontSize: "2.5rem", color: "#007bff" }} />
+//   </div>
+// </div>
+
+
+//     <div className="feature-card">
+//       <i className="fas fa-chart-line feature-icon" style={{ fontSize: "2.5rem", color: "#17a2b8" }}></i>
+//       <h3 className="feature-title" style={{ margin: "1rem 0", color: "#333" }}>Document Three</h3>
+//       <p style={{ color: "#555", lineHeight: "1.8" }}>
+//         Utilize comprehensive tools to monitor your progress, identify bottlenecks, and achieve your objectives effectively.
+//       </p>
+//     </div>
+//   </div>
+// </section>
+
+
+//         </main>
+//       </div>
+//     </div>
+//   );
+// };
+
 import React, { useState, useEffect } from "react";
 import "./Home.css";
 import Navbar from "../../Components/Navbar";
 import Navbar3 from "../../Components/Navbar3";
-import backgroundImage1 from "../../Assets/16.jpg";
-import backgroundImage2 from "../../Assets/slide-4.jpg";
-import backgroundImage3 from "../../Assets/bb.jpg";
+import backgroundImage1 from "../../Assets/backgroundImage1.png";
+import backgroundImage2 from "../../Assets/backgroundImage2.png";
+import backgroundImage3 from "../../Assets/backgroundImage3.png";
+import DownloadIcon from "@mui/icons-material/Download";
+import ReactPlayer from 'react-player';
 
 const Home = () => {
   const images = [backgroundImage1, backgroundImage2, backgroundImage3];
@@ -447,43 +540,107 @@ const Home = () => {
           <section className="features">
             <h2 className="section-title">Application Guidelines</h2>
             <div className="feature-cards">
-              <div className="feature-card feature-card-large">
+              <div className="feature-card">
                 <i className="fas fa-laptop-code feature-icon"></i>
-                <h3 className="feature-title">Procedure</h3>
+                <h3
+                  className="feature-title"
+         
+                >
+                  Procedure
+                </h3>
                 <p>
                   Grant applications should be submitted online on or before the
-                  deadline specified by the URC. Access the submission portal at{" "}
-                  <a href="https://rgms.pdn.ac.lk/">https://rgms.pdn.ac.lk/</a>.
-                  Prepare the following documents:
+                  deadline specified by the URC. Access the submission portal at
+                  <a
+                    href="https://rgms.pdn.ac.lk/"
+                    style={{
+                      color: "#800000",
+                      textDecoration: "none",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {" "}
+                    https://rgms.pdn.ac.lk/
+                  </a>
+                  . Prepare the following documents before entering the portal:
                 </p>
                 <ul>
-                  <li>Project proposal as per the template (PDF)</li>
-                  <li>Project budget as per the template (PDF)</li>
-                  <li>Full CV of the Principal Investigator (PDF)</li>
-                  <li>Two-page CVs of all Co-Investigators compiled (PDF)</li>
+                  <li>
+                    Project proposal (as per the template) converted into a PDF 
+                  </li>
+                  <li>
+                    Project budget (as per the template) converted into a PDF <div>
+    <a 
+      href="/Templates/Project Budget.docx" 
+      download="Project Budget.docx"
+      className="template-download-link"
+    >
+      Click Here to Download the Template
+    </a>
+  </div>
+                  </li>
+                  <li>
+                    Full CV of the Principal Investigator as a PDF
+                  </li>
+                  <li>
+                    Two-page CVs of all Co-Investigators compiled into a single
+                    PDF
+                  </li>
                   <li>
                     DOI of three journal papers or links to conference papers.
+                    For papers without DOI, upload them to Google Drive and
+                    provide the link.
                   </li>
                 </ul>
               </div>
 
               <div className="feature-card">
                 <i className="fas fa-users feature-icon"></i>
-                <h3 className="feature-title">Document Two</h3>
-                <p>
-                  Easily track your progress and make informed decisions with
-                  real-time data visualization.
-                </p>
+                <h3
+                  className="feature-title"
+               
+                >
+                  Detailed Application Instructions Available for Download
+                </h3>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    margin: "1rem 0",
+                  }}
+                >
+                  <a
+                    href="/Templates/Application Guidelines.pdf"
+                    download="Application Guidelines.pdf"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      textDecoration: "none",
+                      color: "#800000",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    <DownloadIcon style={{ fontSize: "2.5rem", color: "#80000", marginRight: "0.5rem" }} />
+                    Application Guidelines.pdf
+                  </a>
+                </div>
               </div>
 
               <div className="feature-card">
-                <i className="fas fa-chart-line feature-icon"></i>
-                <h3 className="feature-title">Document Three</h3>
-                <p>
-                  Utilize tools to monitor progress, identify bottlenecks, and
-                  achieve objectives.
-                </p>
-              </div>
+      <h3 className="feature-title">Application Portal User Guide</h3>
+      
+      <div style={{ display: "flex", justifyContent: "center", marginTop: "1rem" }}>
+        <ReactPlayer
+          url="/video/Application_Portal_Guide.mp4"
+          width="560px"
+          height="315px"
+          controls
+        />
+      </div>
+    </div>
+
             </div>
           </section>
         </main>

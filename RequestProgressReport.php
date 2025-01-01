@@ -48,7 +48,8 @@ if (isset($_GET['app_ID']) && isset($_GET['reportType'])) {
                 a.email AS userEmail,
                 p.projectTitle,
                 a.submittedDate,
-                p.startDate 
+                p.startDate ,
+                p.app_ID
             FROM application a
             JOIN project p ON a.Id = p.app_ID
             WHERE ROUND(a.Status, 1) = 5.1"; // Missing closing quote fixed here

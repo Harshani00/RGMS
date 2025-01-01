@@ -14,18 +14,21 @@ margin-right: 15px; /* Add space between the label and the download button */
 }
 
 .download-button {
-background-color: #007bff; /* Bootstrap blue */
-color: white;
-padding: 8px 16px;
-font-size: 16px;
-border: none;
-border-radius: 4px;
-cursor: pointer;
-transition: background-color 0.3s ease;
+    background-color: #052659;
+    border-color: #052659;
+    color: white;
+    width:100px;
+    border-radius:5px;
+    margin-left: 15px;
+    padding: 3px; /* Adjust padding for the button */
+    margin-top: 10px;
 }
 
-.download-button:hover {
-background-color: #0056b3; /* Darker blue on hover */
+.download-button:hover
+.download-button:focus {
+    background-color: #005b96;
+    border-color: #005b96; 
+    color: white;
 }
 
 .upload-section {
@@ -92,18 +95,21 @@ box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);  /* Soft blue glow */
 }
 
 .submit-button {
-background-color: #007bff;  /* Bootstrap primary blue */
-color: white;  /* White text */
-padding: 8px 16px;  /* Padding for a bigger button */
-font-size: 16px;  /* Font size for the button text */
-border: none;  /* Remove default border */
-border-radius: 4px;  /* Rounded corners */
-cursor: pointer;  /* Pointer cursor on hover */
-transition: background-color 0.3s ease;  /* Smooth transition effect */
+    background-color: #052659;
+    border-color: #052659;
+    color: white;
+    width:100px;
+    border-radius:5px;
+    margin-left: 15px;
+    padding: 3px; /* Adjust padding for the button */
+    margin-top: 10px;
 }
 
-.submit-button:hover {
-background-color: #0056b3;  /* Darker blue on hover */
+.submit-button:hover
+.submit-button:focus {
+    background-color: #005b96;
+    border-color: #005b96; 
+    color: white;
 }
 
 .submit-button:active {

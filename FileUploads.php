@@ -13,7 +13,7 @@ include("dbConnection.php");
 
 // Define target directory and allowed file types
 $targetDir = "D:/GrantData/Applications/"; // Ensure this directory exists and is writable
-$allowedTypes = array('pdf', 'doc', 'docx', 'xls', 'xlsx'); // Adjust as needed
+$allowedTypes = array('pdf'); // Adjust as needed
 
 // Function to handle file upload with renaming
 function uploadFile($file, $targetDir, $allowedTypes, $app_ID, $filePurpose) {

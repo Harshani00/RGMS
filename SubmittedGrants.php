@@ -110,42 +110,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         // Handle fetching submitted grants
         $user_id = $_SESSION['user_id'];
+        $sql = "SELECT p.pID, p.projectTitle, a.Status, a.Id, p.submittedDate,
+        (SELECT COUNT(*) FROM agreement WHERE app_ID = p.app_ID) AS hasAgreement
+ FROM project p
+ JOIN application a ON p.app_ID = a.Id 
+ WHERE p.uid = ?";
 
-        $sql = "SELECT p.pID, p.projectTitle, a.Status, a.Id, p.submittedDate
-                FROM project p
-                JOIN application a ON p.app_ID = a.Id 
-                WHERE p.uid = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
 
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $user_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
+$submittedGrants = [];
+while ($row = $result->fetch_assoc()) {
+// Convert the status codes to human-readable strings
+switch ($row['Status']) {
+case 1:
+             $row['Status'] = 'Submitted';
+             break;
+         case 5.1:
+         case 5.2:
+             $row['Status'] = 'Granted';
+             break;
+         case 3.1:
+             $row['Status'] = 'Approved';
+             break;
+         case 3.2:
+             $row['Status'] = 'Rejected';
+             break;
+         default:
+             $row['Status'] = 'Save';
+             break;
+}
+$row['hasAgreement'] = $row['hasAgreement'] > 0; // true if there is an agreement
+$submittedGrants[] = $row;
+}
 
-        $submittedGrants = [];
-        while ($row = $result->fetch_assoc()) {
-            switch ($row['Status']) {
-                case 1:
-                    $row['Status'] = 'Submitted';
-                    break;
-                case 5.1:
-                case 5.2:
-                    $row['Status'] = 'Granted';
-                    break;
-                case 3.1:
-                    $row['Status'] = 'Approved';
-                    break;
-                case 3.2:
-                    $row['Status'] = 'Rejected';
-                    break;
-                default:
-                    $row['Status'] = 'Save';
-                    break;
-            }
-            $submittedGrants[] = $row;
-        }
-
-        header('Content-Type: application/json');
-        echo json_encode($submittedGrants);
+header('Content-Type: application/json');
+echo json_encode($submittedGrants);
 
         $stmt->close();
     }

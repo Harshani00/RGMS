@@ -370,6 +370,230 @@
 //     </div>
 //   );
 // }
+// import React, { useEffect, useState } from 'react';
+// import Table from 'react-bootstrap/Table';
+// import Modal from 'react-bootstrap/Modal';
+// import Button from 'react-bootstrap/Button';
+// import Navbar from '../../Components/Navbar';
+// import '../Secretary/Table.css';
+// import axios from 'axios';
+
+// export default function ViewApplication() {
+//   const [applications, setApplications] = useState([]);
+//   const [filteredApplications, setFilteredApplications] = useState([]);
+//   const [showModal, setShowModal] = useState(false);
+//   const [selectedFile, setSelectedFile] = useState(null);
+//   const [currentAppId, setCurrentAppId] = useState(null);
+//   const [uploading, setUploading] = useState(false);
+//   const [requestSent, setRequestSent] = useState({}); // Track the request status for each application
+
+
+//   useEffect(() => {
+//     // Fetch applications from the PHP script
+//     fetchApplications();
+//   }, []);
+
+//   const fetchApplications = async () => {
+//     try {
+//         // Use axios for a GET request
+//         const response = await axios.get('/RequestAgreement.php');
+
+//         // Set the fetched data to state variables
+//         setApplications(response.data); 
+//         setFilteredApplications(response.data); 
+//     } catch (error) {
+//         console.error('Error fetching applications:', error);
+//     }
+// };
+
+//   const handleUploadClick = (id) => {
+//     setCurrentAppId(id); // Set the current application ID
+//     setShowModal(true); // Open the modal
+//   };
+
+//   const handleFileChange = (e) => {
+//     setSelectedFile(e.target.files[0]); // Store the selected file
+//   };
+//   // const handleRequestClick = async (id) => {
+//   //   const selectedApp = applications.find((app) => app.Id === id);
+//   //   if (!selectedApp) {
+//   //     alert("Application not found.");
+//   //     return;
+//   //   }
+  
+//   //   const email = selectedApp.email;
+//   //   const subject = "Regarding the Agreement";
+//   //   const message = `
+//   //     Dear Applicant,<br><br>
+//   //     Congratulations! Your application has been approved. We have uploaded the agreement related to your application.<br>
+//   //     Please read the agreement carefully and upload the signed copy within one week.<br><br>
+//   //     Best regards,<br>
+//   //     URC-University of Peradeniya
+//   //   `;
+  
+//   //   try {
+//   //     const response = await axios.post('/Email.php', {
+//   //       email,
+//   //       subject,
+//   //       message,
+//   //     });
+  
+//   //     if (response.data.status === 'success') {
+//   //       alert('Email sent successfully.');
+//   //     } else {
+//   //       alert(`Failed to send email: ${response.data.message}`);
+//   //     }
+//   //   } catch (error) {
+//   //     console.error('Error sending email:', error);
+//   //     alert('An error occurred while sending the email.');
+//   //   }
+//   // };
+//   const handleRequestClick = async (id) => {
+//     const selectedApp = applications.find((app) => app.Id === id);
+//     if (!selectedApp) {
+//       alert("Application not found.");
+//       return;
+//     }
+  
+//     const email = selectedApp.email;
+//     const subject = "Regarding the Agreement";
+//     const message = `
+//       Dear Applicant,<br><br>
+//       Congratulations! Your application has been approved. We have uploaded the agreement related to your application.<br>
+//       Please read the agreement carefully and upload the signed copy within one week.<br><br>
+//       Best regards,<br>
+//       URC-University of Peradeniya
+//     `;
+  
+//     try {
+//       const response = await axios.post('/Email.php', {
+//         email,
+//         subject,
+//         message,
+//       });
+  
+//       if (response.data.status === 'success') {
+//         alert('Email sent successfully.');
+        
+//         // Update the request status for the specific application
+//         setRequestSent(prevState => ({
+//           ...prevState,
+//           [id]: true, // Set the request as sent for the current application
+//         }));
+//       } else {
+//         alert(`Failed to send email: ${response.data.message}`);
+//       }
+//     } catch (error) {
+//       console.error('Error sending email:', error);
+//       alert('An error occurred while sending the email.');
+//     }
+//   };
+  
+
+//   const handleFileUpload = async () => {
+//     if (selectedFile) {
+//         setUploading(true); // Start uploading
+//         const formData = new FormData();
+//         formData.append('app_ID', currentAppId); // Attach the app_ID
+//         formData.append('uploadedFile', selectedFile); // Attach the file
+
+//         try {
+//             // Use axios to post the form data to the server
+//             const response = await axios.post('/RequestAgreement.php', formData, {
+//                 headers: {
+//                     'Content-Type': 'multipart/form-data', // Important to set this for file uploads
+//                 },
+//             });
+
+//             // Handle the response from the server
+//             if (response.data.status === 'success') {
+//                 alert(response.data.message);
+//                 setShowModal(false); // Close the modal
+//                 fetchApplications(); // Refresh the list of applications
+//             } else {
+//                 alert(response.data.message);
+//             }
+//         } catch (error) {
+//             console.error('Error uploading file:', error);
+//             alert('An error occurred while uploading the file.');
+//         } finally {
+//             setUploading(false); // Stop uploading
+//         }
+//     } else {
+//         alert("Please select a file first.");
+//     }
+// };
+
+//   return (
+//     <div>
+//       <Navbar />
+//       <h1 className="page-title">Request Agreements</h1>
+//       <Table striped bordered hover>
+//         <thead>
+//           <tr>
+//             <th colSpan={6} className="title">
+//               <label htmlFor="status-select">All Completed Applications</label>
+//             </th>
+//           </tr>
+//           <tr>
+//             <th>Application ID</th>
+//             <th>User Email</th>
+//             <th>Project Title</th>
+//             <th>Submitted Date</th>
+//             <th>Actions</th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//   {filteredApplications.map((app, index) => (
+//     <tr key={app.Id || index}>
+//       <td>{app.Id}</td>
+//       <td>{app.email}</td>
+//       <td>{app.projectTitle}</td>
+//       <td>{app.submittedDate}</td>
+//       <td>
+//         <button 
+//           className="uploadRequest_button"
+//           onClick={() => handleUploadClick(app.Id)}
+//         >
+//           Upload
+//         </button>
+//          <button 
+//     className={`uploadRequest_button ${requestSent[app.Id] ? 'requested' : ''}`}
+//     onClick={() => handleRequestClick(app.Id)}
+//     disabled={requestSent[app.Id]} // Disable the button once requested
+//   >
+//     {requestSent[app.Id] ? 'Requested' : 'Request'}
+//   </button>
+//       </td>
+//     </tr>
+//   ))}
+// </tbody>
+
+//       </Table>
+
+//       <Modal show={showModal} onHide={() => setShowModal(false)}>
+//         <Modal.Header closeButton>
+//           <Modal.Title>Upload File</Modal.Title>
+//         </Modal.Header>
+//         <Modal.Body>
+//           <input type="file" onChange={handleFileChange} />
+//         </Modal.Body>
+//         <Modal.Footer>
+//           <Button variant="secondary" onClick={() => setShowModal(false)}>
+//             Close
+//           </Button>
+//           <Button 
+//             variant="primary" 
+//             onClick={handleFileUpload}
+//             disabled={uploading}
+//           >
+//             {uploading ? 'Uploading...' : 'Upload'}
+//           </Button>
+//         </Modal.Footer>
+//       </Modal>
+//     </div>
+//   );
+// }
 import React, { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import Modal from 'react-bootstrap/Modal';

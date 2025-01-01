@@ -292,6 +292,16 @@ function MoreDetails() {
             <Button className='dowloadbutton'>Download</Button>
           </Form.Group>
 
+          <Form.Group className="mb-3 d-flex align-items-center" controlId="formagreement">
+            <Form.Label className="me-3">Agreement:</Form.Label>
+            <Button className='dowloadbutton'>Download</Button>
+          </Form.Group>
+
+          <Form.Group className="mb-3 d-flex align-items-center" controlId="formBasicawardletter">
+            <Form.Label className="me-3">Award Letter:</Form.Label>
+            <Button className='dowloadbutton'>Download</Button>
+          </Form.Group>
+
 
             <Form.Label>HOD / Dean Decisions:</Form.Label>
             <Table striped bordered hover className="mt-4">

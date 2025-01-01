@@ -260,11 +260,12 @@ if ($conn->query($sql) === TRUE) {
         $mail->Subject = 'Application Submitted Successfully';
         $mail->Body = "
             Dear $name,<br><br>
-            Thank you for your interest in the Multidisciplinary Research Grants and for submitting your application. We appreciate you taking the time to share your innovative research proposal with us..<br>
+            Thank you for your interest in the Multidisciplinary Research Grants and for submitting your application. We appreciate you taking the time to share your innovative research proposal with us.<br>
+            Your application, including all supporting documents, has been received. The University Research Council (URC) will carefully review your submission and notify you of the outcome in due course.<br>
             Application ID: $app_ID<br><br>
             Thank you for your submission.<br><br>
-            Best regards,<br>
-            URC - University of Peradeniya
+            With Best regards,<br>
+            Director/URC
         ";
 
         $mail->send();

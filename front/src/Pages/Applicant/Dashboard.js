@@ -645,7 +645,7 @@ import Navbar from '../../Components/Navbar';
 // import ApproveBudget from '../../Assets/img9.png';
 // import SubmittedGrant from '../../Assets/img10.jpg';
 import { useNavigate } from 'react-router-dom';
-import backgroundImage from '../../Assets/10.jpg';
+import backgroundImage from '../../Assets/Loginbackground.png';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import MoneyIcon from '@mui/icons-material/Money';
 import AssessmentIcon from '@mui/icons-material/Assessment';

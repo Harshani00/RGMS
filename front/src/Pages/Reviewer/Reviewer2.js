@@ -76,7 +76,7 @@ export default function Reviewer1() {
     <div>
       <Navbar4 />
       <h1 className="reviewer_title">Reviewer 2</h1>
-      <h1 className="dpage-title">Reviewer for Application ID: {application.app_ID}</h1>
+      <h1 className="dpage-title">Application ID: {application.app_ID}</h1>
       <Table striped bordered hover>
         <thead>
           <tr>

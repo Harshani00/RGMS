@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Profile.css'; // Import the CSS file for styling
-import backgroundImage from '../../Assets/10.jpg';
+import backgroundImage from '../../Assets/Loginbackground.png';
 
 const Profile = () => {
     const [formData, setFormData] = useState({

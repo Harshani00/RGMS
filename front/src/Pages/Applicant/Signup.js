@@ -293,7 +293,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import './Signup.css'; // Import the CSS file
 import { useNavigate } from 'react-router-dom';
-import backgroundImage from '../../Assets/10.jpg';
+import backgroundImage from '../../Assets/Loginbackground.png';
 
 const SignupForm = () => {
     const [formData, setFormData] = useState({

@@ -2,6 +2,8 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  
+ 
 }
 
 .hero-section {
@@ -48,24 +50,41 @@
   font-size: 2rem;
   margin-bottom: 1rem;
   font-weight: bold;
+ 
 }
 
 .feature-cards {
   display: flex;
-  justify-content: center;
-  gap: 2rem;
-  flex-wrap: wrap;
+  flex-direction: column; /* Arrange cards vertically */
+  align-items: center; /* Center the cards horizontally */
+  gap: 2rem; /* Add space between cards */
 }
 
 .feature-card {
-  background: #f5f5f5;
+  background:#d5cfcf;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px rgba(196, 7, 7, 0.1);
   padding: 1.5rem;
-  width: 300px;
+  width: 70%; /* Adjust width to look consistent on smaller screens */
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
 }
+
+.feature-card:first-child {
+  width: 70%; /* Make the first card slightly larger */
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
 
 .feature-card-large {
   width: 400px; /* Larger width for the first card */
@@ -86,15 +105,24 @@
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
   color: #333;
+  font-weight: bold;
 }
 
 .feature-card p {
   color: #555;
   line-height: 1.8;
+  text-align: left;
 }
 
 .feature-card ul {
-  margin: 1rem 0 0 1.5rem;
-  color: #555;
-  line-height: 1.8;
+  list-style-position: outside; /* Ensure bullets are outside the text */
+  text-align: left; /* Align text to the left */
+  padding-left: 1.5rem; /* Add space between bullets and card edge */
+  margin: 1rem 0;
+}
+
+.feature-card ul li {
+  margin-bottom: 0.5rem; /* Add spacing between list items */
+  line-height: 1.6; /* Improve readability */
+  color: #555; /* Adjust text color */
 }

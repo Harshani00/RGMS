@@ -226,6 +226,7 @@ export default function ProgressReport() {
       setEmailBody(
         `Dear ${username},<br><br>
         I hope this email finds you well.<br><br>
+       
         As a reminder, per the terms of your Multidisciplinary Research Grant, we kindly request that you submit a detailed six-month/one-year progress report within the next two weeks.<br><br>
         Please note that the timely submission of this report is crucial, as it will be reviewed by university auditors to assess the allocation of funds. Failure to adhere to this deadline may lead to complications for both the URC and yourself, potentially resulting in the withdrawal of your grant.<br><br>
         To streamline the review process, please use the attached template for your report.<br><br>
@@ -242,18 +243,22 @@ export default function ProgressReport() {
   
 
   const handleSendEmail = async () => {
+    if (!currentApp || !currentApp.Id) {
+      alert("Application ID is missing.");
+      return;
+    }
+  
     try {
       // Prepare the email data
       const emailData = {
-        email: currentApp.userEmail,   // Assuming currentApp has userEmail
-        
-        subject: `Progress Report for the Grant No ; {{currentApp.id}`,
+        email: currentApp.userEmail, // Assuming currentApp has userEmail
+        subject: `Progress Report for Grant Application ID: ${currentApp.Id}`, // Include the application ID in the subject
         message: emailBody,
       };
   
       // Send the email via POST request to Email.php
       const response = await axios.post('Email.php', emailData);
-      
+  
       if (response.data.status === 'success') {
         console.log('Email sent successfully');
         alert('Email sent successfully!');
@@ -261,13 +266,14 @@ export default function ProgressReport() {
         console.error('Email sending failed:', response.data.message);
         alert('Failed to send email');
       }
-      
-      handleClose();  // Close the modal after sending the email
+  
+      handleClose(); // Close the modal after sending the email
     } catch (error) {
       console.error('Error sending email:', error);
       alert('Error sending email');
     }
   };
+  
   
   const handleView = (id, reportType) => {
     console.log(`Viewing ${reportType} report for application ${id}`);
@@ -281,7 +287,7 @@ export default function ProgressReport() {
       .then((response) => {
         // Create a link element to trigger the download
         const link = document.createElement('a');
-        const blob = new Blob([response.data], { type: 'application/octet-stream' }); // Create blob with the received data
+        const blob = new Blob([response.data], { type: 'application/pdf'}); // Create blob with the received data
         link.href = URL.createObjectURL(blob); // Create an object URL for the blob
         link.download = `${reportType}_report_${id}.pdf`; // Set the filename for the download (you can modify this based on your reportType)
         link.click();  // Trigger the download
@@ -319,8 +325,8 @@ export default function ProgressReport() {
                 <td>{app.startDate}</td>
                 <td>{app.projectTitle}</td>
                 <td>
-                  <button className="view-button" onClick={() => handleView(app.Id, 'mid')}>
-                    View
+                  <button className="view-button" onClick={() => handleView('app.Id')}>
+                    Application
                   </button>
                 </td>
                 <td>

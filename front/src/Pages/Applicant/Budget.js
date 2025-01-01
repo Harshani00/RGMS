@@ -579,6 +579,7 @@ import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import Navbar from '../../Components/Navbar'; 
 import './UploadFiles.css';
+import DownloadIcon from "@mui/icons-material/Download";
 
 function Budget() {
   const [appData, setAppData] = useState([]);
@@ -677,8 +678,27 @@ console.log("Selected App:", selectedApp);
   };
 
   return (
+    
     <div>
       <Navbar />
+
+       {/* Download Template Section */}
+       <div className="template-download-section">
+        <p>
+          <strong className='downloadtitle'>Download the Template: (Remove previous budget)</strong>
+          <a 
+            href="/Templates/Budget Revisions.docx" 
+            download = "Budget Revisions.docx"
+            className="template-link"
+            
+          >
+           Budget Template
+           <DownloadIcon style={{ fontSize: "1.5rem", marginRight: "0.5rem" }} />
+
+          </a>
+        </p>
+      </div>
+     
       <label className='uploadtitle'>Upload Previous and Current Budget Here 👇</label>
 
 <Form.Group controlId="projectTitleSelect">
@@ -700,6 +720,7 @@ console.log("Selected App:", selectedApp);
     </option>
   ))}
 </Form.Control>
+
 </Form.Group>
 
       <Form.Group controlId="projectTitleSelect">
@@ -711,7 +732,7 @@ console.log("Selected App:", selectedApp);
           readOnly
         />
       </Form.Group>
-
+     
       <div className="label-container1">
         <Form.Label>1. Upload Previous Budget</Form.Label>
         {errors.PreviousBudget && <p className="error">{errors.PreviousBudget}</p>}
